@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "attach",
+      "restart": true,
+      "address": "localhost",
+      "sourceMaps": true,
+      "skipFiles": [
+        "node_modules"
+      ],
+      "port": 9229
+    },
+    {
+      "name": "Attach to Docker",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "attach",
+      "restart": true,
+      "address": "localhost",
+      "sourceMaps": true,
+      "skipFiles": [
+        "node_modules"
+      ],
+      "port": 9229,
+      "localRoot": "${workspaceRoot}",
+      "remoteRoot": "/home/app/node"
+    }
+  ]
+}
