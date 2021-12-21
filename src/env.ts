@@ -2,19 +2,25 @@ import Ajv from 'ajv'
 import envSchema from 'env-schema'
 import { Type, Static } from '@sinclair/typebox'
 
-export enum NODE_ENVS {
+enum NODE_ENVS {
   PRODUCTION = 'production',
   DEVELOPMENT = 'development',
 }
 
+enum STORAGE_PROVIDERS {
+  LOCAL = 'local',
+  S3 = 's3',
+}
+
 const schema = Type.Object(
   {
-    PORT: Type.Number({ default: 3000 }),
     NODE_ENV: Type.Enum(NODE_ENVS),
-    NOLOG: Type.Optional(Type.Boolean()),
-    LOG_LEVEL: Type.Optional(Type.String()),
-    PRETTY_LOGS: Type.Optional(Type.String()),
-    TOKEN: Type.String(),
+    TURBO_TOKEN: Type.String(),
+    PORT: Type.Optional(Type.Number({ default: 3000 })),
+    LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
+    STORAGE_PROVIDER: Type.Optional(
+      Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
+    ),
   },
   { additionalProperties: false },
 )

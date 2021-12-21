@@ -1,15 +1,12 @@
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
-import autoLoad from 'fastify-autoload'
-import { join } from 'path'
 import { isBoom } from '@hapi/boom'
+import remoteCache from './plugins/remote-cache'
+import config from './plugins/config'
 
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify(options)
-
-  app.register(autoLoad, {
-    dir: join(__dirname, './plugins'),
-    dirNameRoutePrefix: false,
-    maxDepth: 1,
+  app.register(config).after(() => {
+    app.register(remoteCache, { allowedTokens: [app.config.TURBO_TOKEN] })
   })
 
   app.setErrorHandler((err, request, reply) => {

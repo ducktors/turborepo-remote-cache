@@ -4,47 +4,49 @@
 // https://github.com/Tapico/tapico-turborepo-remote-cache/blob/4d12cbca59fed053b24fa7a2c88cddfc5f46198c/main.go#L192
 
 import { FastifyInstance } from 'fastify'
+import { badRequest, unauthorized } from '@hapi/boom'
+import { getArtifact, putArtifact } from './routes'
 
-import { getArtifact } from './routes/get-artifact'
-import { createArtifact } from './routes/post-artifact'
-import { env } from '../../env'
-
-async function turboRemoteCache(instance: FastifyInstance, options: { allowedTokens: string[] }) {
-  const { allowedTokens } = options
+async function turboRemoteCache(
+  instance: FastifyInstance,
+  options: { allowedTokens: string[]; bodyLimit?: number; apiVersion?: `v${number}` },
+) {
+  const { allowedTokens, bodyLimit = 104857600, apiVersion = 'v8' } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
       `'allowedTokens' options must be a string[], ${typeof allowedTokens} provided instead`,
     )
   }
-  instance.addContentTypeParser(
+
+  instance.addContentTypeParser<Buffer>(
     'application/octet-stream',
-    { parseAs: 'buffer', bodyLimit: 104857600 },
-    async function streamParser(request, payload) {
+    { parseAs: 'buffer', bodyLimit },
+    async function parser(request, payload) {
       return payload
     },
   )
+
   const tokens = new Set<string>(allowedTokens)
   instance.addHook('onRequest', async function (request) {
     let authHeader = request.headers['authorization']
     authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 
     if (!authHeader) {
-      throw new Error(`Missing Authorization header`) // TODO: add proper boom error
+      throw badRequest(`Missing Authorization header`)
     }
     const [, token] = authHeader.split('Bearer ')
     if (!tokens.has(token)) {
-      throw new Error(`The provided token isn't valid`)
+      throw unauthorized(`Invalid authorization token`)
     }
   })
 
-  instance.route(getArtifact)
-  instance.route({ method: 'POST', ...createArtifact })
-  instance.route({ method: 'PUT', ...createArtifact })
-}
-
-export const autoConfig = {
-  allowedTokens: [env.TOKEN],
-  prefix: 'v8',
+  await instance.register(
+    async function (i) {
+      i.route(getArtifact)
+      i.route(putArtifact)
+    },
+    { prefix: `/${apiVersion}` },
+  )
 }
 
 export default turboRemoteCache

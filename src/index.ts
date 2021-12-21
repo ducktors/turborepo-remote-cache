@@ -33,5 +33,4 @@ app.listen(Number(process.env.PORT), '0.0.0.0', err => {
   }
 
   app.log.info(`Server listening on port ${app.config.PORT}`)
-  app.log.info(app.printRoutes())
 })

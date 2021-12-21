@@ -1,7 +1,7 @@
 import { stat, readFile, writeFile, mkdir } from 'fs/promises'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { logger } from '../../logger'
+import { logger } from '../../../logger'
 
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 

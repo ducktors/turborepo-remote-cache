@@ -1,29 +1,31 @@
 import type { Server } from 'http'
 import type { RouteOptions, RawRequestDefaultExpression, RawReplyDefaultExpression } from 'fastify'
-import { notFound } from '@hapi/boom'
-import { getCachedArtifact } from '../storage/local'
+import { preconditionFailed } from '@hapi/boom'
+import { createCachedArtifact } from '../storage/local'
 import { type Querystring, type Params, artifactsRouteSchema } from './schema'
 
-export const getArtifact: RouteOptions<
+export const putArtifact: RouteOptions<
   Server,
   RawRequestDefaultExpression,
   RawReplyDefaultExpression,
   {
     Querystring: Querystring
     Params: Params
+    Body: Buffer
   }
 > = {
-  method: 'GET',
   url: '/artifacts/:id',
+  method: 'PUT',
   schema: artifactsRouteSchema,
   async handler(req, reply) {
     const artifactId = req.params.id
     const teamId = req.query.teamId
     try {
-      const artifact = await getCachedArtifact(artifactId, teamId)
-      reply.send(artifact)
+      const artifactUrl = await createCachedArtifact(artifactId, teamId, req.body)
+      reply.send({ urls: [`${teamId}/${artifactUrl}`] })
     } catch (err) {
-      throw notFound(`Artifact not found`, err)
+      // we need this error throw since turbo retries if the error is in 5xx range
+      throw preconditionFailed(`Error during the artifact creation`, err)
     }
   },
 }
