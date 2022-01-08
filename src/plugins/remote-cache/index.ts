@@ -6,6 +6,7 @@
 import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
 import { getArtifact, putArtifact } from './routes'
+import { createCachedArtifact, getCachedArtifact } from './storage'
 
 async function turboRemoteCache(
   instance: FastifyInstance,
@@ -39,6 +40,8 @@ async function turboRemoteCache(
       throw unauthorized(`Invalid authorization token`)
     }
   })
+
+  instance.decorate('location', { getCachedArtifact, createCachedArtifact })
 
   await instance.register(
     async function (i) {

@@ -1,7 +1,7 @@
 import { stat, readFile, writeFile, mkdir } from 'fs/promises'
 import { tmpdir } from 'os'
 import { join } from 'path'
-import { logger } from '../../../logger'
+import { logger } from '../../logger'
 
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 
@@ -29,4 +29,13 @@ export async function createCachedArtifact(artifactId: string, teamId: string, a
 
   await writeFile(fileName, artifact)
   return artifactId
+}
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    location: {
+      getCachedArtifact: typeof getCachedArtifact
+      createCachedArtifact: typeof createCachedArtifact
+    }
+  }
 }

@@ -1,7 +1,6 @@
 import type { Server } from 'http'
 import type { RouteOptions, RawRequestDefaultExpression, RawReplyDefaultExpression } from 'fastify'
 import { preconditionFailed } from '@hapi/boom'
-import { createCachedArtifact } from '../storage/local'
 import { type Querystring, type Params, artifactsRouteSchema } from './schema'
 
 export const putArtifact: RouteOptions<
@@ -21,7 +20,7 @@ export const putArtifact: RouteOptions<
     const artifactId = req.params.id
     const teamId = req.query.teamId
     try {
-      const artifactUrl = await createCachedArtifact(artifactId, teamId, req.body)
+      const artifactUrl = await this.location.createCachedArtifact(artifactId, teamId, req.body)
       reply.send({ urls: [`${teamId}/${artifactUrl}`] })
     } catch (err) {
       // we need this error throw since turbo retries if the error is in 5xx range
