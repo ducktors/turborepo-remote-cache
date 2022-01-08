@@ -6,7 +6,10 @@ import config from './plugins/config'
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify(options)
   app.register(config).after(() => {
-    app.register(remoteCache, { allowedTokens: [app.config.TURBO_TOKEN] })
+    app.register(remoteCache, {
+      allowedTokens: [app.config.TURBO_TOKEN],
+      provider: app.config.STORAGE_PROVIDER,
+    })
   })
 
   app.setErrorHandler((err, request, reply) => {

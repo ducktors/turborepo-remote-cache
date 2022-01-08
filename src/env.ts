@@ -7,7 +7,7 @@ enum NODE_ENVS {
   DEVELOPMENT = 'development',
 }
 
-enum STORAGE_PROVIDERS {
+export enum STORAGE_PROVIDERS {
   LOCAL = 'local',
   S3 = 's3',
 }
@@ -21,6 +21,9 @@ const schema = Type.Object(
     STORAGE_PROVIDER: Type.Optional(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
+    STORAGE_PATH: Type.Optional(Type.String()),
+    S3_ACCESS_KEY: Type.Optional(Type.String()),
+    S3_SECRET_KEY: Type.Optional(Type.String()),
   },
   { additionalProperties: false },
 )

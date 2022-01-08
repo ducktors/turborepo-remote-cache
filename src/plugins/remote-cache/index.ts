@@ -1,18 +1,24 @@
-// turborepo-remote-cache
-// dependencies: fastify, boom, @aws/s3
-// https://api.vercel.com/v8/artifacts/09b4848294e347d8?teamID=team_lMDgmODIeVfSbCQNQPDkX8cF
-// https://github.com/Tapico/tapico-turborepo-remote-cache/blob/4d12cbca59fed053b24fa7a2c88cddfc5f46198c/main.go#L192
-
 import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
 import { getArtifact, putArtifact } from './routes'
-import { createCachedArtifact, getCachedArtifact } from './storage'
+import { createLocation } from './storage'
+import { STORAGE_PROVIDERS } from '../../env'
 
 async function turboRemoteCache(
   instance: FastifyInstance,
-  options: { allowedTokens: string[]; bodyLimit?: number; apiVersion?: `v${number}` },
+  options: {
+    allowedTokens: string[]
+    bodyLimit?: number
+    apiVersion?: `v${number}`
+    provider?: STORAGE_PROVIDERS
+  },
 ) {
-  const { allowedTokens, bodyLimit = 104857600, apiVersion = 'v8' } = options
+  const {
+    allowedTokens,
+    bodyLimit = 104857600,
+    apiVersion = 'v8',
+    provider = STORAGE_PROVIDERS.LOCAL,
+  } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
       `'allowedTokens' options must be a string[], ${typeof allowedTokens} provided instead`,
@@ -41,7 +47,14 @@ async function turboRemoteCache(
     }
   })
 
-  instance.decorate('location', { getCachedArtifact, createCachedArtifact })
+  instance.decorate(
+    'location',
+    createLocation(provider, {
+      accessKey: instance.config.S3_ACCESS_KEY,
+      secretKey: instance.config.S3_SECRET_KEY,
+      path: instance.config.STORAGE_PATH,
+    }),
+  )
 
   await instance.register(
     async function (i) {
