@@ -1,8 +1,4 @@
-FROM node:14-alpine as build
-
-# adds deps for node-gyp: add if native modules are used
-# RUN apk update && apk upgrade \
-#   && apk --no-cache add --virtual builds-deps build-base python
+FROM --platform=linux/amd64 node:14-alpine as build
 
 # set app basepath
 ENV HOME=/home/app
@@ -22,10 +18,12 @@ COPY . $HOME/node/
 RUN npm run build
 
 # remove dev dependencies and files that are not needed in production
+RUN rm -rf node_modules
+RUN npm install --only=prod
 RUN npm prune --production
 
 # start new image for lower size
-FROM node:14-alpine
+FROM --platform=linux/amd64 node:14-alpine
 
 # dumb-init registers signal handlers for every signal that can be caught
 RUN apk update && apk add --no-cache dumb-init
@@ -37,8 +35,7 @@ RUN addgroup -g 101 -S app && adduser -u 100 -S -G app -s /bin/false app
 ENV HOME=/home/app
 
 # copy production complied node app to the new image
-COPY --from=build $HOME/node/ $HOME/node/
-RUN chown -R app:app $HOME/*
+COPY --chown=app:app --from=build $HOME/node/ $HOME/node/
 
 # run app with low permissions level user
 USER app
@@ -47,6 +44,13 @@ WORKDIR $HOME/node
 EXPOSE 3000
 
 ENV NODE_ENV=production
+ENV TURBO_TOKEN=$TURBO_TOKEN
+ENV STORAGE_PROVIDER=$STORAGE_PROVIDER
+ENV STORAGE_PATH=$STORAGE_PATH
+ENV S3_ACCESS_KEY=$S3_ACCESS_KEY
+ENV S3_SECRET_KEY=$S3_SECRET_KEY
+ENV S3_REGION=$S3_REGION
+ENV S3_ENDPOINT=$S3_ENDPOINT
 
 ENTRYPOINT ["dumb-init"]
 CMD ["node", "--enable-source-maps", "build/index.js"]
