@@ -5,10 +5,10 @@ This project is an open-source implementation of the [Turborepo custom remote ca
 It supports several storage providers and deploys environments. Moreover, the project provides __"deploy to "__ buttons for one-click deployments whenever possible.
 
 ## Index
-- [Storage Options](#storage-options)
+- [Supported Storage Providers](#supported-storage-providers)
 - [ENV VARS](#env-vars)
-- [Deployment Instructions](#deployment-instructions)
-- [Enable custom remote caching in a Turborepo monorepo](#enable_custom_remote_caching_in_a_turborepo_monorepo)
+- [Deployment Instructions](#deployment-environments)
+- [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo)
 
 ## Supported Storage Providers
 - [x] Local filesystem
@@ -20,7 +20,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## ENV VARS
 
 - `NODE_ENV`: String. Optional. Possible values: `development | production`. Default value: `production`.
-- `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable_custom_remote_caching_in_a_turborepo_monorepo) for more info. This value should be private.
+- `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo) for more info. This value should be private.
 - `PORT`: Number. Optional. Default value: `3000`.
 - `LOG_LEVEL`: String. Optional. Default value: `'info'`
 - `STORAGE_PROVIDER`: Optional. Possible values: `local | s3`. Default value: "local". Use this var to choose the storage provider.
@@ -31,7 +31,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - `S3_ENDPOINT`: String. Optional. Used only if `STORAGE_PROVIDER=s3`. __NOTE: This var can be omitted if the other s3 vars are provided.__
 
 ## Deployment Environments
-- [Deploy on Vercel](##deploy-to-vercel)
+- [Deploy on Vercel](#deploy-to-vercel)
 
 ## Enable custom remote caching in your Turborepo monorepo
 To enable a custom remote caching server in your Turborepo monorepo, you must add a config file by hand. The `turbo login` command works only with the official Vercel server.
@@ -51,7 +51,7 @@ For example:
 }
 ```
   3. Modify your Turborepo top-level `build` script, adding the `--token=` parameter.
-  __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [ENV_VARS](#env_vars) section for more info.__
+  __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [ENV_VARS](#env-vars) section for more info.__
 
   For example:
 
@@ -80,6 +80,6 @@ __Note: Local storage isn't supported for this deployment method.__
 2. `cd turborepo-remote-cache`
 3. `npm i'
 4. `cp env.example env`
-5. put your env vars to the `env` file. See [ENV_VARS](#env_vars) section for more details.
+5. put your env vars to the `env` file. See [ENV_VARS](#env-vars) section for more details.
 6. `npm run dev`
 
