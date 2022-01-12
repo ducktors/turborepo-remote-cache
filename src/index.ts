@@ -1,16 +1,10 @@
 import 'make-promises-safe'
-import hyperid from 'hyperid'
 import closeWithGrace from 'close-with-grace'
 
 import { createApp } from './app'
-import { logger } from './logger'
-
-const uuid = hyperid({ urlSafe: true })
 
 const app = createApp({
   trustProxy: true,
-  logger,
-  genReqId: () => uuid(),
 })
 
 closeWithGrace(

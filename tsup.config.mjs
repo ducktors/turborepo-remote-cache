@@ -15,4 +15,5 @@ export default defineConfig(options => ({
   sourcemap: tsConfig.options.sourceMap,
   clean: true,
   target: tsConfig.raw?.compilerOptions?.target ?? 'node12',
+  bundle: false,
 }))

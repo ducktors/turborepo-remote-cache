@@ -1,10 +1,11 @@
 import { join } from 'path'
-import { pipeline } from 'stream/promises'
-import { Readable } from 'stream'
+import { Readable, pipeline as pipelineCallback } from 'stream'
+import { promisify } from 'util'
 import { STORAGE_PROVIDERS } from '../../../env'
 import { createS3, type S3Options } from './s3'
 import { createLocal, LocalOptions } from './local'
 
+const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 
 type ProviderOptions = Partial<LocalOptions> & Omit<S3Options, 'bucket'>

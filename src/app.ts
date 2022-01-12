@@ -1,10 +1,19 @@
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
+import hyperid from 'hyperid'
 import { isBoom } from '@hapi/boom'
 import remoteCache from './plugins/remote-cache'
 import config from './plugins/config'
+import { logger } from './logger'
+
+const uuid = hyperid({ urlSafe: true })
 
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
-  const app = Fastify(options)
+  const app = Fastify({
+    logger,
+    genReqId: () => uuid(),
+    ...options,
+  })
+
   app.register(config).after(() => {
     app.register(remoteCache, {
       allowedTokens: [app.config.TURBO_TOKEN],
