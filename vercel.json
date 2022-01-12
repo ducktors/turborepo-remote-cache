@@ -7,9 +7,9 @@
     }
   ],
   "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/build/vercel.js"
-        }
-    ]
+    {
+      "source": "/(.*)",
+      "destination": "/build/vercel.js"
+    }
+  ]
 }
