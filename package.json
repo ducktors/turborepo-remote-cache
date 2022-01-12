@@ -25,6 +25,7 @@
   "dependencies": {
     "@hapi/boom": "^9.1.4",
     "@sinclair/typebox": "^0.23.1",
+    "@vercel/node": "^1.12.1",
     "ajv": "^8.8.2",
     "aws-sdk": "^2.1053.0",
     "boom": "^7.3.0",
