@@ -5,5 +5,11 @@
       "src": "./build/vercel.js",
       "use": "@vercel/node"
     }
-  ]
+  ],
+  "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/build/vercel.js"
+        }
+    ]
 }
