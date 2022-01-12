@@ -1,4 +1,4 @@
-# Turborepo Remote Cache
+# Turborepo Remote Cache Server
 
 
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
@@ -78,7 +78,7 @@ __Note: Local storage isn't supported for this deployment method.__
     `git clone git@github.com:fox1t/turborepo-remote-cache.git`
 
 2. `cd turborepo-remote-cache`
-3. `npm i'
+3. `npm i`
 4. `cp env.example env`
 5. put your env vars to the `env` file. See [ENV_VARS](#env-vars) section for more details.
 6. `npm run dev`
