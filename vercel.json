@@ -2,18 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "./src/index.ts",
+      "src": "./build/vercel.js",
       "use": "@vercel/node"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/get/(.*)",
-      "destination": "/src/plugins/remote-cache/routes/get-artifact.ts"
-    },
-    {
-      "source": "/put/(.*)",
-      "destination": "/src/plugins/remote-cache/routes/put-artifact.ts"
     }
   ]
 }
