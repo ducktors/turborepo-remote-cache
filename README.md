@@ -20,8 +20,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## ENV VARS
 
 - `NODE_ENV`: String. Optional. Possible values: `development | production`. Default value: `production`.
-- `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo) for more info. This value should be private.
 - `PORT`: Number. Optional. Default value: `3000`.
+- `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo) for more info. This value should be private.
 - `LOG_LEVEL`: String. Optional. Default value: `'info'`
 - `STORAGE_PROVIDER`: Optional. Possible values: `local | s3`. Default value: "local". Use this var to choose the storage provider.
 - `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3`, this will be the name of the bucket.
@@ -31,7 +31,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - `S3_ENDPOINT`: String. Optional. Used only if `STORAGE_PROVIDER=s3`. __NOTE: This var can be omitted if the other s3 vars are provided.__
 
 ## Deployment Environments
-- [Deploy on Vercel](#deploy-to-vercel)
+- [Deploy on Vercel](#deploy-on-vercel)
+- [Deploy on Docker](#deploy-on-docker)
 
 ## Enable custom remote caching in your Turborepo monorepo
 To enable a custom remote caching server in your Turborepo monorepo, you must add a config file by hand. The `turbo login` command works only with the official Vercel server.
@@ -65,13 +66,34 @@ For example:
   //...
   ```
 
-## Deploy to Vercel
+## Deploy on Vercel
 The server can be easily deployed as Vercel Function using the deploy button.
 
 __Note: Local storage isn't supported for this deployment method.__
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffox1t%2Fturborepo-remote-cache&env=NODE_ENV,TURBO_TOKEN,STORAGE_PROVIDER,STORAGE_PATH,S3_ACCESS_KEY,S3_SECRET_KEY,S3_REGION,S3_ENDPOINT&envDescription=The%20server%20needs%20several%20credentials.%20The%20required%20environmental%20variables%20can%20be%20found%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Ffox1t%2Fturborepo-remote-cache%23readme)
 
+## Deploy on Docker
+You can find the image on the [dockerhub](https://hub.docker.com/r/fox1t/turborepo-remote-cache).
+
+
+1. create an `.env` file, containing all of the env vars you need. Check [ENV_VARS](#env-vars) for more info.
+```sh
+NODE_ENV=
+PORT=
+TURBO_TOKEN=
+LOG_LEVEL=
+STORAGE_PROVIDER=
+STORAGE_PATH=
+S3_ACCESS_KEY=
+S3_SECRET_KEY=
+S3_REGION=
+S3_ENDPOINT=
+```
+2. run the image using the `.env` file created on the step one.
+```sh
+docker run --env-file=.env -p 3000:3000 fox1t/turborepo-remote-cache
+```
 ## Contribute to this project
 1. clone this repository
 
