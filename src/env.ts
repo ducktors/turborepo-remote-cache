@@ -15,7 +15,7 @@ export enum STORAGE_PROVIDERS {
 
 const schema = Type.Object(
   {
-    NODE_ENV: Type.Enum(NODE_ENVS),
+    NODE_ENV: Type.Optional(Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION })),
     TURBO_TOKEN: Type.String(),
     PORT: Type.Optional(Type.Number({ default: 3000 })),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),

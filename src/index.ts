@@ -25,6 +25,4 @@ app.listen(Number(process.env.PORT), '0.0.0.0', err => {
     app.log.error(err)
     process.exit(1)
   }
-
-  app.log.info(`Server listening on port ${app.config.PORT}`)
 })
