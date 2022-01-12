@@ -30,6 +30,8 @@ junit-testresults.xml
 # Dependency directories
 node_modules
 jspm_packages
+test
+
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build
 
@@ -43,8 +45,11 @@ build
 .DS_Store
 .vscode
 .env
+.env.example
 LICENSE
 README.md
 .dockerignore
 .github/
 Dockerfile
+vercel.json
+.nvmrc
