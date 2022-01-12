@@ -1,5 +1,7 @@
 # Turborepo Remote Cache Server
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/fox1t/turborepo-remote-cache) [![Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache)
+
 
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
 It supports several storage providers and deploys environments. Moreover, the project provides __"deploy to "__ buttons for one-click deployments whenever possible.
