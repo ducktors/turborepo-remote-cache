@@ -19,7 +19,7 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=ref,event=tag
+            type=semver,pattern={{version}}
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
