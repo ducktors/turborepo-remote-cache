@@ -1,1 +1,5 @@
 libtap-settings: ./libtap-settings.js
+lines: 80
+branches: 70
+functions: 100
+statements: 80

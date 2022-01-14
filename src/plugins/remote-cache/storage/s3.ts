@@ -9,9 +9,9 @@ export interface S3Options {
   bucket: string
 }
 export function createS3({ accessKey, secretKey, bucket, region, endpoint }: S3Options) {
-  if (!accessKey || !secretKey || !region) {
+  if (!accessKey || !secretKey || !(region || endpoint)) {
     throw new Error(
-      `To use S3 location "accessKey (S3_ACCESS_KEY)", "secretKey (S3_SECRET_KEY)", and "region (S3_REGION)" parameters are mandatory.`,
+      `To use S3 storage "accessKey (S3_ACCESS_KEY)", "secretKey (S3_SECRET_KEY)", and one of "region (S3_REGION)" and "endpoint (S3_ENDPOINT)" parameters are mandatory.`,
     )
   }
 
@@ -20,8 +20,9 @@ export function createS3({ accessKey, secretKey, bucket, region, endpoint }: S3O
       accessKeyId: accessKey,
       secretAccessKey: secretKey,
     },
-    region,
-    ...(endpoint ? { endpoint } : {}),
+    ...(region ? { region } : {}),
+    ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
+    ...(process.env.NODE_ENV === 'test' ? { sslEnabled: false, s3ForcePathStyle: true } : {}),
   })
 
   const location = s3({

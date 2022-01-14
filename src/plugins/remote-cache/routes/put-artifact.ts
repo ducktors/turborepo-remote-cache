@@ -21,12 +21,9 @@ export const putArtifact: RouteOptions<
     const artifactId = req.params.id
     const teamId = req.query.teamId
     try {
-      const artifactUrl = await this.location.createCachedArtifact(
-        artifactId,
-        teamId,
-        Readable.from(req.body),
-      )
-      reply.send({ urls: [`${teamId}/${artifactUrl}`] })
+      await this.location.createCachedArtifact(artifactId, teamId, Readable.from(req.body))
+
+      reply.send({ urls: [`${teamId}/${artifactId}`] })
     } catch (err) {
       // we need this error throw since turbo retries if the error is in 5xx range
       throw preconditionFailed(`Error during the artifact creation`, err)
