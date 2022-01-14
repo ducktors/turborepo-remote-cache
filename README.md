@@ -104,7 +104,7 @@ docker run --env-file=.env -p 3000:3000 fox1t/turborepo-remote-cache
 
 2. `cd turborepo-remote-cache`
 3. `npm i`
-4. `cp env.example env`
+4. `cp .env.example .env`
 5. put your env vars to the `env` file. See [ENV_VARS](#env-vars) section for more details.
 6. `npm run dev`
 
