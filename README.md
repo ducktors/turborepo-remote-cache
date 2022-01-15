@@ -36,6 +36,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## Deployment Environments
 - [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on Docker](#deploy-on-docker)
+- [Deploy on DigitalOcean](#deploy-on-digitalocean)
 
 ## Enable custom remote caching in your Turborepo monorepo
 To enable a custom remote caching server in your Turborepo monorepo, you must add a config file by hand. The `turbo login` command works only with the official Vercel server.
@@ -97,6 +98,15 @@ S3_ENDPOINT=
 ```sh
 docker run --env-file=.env -p 3000:3000 fox1t/turborepo-remote-cache
 ```
+
+## Deploy on DigitalOcean
+The server can be easily deployed on DigitalOcean App Service.
+
+__Note: Local storage isn't supported for this deployment method.__
+
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/fox1t/turborepo-remote-cache/tree/main)
+
+
 ## Contribute to this project
 1. clone this repository
 

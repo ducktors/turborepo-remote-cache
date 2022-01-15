@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nucleode/typescript-microservice-starter.git"
+    "url": "git+https://github.com/fox1t/turborepo-remote-cache.git"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",

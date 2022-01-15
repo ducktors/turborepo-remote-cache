@@ -1,0 +1,28 @@
+spec:
+  name: turborepo-remote-cache
+  services:
+    - name: server
+      git:
+        branch: main
+        repo_clone_url: https://github.com/fox1t/turborepo-remote-cache.git
+      dockerfile_path: Dockerfile
+      envs:
+        - key: NODE_ENV
+          value: "production"
+        - key: PORT
+          value: "3000"
+        - key: TURBO_TOKEN
+          value: "my-cool-token"
+          type: SECRET
+        - key: STORAGE_PROVIDER
+          value: "s3"
+        - key: S3_ACCESS_KEY
+          value: "aws-access-key"
+          type: SECRET
+        - key: S3_SECRET_KEY
+          value: "aws-secret-key"
+          type: SECRET
+        - key: S3_REGION
+          value: "eu-central-1"
+        - key: STORAGE_PATH
+          value: "my-s3-bucket"
