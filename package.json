@@ -1,7 +1,7 @@
 {
   "name": "turborepo-remote-cache",
   "version": "0.1.0",
-  "description": "TypeScript microservice starter project.",
+  "description": "Turborepo remote cache server",
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",
   "license": "MIT",
@@ -81,8 +81,6 @@
     "turborepo",
     "monorepo",
     "remote",
-    "cache",
-    "cache",
-    "remote"
+    "cache"
   ]
 }
