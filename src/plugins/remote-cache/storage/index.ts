@@ -4,17 +4,34 @@ import { promisify } from 'util'
 import { STORAGE_PROVIDERS } from '../../../env'
 import { createS3, type S3Options } from './s3'
 import { createLocal, LocalOptions } from './local'
+import {
+  createGitlabPackageRegistry,
+  GitlabPackageRegistryOptions,
+} from './gitlab-package-registry'
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 
-type ProviderOptions = Partial<LocalOptions> & Omit<S3Options, 'bucket'>
+type ProviderOptions = Partial<LocalOptions> &
+  Omit<S3Options, 'bucket'> &
+  Partial<GitlabPackageRegistryOptions>
 
 export function createLocation(provider: STORAGE_PROVIDERS, providerOptions: ProviderOptions) {
-  const { path = TURBO_CACHE_FOLDER_NAME, accessKey, secretKey, region, endpoint } = providerOptions
+  const {
+    path = TURBO_CACHE_FOLDER_NAME,
+    accessKey,
+    secretKey,
+    region,
+    endpoint,
+    gitlabToken,
+    gitlabRepoPath,
+    gitlabEndpoint,
+  } = providerOptions
   const location =
     provider === STORAGE_PROVIDERS.LOCAL
       ? createLocal({ path })
+      : provider === STORAGE_PROVIDERS.GITLAB_PACKAGE_REGISTRY
+      ? createGitlabPackageRegistry({ gitlabToken, gitlabRepoPath, gitlabEndpoint })
       : createS3({ accessKey, secretKey, bucket: path, region, endpoint })
 
   async function getCachedArtifact(artifactId: string, teamId: string) {

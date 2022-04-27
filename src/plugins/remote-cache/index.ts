@@ -55,6 +55,9 @@ async function turboRemoteCache(
       path: instance.config.STORAGE_PATH,
       region: instance.config.S3_REGION,
       endpoint: instance.config.S3_ENDPOINT,
+      gitlabToken: instance.config.GITLAB_TOKEN,
+      gitlabRepoPath: instance.config.GITLAB_REPO_PATH,
+      gitlabEndpoint: instance.config.GITLAB_ENDPOINT,
     }),
   )
 

@@ -12,6 +12,7 @@ export enum STORAGE_PROVIDERS {
   LOCAL = 'local',
   S3 = 'S3',
   s3 = 's3',
+  GITLAB_PACKAGE_REGISTRY = 'gitlab-package-registry',
 }
 
 const schema = Type.Object(
@@ -28,6 +29,9 @@ const schema = Type.Object(
     S3_SECRET_KEY: Type.Optional(Type.String()),
     S3_REGION: Type.Optional(Type.String()),
     S3_ENDPOINT: Type.Optional(Type.String()),
+    GITLAB_TOKEN: Type.Optional(Type.String()),
+    GITLAB_REPO_PATH: Type.Optional(Type.String()),
+    GITLAB_ENDPOINT: Type.Optional(Type.String()),
   },
   { additionalProperties: false },
 )
