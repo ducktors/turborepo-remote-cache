@@ -50,10 +50,7 @@ async function turboRemoteCache(
   instance.decorate(
     'location',
     createLocation(provider, {
-      accessKey: instance.config.S3_ACCESS_KEY,
-      secretKey: instance.config.S3_SECRET_KEY,
       path: instance.config.STORAGE_PATH,
-      region: instance.config.S3_REGION,
       endpoint: instance.config.S3_ENDPOINT,
     }),
   )
