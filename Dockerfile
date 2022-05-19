@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:14-alpine as build
+FROM --platform=linux/amd64 node:16-alpine as build
 
 # set app basepath
 ENV HOME=/home/app
@@ -23,7 +23,7 @@ RUN npm install --only=prod
 RUN npm prune --production
 
 # start new image for lower size
-FROM --platform=linux/amd64 node:14-alpine
+FROM --platform=linux/amd64 node:16-alpine
 
 # dumb-init registers signal handlers for every signal that can be caught
 RUN apk update && apk add --no-cache dumb-init
