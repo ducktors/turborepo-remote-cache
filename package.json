@@ -5,6 +5,9 @@
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",
   "license": "MIT",
+  "bin": {
+    "turborepo-remote-cache": "./build/cli.js"
+  },
   "scripts": {
     "prebuild": "npm run lint && rimraf ./build",
     "build": "tsc -p ./tsconfig.json",

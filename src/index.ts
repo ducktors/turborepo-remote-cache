@@ -2,6 +2,7 @@ import 'make-promises-safe'
 import closeWithGrace from 'close-with-grace'
 
 import { createApp } from './app'
+import { env } from './env'
 
 const app = createApp({
   trustProxy: true,
@@ -20,7 +21,7 @@ closeWithGrace(
   },
 )
 
-app.listen(Number(process.env.PORT), '0.0.0.0', err => {
+app.listen(env.PORT, '0.0.0.0', err => {
   if (err) {
     app.log.error(err)
     process.exit(1)
