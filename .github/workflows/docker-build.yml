@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3.0.2
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: fox1t/turborepo-remote-cache
           flavor: |
