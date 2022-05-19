@@ -1,4 +1,4 @@
-name: Node Build
+name: Node.js
 
 on:
   pull_request:
