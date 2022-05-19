@@ -1,7 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
 
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/fox1t/turborepo-remote-cache) [![Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/fox1t/turborepo-remote-cache) [![Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml) [![Docker Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/docker-build.yml/badge.svg?branch=main)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/docker-build.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) ![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)
 
 
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
