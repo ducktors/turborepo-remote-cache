@@ -74,9 +74,9 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/nucleode/typescript-microservice-starter/issues"
+    "url": "https://github.com/fox1t/turborepo-remote-cache/issues"
   },
-  "homepage": "https://github.com/nucleode/typescript-microservice-starter#readme",
+  "homepage": "https://github.com/fox1t/turborepo-remote-cache#readme",
   "directories": {
     "test": "test"
   },
@@ -85,5 +85,9 @@
     "monorepo",
     "remote",
     "cache"
+  ],
+  "files": [
+    "build",
+    "vercel.json"
   ]
 }
