@@ -28,10 +28,18 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - `LOG_LEVEL`: String. Optional. Default value: `'info'`
 - `STORAGE_PROVIDER`: Optional. Possible values: `local | s3`. Default value: "local". Use this var to choose the storage provider.
 - `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3`, this will be the name of the bucket.
-- `S3_ACCESS_KEY`: String. Used only if `STORAGE_PROVIDER=s3`
-- `S3_SECRET_KEY`: String. Used only if `STORAGE_PROVIDER=s3`
-- `S3_REGION`: String. Used only if `STORAGE_PROVIDER=s3`
-- `S3_ENDPOINT`: String. Optional. Used only if `STORAGE_PROVIDER=s3`. __NOTE: This var can be omitted if the other s3 vars are provided.__
+
+## AWS Credentials and Region
+
+AWS credentials and configuration are loaded as described in the AWS SDK documentation:
+
+- [Setting Credentials](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html)
+- [Setting Configuration](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html)
+
+For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, or create a file
+`~/.aws/credentials` with AWS credentials.
+
+Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
 
 ## Deployment Environments
 - [Deploy on Vercel](#deploy-on-vercel)
@@ -90,9 +98,9 @@ TURBO_TOKEN=
 LOG_LEVEL=
 STORAGE_PROVIDER=
 STORAGE_PATH=
-S3_ACCESS_KEY=
-S3_SECRET_KEY=
-S3_REGION=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
 S3_ENDPOINT=
 ```
 2. run the image using the `.env` file created on the step one.

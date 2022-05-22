@@ -11,11 +11,11 @@ const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 type ProviderOptions = Partial<LocalOptions> & Omit<S3Options, 'bucket'>
 
 export function createLocation(provider: STORAGE_PROVIDERS, providerOptions: ProviderOptions) {
-  const { path = TURBO_CACHE_FOLDER_NAME, accessKey, secretKey, region, endpoint } = providerOptions
+  const { path = TURBO_CACHE_FOLDER_NAME, endpoint } = providerOptions
   const location =
     provider === STORAGE_PROVIDERS.LOCAL
       ? createLocal({ path })
-      : createS3({ accessKey, secretKey, bucket: path, region, endpoint })
+      : createS3({ bucket: path, endpoint })
 
   async function getCachedArtifact(artifactId: string, teamId: string) {
     return new Promise((resolve, reject) => {
