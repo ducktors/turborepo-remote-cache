@@ -4,7 +4,7 @@ dotenv.config({ path: join(__dirname, '.env.multipletokens') })
 import { test } from 'tap'
 import { createApp } from '../src/app'
 
-test(`should return array with multiple keys`, async t => {
+test(`should return array with multiple tokens`, async t => {
   t.plan(2)
   const app = createApp({ logger: false })
   await app.ready()
