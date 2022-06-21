@@ -17,7 +17,7 @@ export enum STORAGE_PROVIDERS {
 const schema = Type.Object(
   {
     NODE_ENV: Type.Optional(Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION })),
-    TURBO_TOKEN: Type.String(),
+    TURBO_TOKEN: Type.String({ separator: ',' }),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
     STORAGE_PROVIDER: Type.Optional(
@@ -29,15 +29,16 @@ const schema = Type.Object(
     S3_REGION: Type.Optional(Type.String()),
     S3_ENDPOINT: Type.Optional(Type.String()),
   },
-  { additionalProperties: false },
+  {
+    additionalProperties: false,
+  },
 )
-
 export const env = envSchema<Static<typeof schema>>({
   ajv: new Ajv({
     removeAdditional: true,
     useDefaults: true,
     coerceTypes: true,
-    keywords: ['kind', 'RegExp', 'modifier'],
+    keywords: ['kind', 'RegExp', 'modifier', envSchema.keywords.separator],
   }),
   dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT ? true : false,
   schema,

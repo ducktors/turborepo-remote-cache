@@ -16,7 +16,7 @@ export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
 
   app.register(config).after(() => {
     app.register(remoteCache, {
-      allowedTokens: [app.config.TURBO_TOKEN],
+      allowedTokens: [...app.config.TURBO_TOKEN],
       provider: app.config.STORAGE_PROVIDER,
     })
   })

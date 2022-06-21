@@ -12,7 +12,7 @@ const server = new S3erver({
   silent: true,
   configureBuckets: [
     {
-      name: process.env.STORAGE_PATH!,
+      name: process.env.STORAGE_PATH as string,
     },
   ],
 })
