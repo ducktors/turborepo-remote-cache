@@ -24,9 +24,9 @@ const schema = Type.Object(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
     STORAGE_PATH: Type.Optional(Type.String()),
-    S3_ACCESS_KEY: Type.Optional(Type.String()),
-    S3_SECRET_KEY: Type.Optional(Type.String()),
-    S3_REGION: Type.Optional(Type.String()),
+    AWS_ACCESS_KEY_ID: Type.Optional(Type.String()),
+    AWS_SECRET_ACCESS_KEY: Type.Optional(Type.String()),
+    AWS_REGION: Type.Optional(Type.String()),
     S3_ENDPOINT: Type.Optional(Type.String()),
   },
   {
