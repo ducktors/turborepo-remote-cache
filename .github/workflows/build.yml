@@ -11,30 +11,38 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    name: Build
     strategy:
       matrix:
         node-version: [16.x]
         os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Install with npm
-        run: |
-          npm install
-
+        run: npm install
       - name: Lint code
-        run: |
-          npm run lint
-
+        run: npm run lint
       - name: Build
-        run: |
-          npm run build
-
+        run: npm run build
+      
+  test:
+    runs-on: ${{ matrix.os }}
+    name: Test
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install with npm
+        run: npm install
       - name: Run tests
-        run: |
-          npm run test
+        run: npm run test
