@@ -45,7 +45,7 @@ Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/co
 - [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on Docker](#deploy-on-docker)
 - [Deploy on DigitalOcean](#deploy-on-digitalocean)
-- [Remoteless with npx](#deploy-"remoteless"-with-npx)
+- [Remoteless with npx](#deploy-remoteless-with-npx)
 
 ## Enable custom remote caching in your Turborepo monorepo
 To enable a custom remote caching server in your Turborepo monorepo, you must add a config file by hand. The `turbo login` command works only with the official Vercel server.
