@@ -16,13 +16,13 @@ spec:
           type: SECRET
         - key: STORAGE_PROVIDER
           value: "s3"
-        - key: S3_ACCESS_KEY
+        - key: AWS_ACCESS_KEY_ID
           value: "aws-access-key"
           type: SECRET
-        - key: S3_SECRET_KEY
+        - key: AWS_SECRET_ACCESS_KEY
           value: "aws-secret-key"
           type: SECRET
-        - key: S3_REGION
+        - key: AWS_REGION
           value: "eu-central-1"
         - key: STORAGE_PATH
           value: "my-s3-bucket"
