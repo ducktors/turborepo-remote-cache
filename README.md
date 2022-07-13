@@ -79,6 +79,13 @@ For example:
   //...
   ```
 
+### Enable remote caching in Docker
+For some reason, the `.turbo/config.json` is not working in Docker containers. In order to enable remote caching during Docker build, you need to pass the configuration via CLI arguments.
+
+```json
+    "build": "turbo run build --team=\"team_FcALQN9XEVbeJ1NjTQoS9Wup\" --token=\"yourToken\" --api=\"https://your-caching.server.dev\"",
+```
+
 ## Deploy on Vercel
 The server can be easily deployed as Vercel Function using the deploy button.
 
