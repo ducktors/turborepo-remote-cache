@@ -92,4 +92,21 @@ test(`local'`, async t => {
     t2.equal(response.statusCode, 200)
     t2.same(response.body, 'test cache data')
   })
+  t.test('should upload an artifact when slug is used', async t2 => {
+    t2.plan(2)
+    const response = await app.inject({
+      method: 'PUT',
+      url: `/v8/artifacts/${artifactId}`,
+      headers: {
+        authorization: 'Bearer changeme',
+        'content-type': 'application/octet-stream',
+      },
+      query: {
+        slug: teamId,
+      },
+      payload: Buffer.from('test cache data'),
+    })
+    t2.equal(response.statusCode, 200)
+    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+  })
 })
