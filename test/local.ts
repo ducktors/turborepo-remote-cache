@@ -109,4 +109,18 @@ test(`local'`, async t => {
     t2.equal(response.statusCode, 200)
     t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
+  t.test('should return 200 when POST artifacts/events is called', async t2 => {
+    t2.plan(2)
+    const response = await app.inject({
+      method: 'POST',
+      url: `/v8/artifacts/events`,
+      headers: {
+        authorization: 'Bearer changeme',
+        'content-type': 'application/octet-stream',
+      },
+      payload: Buffer.from('test cache data'),
+    })
+    t2.equal(response.statusCode, 200)
+    t2.same(response.json(), {})
+  })
 })
