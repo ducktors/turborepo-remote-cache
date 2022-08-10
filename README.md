@@ -39,6 +39,8 @@ AWS credentials and configuration are loaded as described in the AWS SDK documen
 For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, or create a file
 `~/.aws/credentials` with AWS credentials.
 
+For shortlived credentials you also need to provide the `AWS_SESSION_TOKEN` environmental variable, either in an ENV variable or in the credentials file.
+
 Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
 
 ## Deployment Environments
@@ -112,6 +114,7 @@ STORAGE_PROVIDER=
 STORAGE_PATH=
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
+AWS_SESSION_TOKEN=
 AWS_REGION=
 S3_ENDPOINT=
 ```

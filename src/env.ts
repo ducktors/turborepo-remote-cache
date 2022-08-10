@@ -27,6 +27,7 @@ const schema = Type.Object(
     // AWS_ env vars are used as aws-sdk defaults
     AWS_ACCESS_KEY_ID: Type.Optional(Type.String()),
     AWS_SECRET_ACCESS_KEY: Type.Optional(Type.String()),
+    AWS_SESSION_TOKEN: Type.Optional(Type.String()),
     AWS_REGION: Type.Optional(Type.String()),
     // S3_ env vars are used by Vercel. ref: https://vercel.com/support/articles/how-can-i-use-aws-sdk-environment-variables-on-vercel
     S3_ACCESS_KEY: Type.Optional(Type.String()),
