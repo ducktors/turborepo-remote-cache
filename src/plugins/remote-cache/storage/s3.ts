@@ -17,16 +17,15 @@ export function createS3({
   region = process.env.AWS_REGION,
   endpoint,
 }: S3Options) {
-  if (!accessKey || !secretKey || !(region || endpoint)) {
-    throw new Error(
-      `To use S3 storage "accessKey (S3_ACCESS_KEY)", "secretKey (S3_SECRET_KEY)", and one of "region (S3_REGION)" and "endpoint (S3_ENDPOINT)" parameters are mandatory.`,
-    )
-  }
   const client = new aws.S3({
-    credentials: {
-      accessKeyId: accessKey,
-      secretAccessKey: secretKey,
-    },
+    ...(accessKey && secretKey
+      ? {
+          credentials: {
+            accessKeyId: accessKey,
+            secretAccessKey: secretKey,
+          },
+        }
+      : {}),
     ...(region ? { region } : {}),
     ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
     ...(process.env.NODE_ENV === 'test' ? { sslEnabled: false, s3ForcePathStyle: true } : {}),
