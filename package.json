@@ -26,6 +26,7 @@
     "url": "git+https://github.com/fox1t/turborepo-remote-cache.git"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.4.1",
     "@hapi/boom": "^9.1.4",
     "@sinclair/typebox": "^0.23.1",
     "@vercel/node": "^1.12.1",
