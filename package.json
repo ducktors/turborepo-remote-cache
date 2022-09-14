@@ -20,7 +20,11 @@
     "check:types": "tsc -p ./tsconfig.json --noEmit",
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --ts",
     "test:watch": "npm run test -- --watch",
-    "test:report": "npm run test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml"
+    "test:report": "npm run test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml",
+    "commitlint": "commitlint",
+    "semantic-release": "semantic-release",
+    "commit": "npx git-cz",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -48,13 +52,24 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@commitlint/prompt": "^17.1.2",
     "@cspotcode/source-map-support": "^0.7.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.6",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "@types/node": "^17.0.0",
     "@types/pino": "^6.3.12",
     "@types/tap": "^15.0.5",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
+    "commitizen": "^4.2.5",
+    "commitlint-config-cz": "^0.13.3",
     "cross-env": "^7.0.3",
+    "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^10.0.0",
     "esbuild": "^0.14.5",
     "eslint": "^8.4.1",
@@ -65,14 +80,15 @@
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "s3rver": "^3.7.1",
+    "semantic-release": "^19.0.5",
     "tap": "^15.1.5",
     "ts-node": "^10.4.0",
     "tsup": "^5.11.6",
     "typescript": "^4.5.4"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test && npm run build"
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "bugs": {

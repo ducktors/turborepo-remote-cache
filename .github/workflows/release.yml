@@ -1,4 +1,4 @@
-name: Docker
+name: Releases
 
 on:
   push:
@@ -64,3 +64,18 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    needs: docker-build
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
