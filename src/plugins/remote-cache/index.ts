@@ -55,6 +55,9 @@ async function turboRemoteCache(
       path: instance.config.STORAGE_PATH,
       region: instance.config.S3_REGION,
       endpoint: instance.config.S3_ENDPOINT,
+      clientEmail: instance.config.GCS_CLIENT_EMAIL,
+      privateKey: instance.config.GCS_PRIVATE_KEY,
+      projectId: instance.config.GCS_PROJECT_ID,
     }),
   )
 

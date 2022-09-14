@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Turborepo remote cache server",
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",
@@ -9,6 +9,7 @@
     "turborepo-remote-cache": "./build/cli.js"
   },
   "scripts": {
+    "prepublish": "npm run build",
     "prebuild": "npm run lint && rimraf ./build",
     "build": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps build/index.js",
@@ -26,6 +27,7 @@
     "url": "git+https://github.com/fox1t/turborepo-remote-cache.git"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.4.1",
     "@hapi/boom": "^9.1.4",
     "@sinclair/typebox": "^0.23.1",
     "@vercel/node": "^1.12.1",
