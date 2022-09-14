@@ -16,8 +16,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## Supported Storage Providers
 - [x] Local filesystem
 - [x] AWS S3
+- [x] Google Cloud Storage
 - [ ] Azure Blob Storage (WIP)
-- [ ] Google Cloud Storage (WIP)
 - [ ] Google Drive Blobs (WIP)
 
 ## ENV VARS
@@ -26,8 +26,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - `PORT`: Number. Optional. Default value: `3000`.
 - `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo) for more info. This value should be private.
 - `LOG_LEVEL`: String. Optional. Default value: `'info'`
-- `STORAGE_PROVIDER`: Optional. Possible values: `local | s3`. Default value: "local". Use this var to choose the storage provider.
-- `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3`, this will be the name of the bucket.
+- `STORAGE_PROVIDER`: Optional. Possible values: `local | s3 | google-cloud-storage`. Default value: "local". Use this var to choose the storage provider.
+- `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3` or `google-cloud-storage`, this will be the name of the bucket.
 
 ## AWS Credentials and Region
 
@@ -40,6 +40,20 @@ For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_
 `~/.aws/credentials` with AWS credentials.
 
 Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
+
+## Configure Google Cloud Storage
+1. Create a [bucket](https://console.cloud.google.com/storage/browser) (or use an existing one)
+1. Create a new [service account](https://console.cloud.google.com/iam-admin/serviceaccounts) with a role of `Storage Object Viewer` and `Storage Object Creator`.
+1. Click "Create Key" and save the JSON file.
+1. Add the `project_id` , `client_email`, and `private_key` from saved JSON file to `.env` (or wherever you manage your environment variables):
+  ```sh
+  # .env
+  STORAGE_PROVIDER=google-cloud-storage
+  STORAGE_PATH=<name-of-the-bucket>
+  GCS_PROJECT_ID=<project_id>
+  GCS_CLIENT_EMAIL=<client_email>
+  GCS_PRIVATE_KEY=<private_key>
+  ```
 
 ## Deployment Environments
 - [Deploy on Vercel](#deploy-on-vercel)

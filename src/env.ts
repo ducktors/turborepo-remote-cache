@@ -12,6 +12,7 @@ export enum STORAGE_PROVIDERS {
   LOCAL = 'local',
   S3 = 'S3',
   s3 = 's3',
+  GOOGLE_CLOUD_STORAGE = 'google-cloud-storage',
 }
 
 const schema = Type.Object(
@@ -34,6 +35,11 @@ const schema = Type.Object(
     S3_REGION: Type.Optional(Type.String()),
     // S3_ENDPOINT is shared between are deployments type
     S3_ENDPOINT: Type.Optional(Type.String()),
+
+    // Google Cloud Storage credentials
+    GCS_PROJECT_ID: Type.Optional(Type.String()),
+    GCS_CLIENT_EMAIL: Type.Optional(Type.String()),
+    GCS_PRIVATE_KEY: Type.Optional(Type.String()),
   },
   {
     additionalProperties: false,

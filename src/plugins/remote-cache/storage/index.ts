@@ -2,20 +2,70 @@ import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
 import { STORAGE_PROVIDERS } from '../../../env'
-import { createS3, type S3Options } from './s3'
-import { createLocal, LocalOptions } from './local'
+import { createS3, type S3Options as S3Opts } from './s3'
+import { createLocal, type LocalOptions as LocalOpts } from './local'
+import {
+  createGoogleCloudStorage,
+  type GoogleCloudStorageOptions as GCSOpts,
+} from './google-cloud-storage'
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 
-type ProviderOptions = Partial<LocalOptions> & Omit<S3Options, 'bucket'>
+type LocalOptions = Partial<LocalOpts>
+type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
+type GoogleCloudStorageOptions = Omit<GCSOpts, 'bucket'> & LocalOptions
 
-export function createLocation(provider: STORAGE_PROVIDERS, providerOptions: ProviderOptions) {
-  const { path = TURBO_CACHE_FOLDER_NAME, accessKey, secretKey, region, endpoint } = providerOptions
-  const location =
-    provider === STORAGE_PROVIDERS.LOCAL
-      ? createLocal({ path })
-      : createS3({ accessKey, secretKey, bucket: path, region, endpoint })
+type ProviderOptions<Provider extends STORAGE_PROVIDERS> = Provider extends STORAGE_PROVIDERS.LOCAL
+  ? LocalOptions
+  : Provider extends STORAGE_PROVIDERS.S3
+  ? S3Options
+  : Provider extends STORAGE_PROVIDERS.s3
+  ? S3Options
+  : Provider extends STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
+  ? GoogleCloudStorageOptions
+  : never
+
+// https://github.com/maxogden/abstract-blob-store#api
+export interface StorageProvider {
+  exists: (artifactPath: string, cb: (err: Error | null, exists?: boolean) => void) => void
+  createReadStream: (artifactPath: string) => NodeJS.ReadStream
+  createWriteStream: (artifactPath: string) => NodeJS.WritableStream
+}
+
+function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
+  provider: Provider,
+  providerOptions: ProviderOptions<Provider>,
+): StorageProvider {
+  const { path = TURBO_CACHE_FOLDER_NAME } = providerOptions
+
+  switch (provider) {
+    case STORAGE_PROVIDERS.LOCAL: {
+      return createLocal({ path })
+    }
+    case STORAGE_PROVIDERS.S3:
+    case STORAGE_PROVIDERS.s3: {
+      const { accessKey, secretKey, region, endpoint } = providerOptions as S3Options
+      return createS3({ accessKey, secretKey, bucket: path, region, endpoint })
+    }
+    case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
+      const { clientEmail, privateKey, projectId } = providerOptions as GoogleCloudStorageOptions
+      return createGoogleCloudStorage({ bucket: path, clientEmail, privateKey, projectId })
+    }
+    default:
+      throw new Error(
+        `Unsupported storage provider '${provider}'. Please select one of the following: ${Object.values(
+          STORAGE_PROVIDERS,
+        ).join(', ')}!`,
+      )
+  }
+}
+
+export function createLocation<Provider extends STORAGE_PROVIDERS>(
+  provider: Provider,
+  providerOptions: ProviderOptions<Provider>,
+) {
+  const location = createStorageLocation(provider, providerOptions)
 
   async function getCachedArtifact(artifactId: string, teamId: string) {
     return new Promise((resolve, reject) => {
