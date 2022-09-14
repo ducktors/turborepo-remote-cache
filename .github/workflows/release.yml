@@ -1,9 +1,9 @@
-name: Releases
+name: CD
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
 
 jobs:
   build:
