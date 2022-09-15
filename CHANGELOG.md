@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.3...v1.6.4) (2022-09-15)
+
+
+### Bug Fixes
+
+* adds ignore-script on dockerimage ([2e4f4d2](https://github.com/ducktors/turborepo-remote-cache/commit/2e4f4d2639d0dcd94598935e4bb558f29b2379f7))
+
 ## [1.6.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.2...v1.6.3) (2022-09-15)
 
 
