@@ -1,10 +1,7 @@
-name: Node.js
+name: CI
 
 on:
   pull_request:
-    branches:
-      - main
-  push:
     branches:
       - main
 
@@ -28,7 +25,7 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-      
+
   test:
     runs-on: ${{ matrix.os }}
     name: Test
