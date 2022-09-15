@@ -19,8 +19,7 @@ RUN npm run build
 
 # remove dev dependencies and files that are not needed in production
 RUN rm -rf node_modules
-RUN npm install --only=prod
-RUN npm prune --production
+RUN npm install --omit=dev
 
 # start new image for lower size
 FROM --platform=linux/amd64 node:16-alpine

@@ -9,7 +9,6 @@
     "turborepo-remote-cache": "./build/cli.js"
   },
   "scripts": {
-    "prepublish": "npm run build",
     "prebuild": "npm run lint && rimraf ./build",
     "build": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps build/index.js",
