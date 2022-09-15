@@ -1,7 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
 
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/fox1t/turborepo-remote-cache) [![Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/build.yml) [![Docker Build](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/docker-build.yml/badge.svg?branch=main)](https://github.com/fox1t/turborepo-remote-cache/actions/workflows/docker-build.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) ![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache) [![Build](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml) [![Docker Build](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker-build.yml/badge.svg?branch=main)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker-build.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) ![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)
 
 
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
@@ -110,7 +110,7 @@ The server can be easily deployed as Vercel Function using the deploy button.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffox1t%2Fturborepo-remote-cache&env=NODE_ENV,TURBO_TOKEN,STORAGE_PROVIDER,STORAGE_PATH,S3_ACCESS_KEY,S3_SECRET_KEY,S3_REGION,S3_ENDPOINT&envDescription=The%20server%20needs%20several%20credentials.%20The%20required%20environmental%20variables%20can%20be%20found%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Ffox1t%2Fturborepo-remote-cache%23readme)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache&env=NODE_ENV,TURBO_TOKEN,STORAGE_PROVIDER,STORAGE_PATH,S3_ACCESS_KEY,S3_SECRET_KEY,S3_REGION,S3_ENDPOINT&envDescription=The%20server%20needs%20several%20credentials.%20The%20required%20environmental%20variables%20can%20be%20found%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache%23readme)
 
 ## Deploy on Docker
 You can find the image on the [dockerhub](https://hub.docker.com/r/fox1t/turborepo-remote-cache).
@@ -139,7 +139,7 @@ The server can be easily deployed on DigitalOcean App Service.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/fox1t/turborepo-remote-cache/tree/main)
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
 
 ## Deploy "remoteless" with npx
 If you have Node.js installed, you can run the server simply by typing
@@ -153,7 +153,7 @@ npx turborepo-remote-cache
 ## Contribute to this project
 1. clone this repository
 
-    `git clone git@github.com:fox1t/turborepo-remote-cache.git`
+    `git clone git@github.com:ducktors/turborepo-remote-cache.git`
 
 2. `cd turborepo-remote-cache`
 3. `npm i`
