@@ -1,3 +1,17 @@
+## [1.6.5](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.4...v1.6.5) (2022-09-15)
+
+
+### Bug Fixes
+
+* enable npm autopublish ([11c01d9](https://github.com/ducktors/turborepo-remote-cache/commit/11c01d951580829a5d5f09e601727058900a214d))
+
+## [1.6.5](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.4...v1.6.5) (2022-09-15)
+
+
+### Bug Fixes
+
+* enable npm autopublish ([11c01d9](https://github.com/ducktors/turborepo-remote-cache/commit/11c01d951580829a5d5f09e601727058900a214d))
+
 ## [1.6.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.3...v1.6.4) (2022-09-15)
 
 
