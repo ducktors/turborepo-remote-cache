@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Install dependencies
+        run: npm install
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.DUCKTORS_PAT }}
+          NPM_TOKEN: ${{ secrets.DUCKTORS_NPM_TOKEN }}
+        run: npx semantic-release
