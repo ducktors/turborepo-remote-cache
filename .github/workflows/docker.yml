@@ -1,0 +1,32 @@
+name: Docker
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+        with:
+          path: .
+      - name: Build and push latest
+        run: |
+          docker buildx build --platform linux/x86_64 --rm --push \
+            -t fox1t/turborepo-remote-cache:$DOCKER_IMAGE_VERSION \
+            -t fox1t/turborepo-remote-cache:latest .
+        env:
+          DOCKER_IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}

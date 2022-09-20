@@ -4,7 +4,7 @@ spec:
     - name: server
       git:
         branch: main
-        repo_clone_url: https://github.com/fox1t/turborepo-remote-cache.git
+        repo_clone_url: https://github.com/ducktors/turborepo-remote-cache.git
       dockerfile_path: Dockerfile
       envs:
         - key: NODE_ENV
