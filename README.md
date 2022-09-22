@@ -17,8 +17,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [x] Local filesystem
 - [x] AWS S3
 - [x] Google Cloud Storage
-- [ ] Azure Blob Storage (WIP)
-- [ ] Google Drive Blobs (WIP)
+- [ ] Azure Blob Storage (PR welcome)
+- [ ] Google Drive Blobs (PR welcome)
 
 ## ENV VARS
 
