@@ -84,7 +84,7 @@ For example:
   For example:
 
   `package.json`
-  ```json
+  ```jsonc
   //...
     "build": "turbo run build --token=\"yourToken\"",
     "dev": "turbo run dev --parallel",
