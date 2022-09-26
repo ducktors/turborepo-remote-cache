@@ -11,22 +11,16 @@ export interface S3Options {
 
 // AWS_ envs are default for aws-sdk
 export function createS3({
-  accessKey = process.env.AWS_ACCESS_KEY_ID,
-  secretKey = process.env.AWS_SECRET_ACCESS_KEY,
+  accessKey = process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY,
+  secretKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_KEY,
   bucket,
-  region = process.env.AWS_REGION,
+  region = process.env.AWS_REGION || process.env.S3_REGION,
   endpoint,
 }: S3Options) {
-  if (!accessKey || !secretKey || !(region || endpoint)) {
-    throw new Error(
-      `To use S3 storage "accessKey (S3_ACCESS_KEY)", "secretKey (S3_SECRET_KEY)", and one of "region (S3_REGION)" and "endpoint (S3_ENDPOINT)" parameters are mandatory.`,
-    )
-  }
   const client = new aws.S3({
-    credentials: {
-      accessKeyId: accessKey,
-      secretAccessKey: secretKey,
-    },
+    ...(accessKey && secretKey
+      ? { credentials: { accessKeyId: accessKey, secretAccessKey: secretKey } }
+      : {}),
     ...(region ? { region } : {}),
     ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
     ...(process.env.NODE_ENV === 'test' ? { sslEnabled: false, s3ForcePathStyle: true } : {}),
