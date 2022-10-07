@@ -6,4 +6,4 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## Index
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
-- [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/enable-custom-remote-caching-in-your-turborepo-monorepo)
+- [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)

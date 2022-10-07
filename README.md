@@ -12,8 +12,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 - [Environment variables](#environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
-- [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/enable-custom-remote-caching-in-your-turborepo-monorepo)
-
+- [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
 ## Supported Storage Providers
 - [x] Local filesystem
 - [x] AWS S3
@@ -33,15 +32,27 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3` or `google-cloud-storage`, this will be the name of the bucket.
 
 ## Contribute to this project
-1. clone this repository
+1. Clone this repository 
 
-    `git clone git@github.com:ducktors/turborepo-remote-cache.git`
+    ```git clone git@github.com:ducktors/turborepo-remote-cache.git```
 
-2. `cd turborepo-remote-cache`
-3. `npm i`
-4. `cp .env.example .env`
-5. put your env vars to the `env` file. See [ENV_VARS](#env-vars) section for more details.
-6. `npm run dev`
+2. Move inside repository folder 
+
+    ```cd turborepo-remote-cache```
+
+3. Install dependencies 
+
+    ```npm install```
+
+4. Copy example variables 
+
+    ```cp .env.example .env```
+
+5. Put your env vars to the `env` file. See [Environment variables](#environment-variables) section for more details.
+
+6. Run the project in development mode
+
+    ```npm run dev```
 
 ## Contributors
 
