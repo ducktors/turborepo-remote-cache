@@ -1,4 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache) [![CI](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml) [![Release](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml) [![Docker](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) [![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)]([https://img.shields.io/npm/dt/turborepo-remote-cache](https://www.npmjs.com/package/turborepo-remote-cache)) 
@@ -164,6 +167,20 @@ npx turborepo-remote-cache
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://maksim.dev"><img src="https://avatars.githubusercontent.com/u/1620916?v=4?s=100" width="100px;" alt="Maksim Sinik"/><br /><sub><b>Maksim Sinik</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=fox1t" title="Code">💻</a> <a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=fox1t" title="Tests">⚠️</a> <a href="#ideas-fox1t" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-fox1t" title="Maintenance">🚧</a> <a href="#mentoring-fox1t" title="Mentoring">🧑‍🏫</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
