@@ -56,6 +56,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "dobesv",
+      "name": "Dobes Vandermeer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/327833?v=4",
+      "profile": "http://dobesv.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
