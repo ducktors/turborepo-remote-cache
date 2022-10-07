@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:16-alpine as build
+FROM --platform=linux/amd64 node:16.17.1-alpine3.16@sha256:4e36c3dee7c32cef5bfce5bc1b5013d1c3cc542cfdefde2a545ec641e7c94243 as build
 
 # set app basepath
 ENV HOME=/home/app
@@ -22,7 +22,7 @@ RUN rm -rf node_modules
 RUN npm install --omit=dev --ignore-scripts
 
 # start new image for lower size
-FROM --platform=linux/amd64 node:16-alpine
+FROM --platform=linux/amd64 node:16.17.1-alpine3.16@sha256:4e36c3dee7c32cef5bfce5bc1b5013d1c3cc542cfdefde2a545ec641e7c94243
 
 # dumb-init registers signal handlers for every signal that can be caught
 RUN apk update && apk add --no-cache dumb-init
@@ -49,7 +49,13 @@ ENV STORAGE_PATH=$STORAGE_PATH
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ENV AWS_REGION=$AWS_REGION
+ENV S3_ACCESS_KEY=$S3_ACCESS_KEY
+ENV S3_SECRET_KEY=$S3_SECRET_KEY
+ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
+ENV GCS_PROJECT_ID=$GCS_PROJECT_ID
+ENV GCS_CLIENT_EMAIL=$GCS_CLIENT_EMAIL
+ENV GCS_PRIVATE_KEY=$GCS_PRIVATE_KEY
 
 ENTRYPOINT ["dumb-init"]
 CMD ["node", "--enable-source-maps", "build/index.js"]
