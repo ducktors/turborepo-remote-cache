@@ -1,3 +1,21 @@
 title: Turborepo Remote Cache
 description: Open source implementation of the Turborepo custom remote cache server.
 remote_theme: just-the-docs/just-the-docs
+search_enabled: true
+heading_anchors: true
+color_scheme: dark
+
+
+footer_content: "Copyright &copy; 2017-2020 Patrick Marsceill. Distributed by an <a href=\"https://github.com/just-the-docs/just-the-docs/tree/main/LICENSE.txt\">MIT license.</a>"
+
+# Footer last edited timestamp
+last_edit_timestamp: true 
+last_edit_time_format: "%b %e %Y at %I:%M %p"
+
+# Footer "Edit this page on GitHub" link text
+gh_edit_link: true 
+gh_edit_link_text: "Edit this page on GitHub."
+gh_edit_repository: "https://github.com/ducktors/turborepo-remote-cache" 
+gh_edit_branch: "main" 
+gh_edit_source: docs
+gh_edit_view_mode: "tree"
