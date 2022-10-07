@@ -161,3 +161,14 @@ npx turborepo-remote-cache
 5. put your env vars to the `env` file. See [ENV_VARS](#env-vars) section for more details.
 6. `npm run dev`
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
