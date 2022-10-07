@@ -1,3 +1,3 @@
-theme: jekyll-theme-minimal
 title: Turborepo Remote Cache
 description: Open source implementation of the Turborepo custom remote cache server.
+remote_theme: just-the-docs/just-the-docs
