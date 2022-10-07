@@ -24,12 +24,14 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 ## Environment variables
 
-- `NODE_ENV`: String. Optional. Possible values: `development | production`. Default value: `production`.
-- `PORT`: Number. Optional. Default value: `3000`.
-- `TURBO_TOKEN`: String. Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See [Enable custom remote caching in a Turborepo monorepo](#enable-custom-remote-caching-in-your-turborepo-monorepo) for more info. This value should be private.
-- `LOG_LEVEL`: String. Optional. Default value: `'info'`
-- `STORAGE_PROVIDER`: Optional. Possible values: `local | s3 | google-cloud-storage`. Default value: "local". Use this var to choose the storage provider.
-- `STORAGE_PATH`: String. Caching folder. If `STORAGE_PROVIDER` is set to `s3` or `google-cloud-storage`, this will be the name of the bucket.
+| Variable | Type | Required | Default | Description |
+| -- | -- | -- | -- | -- |
+| `NODE_ENV` | string | optional | `production` | Possible values are `development` or `production`|
+| `PORT` | number | optional | `3000` |   |
+| `TURBO_TOKEN` | string | mandatory | | Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See enable [custom remote caching](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching) in a Turborepo monorepo |
+| `LOG_LEVEL` | string | optional | Possibile values are [one of these](https://github.com/ducktors/turborepo-remote-cache/blob/main/src/logger.ts#L3)  | `'info'` |
+| `STORAGE_PROVIDER` | string | optional | Possible values are `local`, `s3` or `google-cloud-storage`. Use this var to choose the storage provider. | `local`  |
+| `STORAGE_PATH` | string | optional | Caching folder. If `STORAGE_PROVIDER` is set to `s3` or `google-cloud-storage`, this will be the name of the bucket. |  |
 
 ## Contribute to this project
 1. Clone this repository 

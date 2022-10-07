@@ -17,7 +17,7 @@ For example:
 }
 ```
   3. Modify your Turborepo top-level `build` script, adding the `--token=` parameter.
-  __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [ENV_VARS](#env-vars) section for more info.__
+  __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [environment variables](https://github.com/ducktors/turborepo-remote-cache#environment-variables) section for more info.__
 
   For example:
 
