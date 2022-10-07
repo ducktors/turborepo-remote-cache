@@ -1,4 +1,11 @@
+---
+layout: default
+title: Deployment Environments
+nav_order: 4
+---
+
 # Deployment Environments
+
 - [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on Docker](#deploy-on-docker)
 - [Deploy on DigitalOcean](#deploy-on-digitalocean)
@@ -14,7 +21,7 @@ __Note: Local storage isn't supported for this deployment method.__
 ## Deploy on Docker
 You can find the image on the [dockerhub](https://hub.docker.com/r/fox1t/turborepo-remote-cache).
 
-1. create an `.env` file, containing all of the env vars you need. Check [ENV_VARS](#env-vars) for more info.
+1. create an `.env` file, containing all of the env vars you need. Check [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) for more info.
 ```sh
 NODE_ENV=
 PORT=

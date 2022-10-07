@@ -1,3 +1,9 @@
+---
+layout: default
+title: Supported Storage Providers
+nav_order: 3
+---
+
 # Supported Storage Providers
 
 ## AWS Credentials and Region

@@ -10,7 +10,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 ## Index
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
-- [Environment variables](#environment-variables)
+- [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
 - [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
 ## Supported Storage Providers
@@ -21,17 +21,6 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [ ] Google Drive Blobs (PR welcome)
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
-
-## Environment variables
-
-| Variable | Type | Required | Default | Description |
-| -- | -- | -- | -- | -- |
-| `NODE_ENV` | string | optional | `production` | Possible values are `development` or `production`|
-| `PORT` | number | optional | `3000` |   |
-| `TURBO_TOKEN` | string | mandatory | | Secret token used for the authentication. The value must be the same one provided for the `token` parameter of the `build` script. See enable [custom remote caching](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching) in a Turborepo monorepo |
-| `LOG_LEVEL` | string | optional | Possibile values are [one of these](https://github.com/ducktors/turborepo-remote-cache/blob/main/src/logger.ts#L3)  | `'info'` |
-| `STORAGE_PROVIDER` | string | optional | Possible values are `local`, `s3` or `google-cloud-storage`. Use this var to choose the storage provider. | `local`  |
-| `STORAGE_PATH` | string | optional | Caching folder. If `STORAGE_PROVIDER` is set to `s3` or `google-cloud-storage`, this will be the name of the bucket. |  |
 
 ## Contribute to this project
 1. Clone this repository 
@@ -50,7 +39,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
     ```cp .env.example .env```
 
-5. Put your env vars to the `env` file. See [Environment variables](#environment-variables) section for more details.
+5. Put your env vars to the `env` file. See [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) section for more details.
 
 6. Run the project in development mode
 
