@@ -17,8 +17,8 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [x] Local filesystem
 - [x] AWS S3
 - [x] Google Cloud Storage
-- [ ] Azure Blob Storage (WIP)
-- [ ] Google Drive Blobs (WIP)
+- [ ] Azure Blob Storage (PR welcome)
+- [ ] Google Drive Blobs (PR welcome)
 
 ## ENV VARS
 
@@ -86,7 +86,7 @@ For example:
   For example:
 
   `package.json`
-  ```json
+  ```jsonc
   //...
     "build": "turbo run build --token=\"yourToken\"",
     "dev": "turbo run dev --parallel",
