@@ -134,7 +134,7 @@ server.run(err => {
         },
       })
       t2.equal(response.statusCode, 404)
-      t2.same(response.body, {})
+      t2.equal(response.json().message, 'Artifact not found')
     })
 
     t.teardown(() => {

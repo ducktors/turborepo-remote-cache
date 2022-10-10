@@ -120,7 +120,7 @@ test(`local'`, async t => {
       },
     })
     t2.equal(response.statusCode, 404)
-    t2.same(response.body, {})
+    t2.equal(response.json().message, 'Artifact not found')
   })
   t.test('should upload an artifact when slug is used', async t2 => {
     t2.plan(2)
