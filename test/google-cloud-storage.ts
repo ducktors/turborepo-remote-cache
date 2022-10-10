@@ -143,7 +143,7 @@ tap.test('Google Cloud Storage', async t => {
       },
     })
     t2.equal(response.statusCode, 200)
-    t2.same(response.body, {})
+    t2.same(response.body, '')
   })
   t.test('should verify artifact does not exist', async t2 => {
     t2.plan(2)
