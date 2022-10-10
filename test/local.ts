@@ -92,6 +92,36 @@ test(`local'`, async t => {
     t2.equal(response.statusCode, 200)
     t2.same(response.body, 'test cache data')
   })
+  t.test('should verify artifact exists', async t2 => {
+    t2.plan(2)
+    const response = await app.inject({
+      method: 'HEAD',
+      url: `/v8/artifacts/${artifactId}`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        teamId,
+      },
+    })
+    t2.equal(response.statusCode, 200)
+    t2.same(response.body, {})
+  })
+  t.test('should verify artifact does not exist', async t2 => {
+    t2.plan(2)
+    const response = await app.inject({
+      method: 'HEAD',
+      url: `/v8/artifacts/not-found`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        teamId,
+      },
+    })
+    t2.equal(response.statusCode, 404)
+    t2.same(response.body, {})
+  })
   t.test('should upload an artifact when slug is used', async t2 => {
     t2.plan(2)
     const response = await app.inject({
