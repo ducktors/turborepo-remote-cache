@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "Turborepo remote cache server",
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",
@@ -69,6 +69,7 @@
     "commitizen": "^4.2.5",
     "commitlint-config-cz": "^0.13.3",
     "commitlint-plugin-function-rules": "^1.7.1",
+    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^10.0.0",

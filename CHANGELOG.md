@@ -1,3 +1,17 @@
+## [1.6.6](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.5...v1.6.6) (2022-09-27)
+
+
+### Bug Fixes
+
+* update node ([cf0db61](https://github.com/ducktors/turborepo-remote-cache/commit/cf0db6194d9bf2e25b5ce1e273308c52d6110632))
+
+## [1.6.6](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.5...v1.6.6) (2022-09-27)
+
+
+### Bug Fixes
+
+* update node ([cf0db61](https://github.com/ducktors/turborepo-remote-cache/commit/cf0db6194d9bf2e25b5ce1e273308c52d6110632))
+
 ## [1.6.5](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.4...v1.6.5) (2022-09-15)
 
 

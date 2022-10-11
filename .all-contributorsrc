@@ -1,0 +1,76 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "fox1t",
+      "name": "Maksim Sinik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1620916?v=4",
+      "profile": "https://maksim.dev",
+      "contributions": [
+        "code",
+        "test",
+        "ideas",
+        "maintenance",
+        "mentoring"
+      ]
+    },
+    {
+      "login": "tehKapa",
+      "name": "Matteo Vivona",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6388707?v=4",
+      "profile": "http://matteovivona.it",
+      "contributions": [
+        "infra",
+        "security",
+        "doc"
+      ]
+    },
+    {
+      "login": "dlehmhus",
+      "name": "Dario Lehmhus",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27899554?v=4",
+      "profile": "https://github.com/dlehmhus",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lodmfjord",
+      "name": "lommi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5091589?v=4",
+      "profile": "https://github.com/lodmfjord",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bmuenzenmeyer",
+      "name": "Brian Muenzenmeyer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/298435?v=4",
+      "profile": "https://www.brianmuenzenmeyer.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dobesv",
+      "name": "Dobes Vandermeer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/327833?v=4",
+      "profile": "http://dobesv.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "turborepo-remote-cache",
+  "projectOwner": "ducktors"
+}
