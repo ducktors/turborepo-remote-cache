@@ -1,3 +1,17 @@
+## [1.6.7](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.6...v1.6.7) (2022-10-11)
+
+
+### Bug Fixes
+
+* don't require AWS env vars ([33ffe5e](https://github.com/ducktors/turborepo-remote-cache/commit/33ffe5e18083e65a3f084e103cf0e5054b136d41))
+
+## [1.6.7](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.6...v1.6.7) (2022-10-11)
+
+
+### Bug Fixes
+
+* don't require AWS env vars ([33ffe5e](https://github.com/ducktors/turborepo-remote-cache/commit/33ffe5e18083e65a3f084e103cf0e5054b136d41))
+
 ## [1.6.6](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.5...v1.6.6) (2022-09-27)
 
 
