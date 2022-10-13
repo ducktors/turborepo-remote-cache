@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
-import { getArtifact, putArtifact, artifactsEvents } from './routes'
+import { getArtifact, putArtifact, artifactsEvents, headArtifact } from './routes'
 import { createLocation } from './storage'
 import { STORAGE_PROVIDERS } from '../../env'
 
@@ -64,6 +64,7 @@ async function turboRemoteCache(
   await instance.register(
     async function (i) {
       i.route(getArtifact)
+      i.route(headArtifact)
       i.route(putArtifact)
       i.route(artifactsEvents)
     },

@@ -82,18 +82,36 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     })
   }
 
+  async function existsCachedArtifact(artifactId: string, teamId: string) {
+    return new Promise<void>((resolve, reject) => {
+      const artifactPath = join(teamId, artifactId)
+      location.exists(artifactPath, (err, exists) => {
+        if (err) {
+          return reject(err)
+        }
+        if (!exists) {
+          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+        }
+        resolve()
+      })
+    })
+  }
+
   async function createCachedArtifact(artifactId: string, teamId: string, artifact: Readable) {
     return pipeline(artifact, location.createWriteStream(join(teamId, artifactId)))
   }
+
   return {
     getCachedArtifact,
     createCachedArtifact,
+    existsCachedArtifact,
   }
 }
 
 declare module 'fastify' {
   interface FastifyInstance {
     location: {
+      existsCachedArtifact: ReturnType<typeof createLocation>['existsCachedArtifact']
       getCachedArtifact: ReturnType<typeof createLocation>['getCachedArtifact']
       createCachedArtifact: ReturnType<typeof createLocation>['createCachedArtifact']
     }
