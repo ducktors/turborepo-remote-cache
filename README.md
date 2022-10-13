@@ -1,7 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache) [![CI](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/build.yml) [![Release](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml) [![Docker](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml) [![Coverage Status](https://coveralls.io/repos/github/ducktors/turborepo-remote-cache/badge.svg?branch=main)](https://coveralls.io/github/ducktors/turborepo-remote-cache?branch=main) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) [![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)]([https://img.shields.io/npm/dt/turborepo-remote-cache](https://www.npmjs.com/package/turborepo-remote-cache)) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -60,6 +60,9 @@ It supports several storage providers and deploys environments. Moreover, the pr
       <td align="center"><a href="https://www.brianmuenzenmeyer.com"><img src="https://avatars.githubusercontent.com/u/298435?v=4?s=100" width="100px;" alt="Brian Muenzenmeyer"/><br /><sub><b>Brian Muenzenmeyer</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=bmuenzenmeyer" title="Documentation">📖</a></td>
       <td align="center"><a href="http://dobesv.com"><img src="https://avatars.githubusercontent.com/u/327833?v=4?s=100" width="100px;" alt="Dobes Vandermeer"/><br /><sub><b>Dobes Vandermeer</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=dobesv" title="Code">💻</a></td>
       <td align="center"><a href="http://tanzigang.com"><img src="https://avatars.githubusercontent.com/u/11520821?v=4?s=100" width="100px;" alt="Tan Zi Gang"/><br /><sub><b>Tan Zi Gang</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=zigang93" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/jgoz"><img src="https://avatars.githubusercontent.com/u/132233?v=4?s=100" width="100px;" alt="John Gozde"/><br /><sub><b>John Gozde</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=jgoz" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
