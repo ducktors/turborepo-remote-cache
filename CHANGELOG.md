@@ -1,3 +1,17 @@
+# [1.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.7...v1.7.0) (2022-10-14)
+
+
+### Features
+
+* trigger release of head support [#50](https://github.com/ducktors/turborepo-remote-cache/issues/50) ([bc3bd8a](https://github.com/ducktors/turborepo-remote-cache/commit/bc3bd8a4b83b87e65805f7a982201125436d1ccb))
+
+# [1.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.7...v1.7.0) (2022-10-14)
+
+
+### Features
+
+* trigger release of head support [#50](https://github.com/ducktors/turborepo-remote-cache/issues/50) ([bc3bd8a](https://github.com/ducktors/turborepo-remote-cache/commit/bc3bd8a4b83b87e65805f7a982201125436d1ccb))
+
 ## [1.6.7](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.6...v1.6.7) (2022-10-11)
 
 
