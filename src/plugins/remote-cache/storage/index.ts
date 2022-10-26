@@ -37,7 +37,7 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
   provider: Provider,
   providerOptions: ProviderOptions<Provider>,
 ): StorageProvider {
-  const { path = TURBO_CACHE_FOLDER_NAME } = providerOptions
+  const path = providerOptions.path || TURBO_CACHE_FOLDER_NAME
 
   switch (provider) {
     case STORAGE_PROVIDERS.LOCAL: {
