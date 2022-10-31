@@ -58,6 +58,7 @@ async function turboRemoteCache(
       clientEmail: instance.config.GCS_CLIENT_EMAIL,
       privateKey: instance.config.GCS_PRIVATE_KEY,
       projectId: instance.config.GCS_PROJECT_ID,
+      useApplicationDefaultCredentials: instance.config.GCS_USE_ADC == 'true',
     }),
   )
 

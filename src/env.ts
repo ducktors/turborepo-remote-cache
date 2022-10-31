@@ -40,6 +40,7 @@ const schema = Type.Object(
     GCS_PROJECT_ID: Type.Optional(Type.String()),
     GCS_CLIENT_EMAIL: Type.Optional(Type.String()),
     GCS_PRIVATE_KEY: Type.Optional(Type.String()),
+    GCS_USE_ADC: Type.Optional(Type.String({ default: 'false' })),
   },
   {
     additionalProperties: false,

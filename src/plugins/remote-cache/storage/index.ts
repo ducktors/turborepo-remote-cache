@@ -49,8 +49,15 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
       return createS3({ accessKey, secretKey, bucket: path, region, endpoint })
     }
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
-      const { clientEmail, privateKey, projectId } = providerOptions as GoogleCloudStorageOptions
-      return createGoogleCloudStorage({ bucket: path, clientEmail, privateKey, projectId })
+      const { clientEmail, privateKey, projectId, useApplicationDefaultCredentials } =
+        providerOptions as GoogleCloudStorageOptions
+      return createGoogleCloudStorage({
+        bucket: path,
+        clientEmail,
+        privateKey,
+        projectId,
+        useApplicationDefaultCredentials,
+      })
     }
     default:
       throw new Error(
