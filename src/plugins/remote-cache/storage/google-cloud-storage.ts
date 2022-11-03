@@ -10,10 +10,8 @@ export interface GoogleCloudStorageOptions {
 
 function createStorage({ clientEmail, privateKey, projectId }) {
   if (!clientEmail || !privateKey || !projectId) {
-    console.log('using ADC')
     return new Storage()
   } else {
-    console.log('Using provided creds')
     return new Storage({
       projectId,
       credentials: {
