@@ -92,6 +92,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "wdalmijn",
+      "name": "Win Dalmijn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3494819?v=4",
+      "profile": "https://github.com/wdalmijn",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
