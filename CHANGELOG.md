@@ -1,3 +1,17 @@
+## [1.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.0...v1.7.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* Fixed problem with GCS_PRIVATE_KEY being escaped and causing an error ([59d5d5d](https://github.com/ducktors/turborepo-remote-cache/commit/59d5d5df8a236894854a840922c05e864e35cca1))
+
+## [1.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.0...v1.7.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* Fixed problem with GCS_PRIVATE_KEY being escaped and causing an error ([59d5d5d](https://github.com/ducktors/turborepo-remote-cache/commit/59d5d5df8a236894854a840922c05e864e35cca1))
+
 # [1.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.6.7...v1.7.0) (2022-10-14)
 
 
