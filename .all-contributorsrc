@@ -92,6 +92,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "tm1000",
+      "name": "Andrew Nagy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/564256?v=4",
+      "profile": "http://www.andrewsnagy.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
