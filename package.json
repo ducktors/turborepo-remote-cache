@@ -18,7 +18,7 @@
     "dev:start": "node --inspect -r @cspotcode/source-map-support/register -r dotenv/config build/index.js",
     "check:types": "tsc -p ./tsconfig.json --noEmit",
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --ts",
-    "posttest": "tap --coverage-report=text-lcov",
+    "posttest": "tap --coverage-report=lcov",
     "test:watch": "npm run test -- --watch",
     "test:report": "npm run test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml",
     "commitlint": "commitlint",
