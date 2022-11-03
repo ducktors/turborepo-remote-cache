@@ -12,7 +12,7 @@ async function turboRemoteCache(
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const bodyLimit = instance.config.BODY_LIMIT ?? 104857600
+  const bodyLimit = <number>instance.config.BODY_LIMIT
   const { allowedTokens, apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
@@ -53,7 +53,7 @@ async function turboRemoteCache(
       clientEmail: instance.config.GCS_CLIENT_EMAIL,
       privateKey: instance.config.GCS_PRIVATE_KEY,
       projectId: instance.config.GCS_PROJECT_ID,
-      useTmp: instance.config.STORAGE_PATH_USE_TMP_FOLDER ?? true,
+      useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
     }),
   )
 
