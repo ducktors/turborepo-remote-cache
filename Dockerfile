@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:16.17.1-alpine3.16@sha256:4e36c3dee7c32cef5bfce5bc1b5013d1c3cc542cfdefde2a545ec641e7c94243 as build
+FROM --platform=${TARGETPLATFORM} node:16.17.1-alpine3.16 as build
 
 # set app basepath
 ENV HOME=/home/app
@@ -22,7 +22,7 @@ RUN rm -rf node_modules
 RUN npm install --omit=dev --ignore-scripts
 
 # start new image for lower size
-FROM --platform=linux/amd64 node:16.17.1-alpine3.16@sha256:4e36c3dee7c32cef5bfce5bc1b5013d1c3cc542cfdefde2a545ec641e7c94243
+FROM --platform=${TARGETPLATFORM} node:16.17.1-alpine3.16
 
 # dumb-init registers signal handlers for every signal that can be caught
 RUN apk update && apk add --no-cache dumb-init
