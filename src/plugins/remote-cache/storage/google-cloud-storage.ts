@@ -8,24 +8,32 @@ export interface GoogleCloudStorageOptions {
   privateKey: string
 }
 
+function createStorage({ clientEmail, privateKey, projectId }) {
+  if (!clientEmail || !privateKey || !projectId) {
+    return new Storage()
+  } else {
+    return new Storage({
+      projectId,
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
+    })
+  }
+}
+
 export function createGoogleCloudStorage({
   bucket,
   clientEmail,
   privateKey,
   projectId,
 }: GoogleCloudStorageOptions): StorageProvider {
-  if (!clientEmail || !privateKey || !projectId) {
-    throw new Error(
-      `To use Google Cloud Storage "clientEmail (GCS_CLIENT_EMAIL)", "privateKey (GCS_PRIVATE_KEY)" and "projectId (GCS_PROJECT_ID)" parameters are mandatory.`,
-    )
-  }
-  const storage = new Storage({
+  const storage = createStorage({
+    clientEmail,
+    privateKey,
     projectId,
-    credentials: {
-      client_email: clientEmail,
-      private_key: privateKey,
-    },
   })
+
   const turboBucket = storage.bucket(bucket)
 
   return {
