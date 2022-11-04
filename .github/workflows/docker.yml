@@ -25,7 +25,7 @@ jobs:
           path: .
       - name: Build and push latest
         run: |
-          docker buildx build --platform linux/x86_64 --rm --push \
+          docker buildx build --platform linux/x86_64,linux/arm64 --rm --push \
             -t fox1t/turborepo-remote-cache:$DOCKER_IMAGE_VERSION \
             -t fox1t/turborepo-remote-cache:latest .
         env:

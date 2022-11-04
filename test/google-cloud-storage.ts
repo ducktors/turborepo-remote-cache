@@ -192,3 +192,40 @@ tap.test('Google Cloud Storage', async t => {
     t2.same(response.json(), {})
   })
 })
+
+dotenv.config({ path: join(__dirname, '.env.google-cloud-storage.adc'), override: true })
+const mockAppADC = tap.mock('../src/app', {
+  '@google-cloud/storage': {
+    Storage: class MockStorage {
+      bucket(name: string) {
+        return new GCSMockBucket(name)
+      }
+    },
+  },
+})
+
+tap.test('Google Cloud Storage', async t => {
+  const artifactId = crypto.randomBytes(20).toString('hex')
+  const teamId = 'superteam'
+  const app = mockAppADC.createApp({ logger: false })
+  await app.ready()
+
+  t.test('should upload an artifact when using ADC credentials', async t2 => {
+    t2.plan(2)
+
+    const response = await app.inject({
+      method: 'PUT',
+      url: `/v8/artifacts/${artifactId}`,
+      headers: {
+        authorization: 'Bearer changeme',
+        'content-type': 'application/octet-stream',
+      },
+      query: {
+        teamId,
+      },
+      payload: Buffer.from('test cache data'),
+    })
+    t2.equal(response.statusCode, 200)
+    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+  })
+})
