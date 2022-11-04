@@ -1,3 +1,17 @@
+## [1.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.1...v1.7.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* remove need for VERCEL_* ([9e6dd06](https://github.com/ducktors/turborepo-remote-cache/commit/9e6dd0621d4786da0456d3cab254e29bb4c03d63))
+
+## [1.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.1...v1.7.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* remove need for VERCEL_* ([9e6dd06](https://github.com/ducktors/turborepo-remote-cache/commit/9e6dd0621d4786da0456d3cab254e29bb4c03d63))
+
 ## [1.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.0...v1.7.1) (2022-11-03)
 
 

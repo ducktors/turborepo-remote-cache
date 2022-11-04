@@ -92,6 +92,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "tm1000",
+      "name": "Andrew Nagy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/564256?v=4",
+      "profile": "http://www.andrewsnagy.com",
+      "contributions": [
+        "code"
+      ]
+   },
+     {
+      "login": "emalihin",
+      "name": "Eugene Malihins",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6379998?v=4",
+      "profile": "https://github.com/emalihin",
+      "contributions": [
+        "code"
+      ]
+    },
+     {
+      "login": "joedevivo",
+      "name": "Joe DeVivo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55951?v=4",
+      "profile": "http://joedevivo.com",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
