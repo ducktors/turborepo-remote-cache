@@ -43,8 +43,3 @@ For some reason, the `.turbo/config.json` is not working in Docker containers. I
 ```json
     "build": "turbo run build --team=\"team_awesome\" --token=\"turbotoken\" --api=\"https://your-caching.server.dev\"",
 ```
-and add this to your `Dockerfile` before calling the `turbo run build` command:
-```docker
-ENV VERCEL_ARTIFACTS_TOKEN=turbotoken
-ENV VERCEL_ARTIFACTS_OWNER=team_awesome
-```
