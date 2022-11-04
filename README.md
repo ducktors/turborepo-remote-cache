@@ -74,6 +74,7 @@ fix: fix a bug ---> 1.0.x
     <tr>
       <td align="center"><a href="https://github.com/jgoz"><img src="https://avatars.githubusercontent.com/u/132233?v=4?s=100" width="100px;" alt="John Gozde"/><br /><sub><b>John Gozde</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=jgoz" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/sppatel"><img src="https://avatars.githubusercontent.com/u/989367?v=4?s=100" width="100px;" alt="Sachin Patel"/><br /><sub><b>Sachin Patel</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=sppatel" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/emalihin"><img src="https://avatars.githubusercontent.com/u/6379998?v=4?s=100" width="100px;" alt="Eugene Malihins"/><br /><sub><b>Eugene Malihins</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=emalihin" title="Code">💻</a></td>
       <td align="center"><a href="http://joedevivo.com"><img src="https://avatars.githubusercontent.com/u/55951?v=4?s=100" width="100px;" alt="Joe DeVivo"/><br /><sub><b>Joe DeVivo</b></sub></a><br /><a href="#infra-joedevivo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
