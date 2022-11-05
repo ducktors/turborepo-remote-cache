@@ -11,6 +11,7 @@ import {
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
+const TURBO_CACHE_USE_TMP_FOLDER = true as const
 
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
@@ -37,11 +38,11 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
   provider: Provider,
   providerOptions: ProviderOptions<Provider>,
 ): StorageProvider {
-  const { path = TURBO_CACHE_FOLDER_NAME } = providerOptions
+  const { path = TURBO_CACHE_FOLDER_NAME, useTmp = TURBO_CACHE_USE_TMP_FOLDER } = providerOptions
 
   switch (provider) {
     case STORAGE_PROVIDERS.LOCAL: {
-      return createLocal({ path })
+      return createLocal({ path, useTmp })
     }
     case STORAGE_PROVIDERS.S3:
     case STORAGE_PROVIDERS.s3: {

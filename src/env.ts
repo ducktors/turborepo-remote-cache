@@ -24,7 +24,9 @@ const schema = Type.Object(
     STORAGE_PROVIDER: Type.Optional(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
+    BODY_LIMIT: Type.Optional(Type.Number({ default: 104857600 })),
     STORAGE_PATH: Type.Optional(Type.String()),
+    STORAGE_PATH_USE_TMP_FOLDER: Type.Optional(Type.Boolean({ default: true })),
     // AWS_ env vars are used as aws-sdk defaults
     AWS_ACCESS_KEY_ID: Type.Optional(Type.String()),
     AWS_SECRET_ACCESS_KEY: Type.Optional(Type.String()),
