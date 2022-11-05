@@ -1,3 +1,17 @@
+## [1.7.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.3...v1.7.4) (2022-11-05)
+
+
+### Bug Fixes
+
+* replace npm ci with npm i to allow build on arm ([76f895d](https://github.com/ducktors/turborepo-remote-cache/commit/76f895d64fe41d7df220d6e181ce7ebef0c6ba09))
+
+## [1.7.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.3...v1.7.4) (2022-11-05)
+
+
+### Bug Fixes
+
+* replace npm ci with npm i to allow build on arm ([76f895d](https://github.com/ducktors/turborepo-remote-cache/commit/76f895d64fe41d7df220d6e181ce7ebef0c6ba09))
+
 ## [1.7.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.2...v1.7.3) (2022-11-05)
 
 
