@@ -8,17 +8,12 @@ async function turboRemoteCache(
   instance: FastifyInstance,
   options: {
     allowedTokens: string[]
-    bodyLimit?: number
     apiVersion?: `v${number}`
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const {
-    allowedTokens,
-    bodyLimit = 104857600,
-    apiVersion = 'v8',
-    provider = STORAGE_PROVIDERS.LOCAL,
-  } = options
+  const bodyLimit = <number>instance.config.BODY_LIMIT
+  const { allowedTokens, apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
       `'allowedTokens' options must be a string[], ${typeof allowedTokens} provided instead`,
@@ -58,6 +53,7 @@ async function turboRemoteCache(
       clientEmail: instance.config.GCS_CLIENT_EMAIL,
       privateKey: instance.config.GCS_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       projectId: instance.config.GCS_PROJECT_ID,
+      useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
     }),
   )
 
