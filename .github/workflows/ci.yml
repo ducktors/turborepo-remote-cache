@@ -51,9 +51,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Local build on linux/x86_64
-        run: docker buildx build --platform linux/x86_64 --rm --load -t turborepo-remote-cache:ci .
-      - name: Local build on linux/arm64
-        run: docker buildx build --platform linux/arm64 --rm --load -t turborepo-remote-cache:ci .
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/x86_64,linux/arm64
+          push: false
+          tags: turborepo-remote-cache:ci
