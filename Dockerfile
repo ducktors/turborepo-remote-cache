@@ -9,7 +9,7 @@ COPY package-lock.json $HOME/node/
 
 # change workgin dir and install deps in quiet mode
 WORKDIR $HOME/node
-RUN npm ci -q
+RUN npm i -q
 
 # copy all app files
 COPY . $HOME/node/
