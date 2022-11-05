@@ -11,6 +11,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Get package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+        with:
+          path: .
+      - name: Set correct environment
+        run: |
+          TAG=${{ steps.package-version.outputs.current-version}}
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: fox1t/turborepo-remote-cache
+          flavor: latest=true
+          tags: type=raw,value=${{ env.TAG }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
@@ -18,15 +36,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Get package version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
+      - name: Build and push
+        uses: docker/build-push-action@v3
         with:
-          path: .
-      - name: Build and push latest
-        run: |
-          docker buildx build --platform linux/x86_64,linux/arm64 --rm --push \
-            -t fox1t/turborepo-remote-cache:$DOCKER_IMAGE_VERSION \
-            -t fox1t/turborepo-remote-cache:latest .
-        env:
-          DOCKER_IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}
+          context: .
+          platforms: linux/x86_64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
