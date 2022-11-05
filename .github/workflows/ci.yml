@@ -51,6 +51,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Get package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+        with:
+          path: .
+      - name: Set correct environment
+        run: |
+          TAG=${{ steps.package-version.outputs.current-version}}
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: fox1t/turborepo-remote-cache
+          flavor: latest=true
+          tags: type=raw,value=${{ env.TAG }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -61,4 +77,4 @@ jobs:
           context: .
           platforms: linux/x86_64,linux/arm64
           push: false
-          tags: turborepo-remote-cache:ci
+          tags: ${{ steps.meta.outputs.tags }}
