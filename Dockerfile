@@ -5,21 +5,25 @@ ENV HOME=/home/app
 
 # add app dependencies
 COPY package.json $HOME/node/
-COPY package-lock.json $HOME/node/
+COPY pnpm-lock.yaml $HOME/node/
 
 # change workgin dir and install deps in quiet mode
 WORKDIR $HOME/node
-RUN npm ci -q
+
+# enable pnpm and install deps
+RUN corepack enable
+RUN pnpm --ignore-scripts --frozen-lockfile install
 
 # copy all app files
 COPY . $HOME/node/
 
 # compile typescript and build all production stuff
-RUN npm run build
+RUN pnpm build
 
 # remove dev dependencies and files that are not needed in production
 RUN rm -rf node_modules
-RUN npm install --omit=dev --ignore-scripts
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
+RUN rm -rf $PROJECT_WORKDIR/.pnpm-store
 
 # start new image for lower size
 FROM --platform=${TARGETPLATFORM} node:16.17.1-alpine3.16

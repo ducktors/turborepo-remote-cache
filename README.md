@@ -23,19 +23,19 @@ It supports several storage providers and deploys environments. Moreover, the pr
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
 ## Contribute to this project
-1. Clone this repository 
+1. Clone this repository
 
     ```git clone git@github.com:ducktors/turborepo-remote-cache.git```
 
-2. Move inside repository folder 
+2. Move inside repository folder
 
     ```cd turborepo-remote-cache```
 
-3. Install dependencies 
+3. Install dependencies
 
-    ```npm install```
+    ```pnpm install```
 
-4. Copy example variables 
+4. Copy example variables
 
     ```cp .env.example .env```
 
@@ -43,11 +43,11 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 6. Run the project in development mode
 
-    ```npm run dev```
+    ```pnpm dev```
 
 ## How to commit
 
-This repo uses [Semantic Release](https://github.com/semantic-release/semantic-release) with Conventional Commits. 
+This repo uses [Semantic Release](https://github.com/semantic-release/semantic-release) with Conventional Commits.
 Releases are automatically created based on the type of commit message: feat for minor and fix for patch.
 
 ```
