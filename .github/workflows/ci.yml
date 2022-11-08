@@ -19,12 +19,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install with npm
-        run: npm install
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.14.2
+      - name: Install with pnpm
+        run: pnpm install
       - name: Lint code
-        run: npm run lint
+        run: pnpm lint
       - name: Build
-        run: npm run build
+        run: pnpm build
 
   test:
     runs-on: ubuntu-latest
@@ -35,10 +38,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Install with npm
-        run: npm install
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.14.2
+      - name: Install with pnpm
+        run: pnpm install
       - name: Run tests
-        run: npm run test
+        run: pnpm test
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
