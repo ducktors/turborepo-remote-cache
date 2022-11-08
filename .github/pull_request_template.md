@@ -16,4 +16,4 @@
 * [ ] Have you written new tests for your core changes, as applicable?
 * [ ] Have you successfully ran build with `pnpm build` of your changes locally?
 * [ ] Have you successfully ran tests with `pnpm test` of your changes locally?
-* [ ] Have you commit using [Conventional Commits](https://github.com/ducktors/turborepo-remote-cache#how-to-commit)
+* [ ] Have you commit using [Conventional Commits](https://github.com/ducktors/turborepo-remote-cache#how-to-commit)?
