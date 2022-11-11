@@ -15,7 +15,7 @@ export const getStatus: RouteOptions<
   method: 'GET',
   url: '/artifacts/status',
   schema: statusRouteSchema,
-  logLevel: 'silent'
+  logLevel: 'error',
   async handler(req, reply) {
     reply.send({ status: 'enabled' })
   },
