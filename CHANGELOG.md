@@ -1,3 +1,29 @@
+# [1.8.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.4...v1.8.0) (2022-11-12)
+
+
+### Bug Fixes
+
+* add missing comma, silent is not a valid loglevel, log only errors instead ([a8ec568](https://github.com/ducktors/turborepo-remote-cache/commit/a8ec5680e04cb8c090e1ba05ab13f72feeb70ce0))
+* use file for commitizen config ([7623239](https://github.com/ducktors/turborepo-remote-cache/commit/762323949bcf928480a74695063c71573211e769))
+
+
+### Features
+
+* add status endpoint ([a0a1cd7](https://github.com/ducktors/turborepo-remote-cache/commit/a0a1cd7c8cba310ed71719e8a15575dc6273b1c7))
+
+# [1.8.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.4...v1.8.0) (2022-11-12)
+
+
+### Bug Fixes
+
+* add missing comma, silent is not a valid loglevel, log only errors instead ([a8ec568](https://github.com/ducktors/turborepo-remote-cache/commit/a8ec5680e04cb8c090e1ba05ab13f72feeb70ce0))
+* use file for commitizen config ([7623239](https://github.com/ducktors/turborepo-remote-cache/commit/762323949bcf928480a74695063c71573211e769))
+
+
+### Features
+
+* add status endpoint ([a0a1cd7](https://github.com/ducktors/turborepo-remote-cache/commit/a0a1cd7c8cba310ed71719e8a15575dc6273b1c7))
+
 ## [1.7.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.3...v1.7.4) (2022-11-05)
 
 
