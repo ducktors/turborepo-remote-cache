@@ -153,4 +153,16 @@ test(`local'`, async t => {
     t2.equal(response.statusCode, 200)
     t2.same(response.json(), {})
   })
+  t.test('should return 200 when GET artifacts/status is called', async t2 => {
+    t2.plan(2)
+    const response = await app.inject({
+      method: 'GET',
+      url: `/v8/artifacts/status`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+    })
+    t2.equal(response.statusCode, 200)
+    t2.same(response.json(), { status: 'enabled' })
+  })
 })

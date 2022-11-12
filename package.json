@@ -90,11 +90,6 @@
     "tsup": "^5.11.6",
     "typescript": "^4.5.4"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "bugs": {
     "url": "https://github.com/ducktors/turborepo-remote-cache/issues"
   },
