@@ -1,7 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache)](https://github.com/ducktors/turborepo-remote-cache/releases) [![CI](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml) [![Release](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml) [![Docker](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml) [![Coverage Status](https://coveralls.io/repos/github/ducktors/turborepo-remote-cache/badge.svg?branch=main)](https://coveralls.io/github/ducktors/turborepo-remote-cache?branch=main) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) [![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)](https://www.npmjs.com/package/turborepo-remote-cache) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -77,6 +77,7 @@ fix: fix a bug ---> 1.0.x
       <td align="center"><a href="http://www.andrewsnagy.com"><img src="https://avatars.githubusercontent.com/u/564256?v=4?s=100" width="100px;" alt="Andrew Nagy"/><br /><sub><b>Andrew Nagy</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=tm1000" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/emalihin"><img src="https://avatars.githubusercontent.com/u/6379998?v=4?s=100" width="100px;" alt="Eugene Malihins"/><br /><sub><b>Eugene Malihins</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=emalihin" title="Code">💻</a></td>
       <td align="center"><a href="http://joedevivo.com"><img src="https://avatars.githubusercontent.com/u/55951?v=4?s=100" width="100px;" alt="Joe DeVivo"/><br /><sub><b>Joe DeVivo</b></sub></a><br /><a href="#infra-joedevivo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center"><a href="http://www.aoe.com"><img src="https://avatars.githubusercontent.com/u/1044246?v=4?s=100" width="100px;" alt="Daniel Kopp"/><br /><sub><b>Daniel Kopp</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=devtribe" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

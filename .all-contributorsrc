@@ -101,8 +101,8 @@
       "contributions": [
         "code"
       ]
-   },
-     {
+    },
+    {
       "login": "emalihin",
       "name": "Eugene Malihins",
       "avatar_url": "https://avatars.githubusercontent.com/u/6379998?v=4",
@@ -111,13 +111,22 @@
         "code"
       ]
     },
-     {
+    {
       "login": "joedevivo",
       "name": "Joe DeVivo",
       "avatar_url": "https://avatars.githubusercontent.com/u/55951?v=4",
       "profile": "http://joedevivo.com",
       "contributions": [
         "infra"
+      ]
+    },
+    {
+      "login": "devtribe",
+      "name": "Daniel Kopp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1044246?v=4",
+      "profile": "http://www.aoe.com",
+      "contributions": [
+        "code"
       ]
     }
   ],
