@@ -11,6 +11,7 @@ import {
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
+const TURBO_CACHE_USE_TMP_FOLDER = true as const
 
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
@@ -37,11 +38,11 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
   provider: Provider,
   providerOptions: ProviderOptions<Provider>,
 ): StorageProvider {
-  const { path = TURBO_CACHE_FOLDER_NAME } = providerOptions
+  const { path = TURBO_CACHE_FOLDER_NAME, useTmp = TURBO_CACHE_USE_TMP_FOLDER } = providerOptions
 
   switch (provider) {
     case STORAGE_PROVIDERS.LOCAL: {
-      return createLocal({ path })
+      return createLocal({ path, useTmp })
     }
     case STORAGE_PROVIDERS.S3:
     case STORAGE_PROVIDERS.s3: {
@@ -82,18 +83,36 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     })
   }
 
+  async function existsCachedArtifact(artifactId: string, teamId: string) {
+    return new Promise<void>((resolve, reject) => {
+      const artifactPath = join(teamId, artifactId)
+      location.exists(artifactPath, (err, exists) => {
+        if (err) {
+          return reject(err)
+        }
+        if (!exists) {
+          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+        }
+        resolve()
+      })
+    })
+  }
+
   async function createCachedArtifact(artifactId: string, teamId: string, artifact: Readable) {
     return pipeline(artifact, location.createWriteStream(join(teamId, artifactId)))
   }
+
   return {
     getCachedArtifact,
     createCachedArtifact,
+    existsCachedArtifact,
   }
 }
 
 declare module 'fastify' {
   interface FastifyInstance {
     location: {
+      existsCachedArtifact: ReturnType<typeof createLocation>['existsCachedArtifact']
       getCachedArtifact: ReturnType<typeof createLocation>['getCachedArtifact']
       createCachedArtifact: ReturnType<typeof createLocation>['createCachedArtifact']
     }

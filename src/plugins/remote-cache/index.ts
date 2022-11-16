@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
-import { getArtifact, putArtifact, artifactsEvents } from './routes'
+import { getArtifact, putArtifact, artifactsEvents, headArtifact, getStatus } from './routes'
 import { createLocation } from './storage'
 import { STORAGE_PROVIDERS } from '../../env'
 
@@ -8,17 +8,12 @@ async function turboRemoteCache(
   instance: FastifyInstance,
   options: {
     allowedTokens: string[]
-    bodyLimit?: number
     apiVersion?: `v${number}`
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const {
-    allowedTokens,
-    bodyLimit = 104857600,
-    apiVersion = 'v8',
-    provider = STORAGE_PROVIDERS.LOCAL,
-  } = options
+  const bodyLimit = <number>instance.config.BODY_LIMIT
+  const { allowedTokens, apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
       `'allowedTokens' options must be a string[], ${typeof allowedTokens} provided instead`,
@@ -56,16 +51,19 @@ async function turboRemoteCache(
       region: instance.config.S3_REGION,
       endpoint: instance.config.S3_ENDPOINT,
       clientEmail: instance.config.GCS_CLIENT_EMAIL,
-      privateKey: instance.config.GCS_PRIVATE_KEY,
+      privateKey: instance.config.GCS_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       projectId: instance.config.GCS_PROJECT_ID,
+      useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
     }),
   )
 
   await instance.register(
     async function (i) {
       i.route(getArtifact)
+      i.route(headArtifact)
       i.route(putArtifact)
       i.route(artifactsEvents)
+      i.route(getStatus)
     },
     { prefix: `/${apiVersion}` },
   )

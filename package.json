@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "1.6.6",
+  "version": "1.8.0",
   "description": "Turborepo remote cache server",
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",
@@ -9,17 +9,18 @@
     "turborepo-remote-cache": "./build/cli.js"
   },
   "scripts": {
-    "prebuild": "npm run lint && rimraf ./build",
+    "preinstall": "npx only-allow pnpm",
+    "prebuild": "pnpm lint && rimraf ./build",
     "build": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps build/index.js",
-    "update": "npx npm-check -u",
     "lint": "eslint --ext .ts --no-error-on-unmatched-pattern \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "tsup --watch --onSuccess \"run-p dev:start check:types\"",
     "dev:start": "node --inspect -r @cspotcode/source-map-support/register -r dotenv/config build/index.js",
     "check:types": "tsc -p ./tsconfig.json --noEmit",
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --ts",
-    "test:watch": "npm run test -- --watch",
-    "test:report": "npm run test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml",
+    "posttest": "tap --coverage-report=lcov --no-browser",
+    "test:watch": "pnpm test -- --watch",
+    "test:report": "pnpm test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml",
     "commitlint": "commitlint",
     "semantic-release": "semantic-release",
     "commit": "npx git-cz",
@@ -30,25 +31,26 @@
     "url": "git+https://github.com/ducktors/turborepo-remote-cache.git"
   },
   "dependencies": {
-    "@google-cloud/storage": "^6.4.1",
-    "@hapi/boom": "^9.1.4",
-    "@sinclair/typebox": "^0.23.1",
-    "@vercel/node": "^1.12.1",
-    "ajv": "^8.8.2",
-    "aws-sdk": "^2.1053.0",
-    "boom": "^7.3.0",
-    "close-with-grace": "^1.1.0",
-    "env-schema": "^3.5.0",
-    "fastify": "^3.25.0",
-    "fastify-autoload": "^3.9.0",
-    "fastify-plugin": "^3.0.0",
-    "fs-blob-store": "^6.0.0",
-    "hyperid": "^2.3.1",
-    "make-promises-safe": "^5.1.0",
-    "pino": "^6.13.3",
-    "pino-pretty": "^7.3.0",
-    "s3-blob-store": "^4.1.1",
-    "tslib": "^2.3.1"
+    "@commitlint/lint": "^17.2.0",
+    "@google-cloud/storage": "6.4.1",
+    "@hapi/boom": "9.1.4",
+    "@sinclair/typebox": "0.23.1",
+    "@vercel/node": "1.12.1",
+    "ajv": "8.11.0",
+    "aws-sdk": "2.1053.0",
+    "boom": "7.3.0",
+    "close-with-grace": "1.1.0",
+    "env-schema": "5.1.0",
+    "fastify": "3.25.0",
+    "fastify-autoload": "3.9.0",
+    "fastify-plugin": "3.0.0",
+    "fs-blob-store": "6.0.0",
+    "hyperid": "2.3.1",
+    "make-promises-safe": "5.1.0",
+    "pino": "6.13.3",
+    "pino-pretty": "7.3.0",
+    "s3-blob-store": "4.1.1",
+    "tslib": "2.3.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -69,9 +71,10 @@
     "commitizen": "^4.2.5",
     "commitlint-config-cz": "^0.13.3",
     "commitlint-plugin-function-rules": "^1.7.1",
+    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^14.1.0",
     "esbuild": "^0.14.5",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
@@ -86,11 +89,6 @@
     "ts-node": "^10.4.0",
     "tsup": "^5.11.6",
     "typescript": "^4.5.4"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "bugs": {
     "url": "https://github.com/ducktors/turborepo-remote-cache/issues"

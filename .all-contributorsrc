@@ -1,0 +1,139 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "fox1t",
+      "name": "Maksim Sinik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1620916?v=4",
+      "profile": "https://maksim.dev",
+      "contributions": [
+        "code",
+        "test",
+        "ideas",
+        "maintenance",
+        "mentoring"
+      ]
+    },
+    {
+      "login": "tehKapa",
+      "name": "Matteo Vivona",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6388707?v=4",
+      "profile": "http://matteovivona.it",
+      "contributions": [
+        "infra",
+        "security",
+        "doc"
+      ]
+    },
+    {
+      "login": "dlehmhus",
+      "name": "Dario Lehmhus",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27899554?v=4",
+      "profile": "https://github.com/dlehmhus",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lodmfjord",
+      "name": "lommi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5091589?v=4",
+      "profile": "https://github.com/lodmfjord",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bmuenzenmeyer",
+      "name": "Brian Muenzenmeyer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/298435?v=4",
+      "profile": "https://www.brianmuenzenmeyer.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dobesv",
+      "name": "Dobes Vandermeer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/327833?v=4",
+      "profile": "http://dobesv.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "zigang93",
+      "name": "Tan Zi Gang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11520821?v=4",
+      "profile": "http://tanzigang.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jgoz",
+      "name": "John Gozde",
+      "avatar_url": "https://avatars.githubusercontent.com/u/132233?v=4",
+      "profile": "https://github.com/jgoz",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "sppatel",
+      "name": "Sachin Patel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/989367?v=4",
+      "profile": "https://github.com/sppatel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "tm1000",
+      "name": "Andrew Nagy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/564256?v=4",
+      "profile": "http://www.andrewsnagy.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "emalihin",
+      "name": "Eugene Malihins",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6379998?v=4",
+      "profile": "https://github.com/emalihin",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "joedevivo",
+      "name": "Joe DeVivo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55951?v=4",
+      "profile": "http://joedevivo.com",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "devtribe",
+      "name": "Daniel Kopp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1044246?v=4",
+      "profile": "http://www.aoe.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "turborepo-remote-cache",
+  "projectOwner": "ducktors"
+}
