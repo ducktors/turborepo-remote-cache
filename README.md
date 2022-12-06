@@ -18,7 +18,6 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [x] AWS S3
 - [x] Google Cloud Storage
 - [ ] Azure Blob Storage (PR welcome)
-- [ ] Google Drive Blobs (PR welcome)
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
