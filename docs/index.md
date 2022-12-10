@@ -14,3 +14,4 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
 - [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
+- [Running in an AWS Lambda Function](https://ducktors.github.io/turborepo-remote-cache/running-in-lambda)
