@@ -16,6 +16,10 @@ AWS credentials and configuration are loaded as described in the AWS SDK documen
 For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, or create a file
 `~/.aws/credentials` with AWS credentials.
 
+If running in an AWS Lambda Function, temporary credentials (including an
+`AWS_SESSION_TOKEN`) are automatically created and you do not need to manually
+configure these.
+
 Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
 
 ## Configure Google Cloud Storage

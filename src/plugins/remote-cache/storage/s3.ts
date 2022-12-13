@@ -19,7 +19,13 @@ export function createS3({
 }: S3Options) {
   const client = new aws.S3({
     ...(accessKey && secretKey
-      ? { credentials: { accessKeyId: accessKey, secretAccessKey: secretKey } }
+      ? {
+          credentials: {
+            accessKeyId: accessKey,
+            secretAccessKey: secretKey,
+            sessionToken: process.env.AWS_SESSION_TOKEN,
+          },
+        }
       : {}),
     ...(region ? { region } : {}),
     ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
