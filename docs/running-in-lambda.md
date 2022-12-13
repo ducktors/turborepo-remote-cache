@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Running in an AWS Lambda Function
-nav_order: 6
+parent: Deployment Environments
+nav_order: 1
 ---
 
 # Running in an AWS Lambda Function
