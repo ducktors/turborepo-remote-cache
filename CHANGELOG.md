@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.8.0...v1.9.0) (2022-12-13)
+
+
+### Features
+
+* use AWS_SESSION_TOKEN ([90cadc6](https://github.com/ducktors/turborepo-remote-cache/commit/90cadc6a51b39847d166e85ba6ed1be9ea09a412))
+
+# [1.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.8.0...v1.9.0) (2022-12-13)
+
+
+### Features
+
+* use AWS_SESSION_TOKEN ([90cadc6](https://github.com/ducktors/turborepo-remote-cache/commit/90cadc6a51b39847d166e85ba6ed1be9ea09a412))
+
 # [1.8.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.7.4...v1.8.0) (2022-11-12)
 
 
