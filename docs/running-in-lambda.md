@@ -91,11 +91,11 @@ sometimes cause timeouts).
 Go into **Environment variables** and create the following environment
 variables:
 
-| Key              | Value              |
-|------------------|--------------------|
-| STORAGE_PATH     | <your_bucket_name> | 
-| STORAGE_PROVIDER | s3                 |
-| TURBO_TOKEN      | <your_secret_key>  |
+| Variable            | Value              |
+|--------------------|--------------------|
+| `STORAGE_PATH`     | <your_bucket_name> | 
+| `STORAGE_PROVIDER` | s3                 |
+| `TURBO_TOKEN`      | <your_secret_key>  |
 
 *See [Environment
 variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
@@ -124,12 +124,10 @@ set up your repository.
 
 ## Configuring your repository to use the new API
 
-You will need to enable custom remote caching in your turbo repository - see -
-[Enable custom remote caching in a Turborepo
+You will need to enable custom remote caching in your turbo repository. Your
+**Invoke URL** is your Turborepo API URL, see [Enable custom remote caching in a
+Turborepo
 monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
-for more information.
-
-In your `.turbo/config.json`, set your `apiUrl` to your API Gateway **Invoke
-URL**.
+for more information on how to configure this.
 
 Your remote `turborepo-remote-cache` API is now ready to use!
