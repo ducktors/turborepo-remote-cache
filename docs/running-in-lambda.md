@@ -67,25 +67,20 @@ created. Click on **Create function**.
 
 ### Handler code
 
-The Lambda handler will need the packages `@fastify/aws-lambda` and
-`turborepo-remote-cache` installed. Your `index.js` handler code should look
-like this:
+Create a new package for your Lambda handler, and add `turborepo-remote-cache`
+as a dependency. Your `index.js` handler code should look like this:
 
 ```js
-import awsLambdaFastify from '@fastify/aws-lambda';
-import { createApp } from 'turborepo-remote-cache/build/app';
-
-const app = createApp({
-	trustProxy: true,
-});
-
-const proxy = awsLambdaFastify(app, { enforceBase64: (_) => true });
-
-export const handler = proxy;
+export { handler } from 'turborepo-remote-cache/build/aws-lambda';
 ```
 
-*Note - how you choose to bundle dependencies and upload the handler code are
-outside the scope of this document.*
+*Note - You will need to bundle dependencies and upload the handler code. How
+you choose to do this is outside the scope of this guide, but one method to
+consider is using `esbuild`:*
+
+```
+esbuild src/index.js --bundle --platform=node --outfile=build/index.js
+```
 
 ### Configuration
 
