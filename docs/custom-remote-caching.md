@@ -6,7 +6,12 @@ nav_order: 5
 
 # Enable custom remote caching in your Turborepo monorepo
 
-To enable a custom remote caching server in your Turborepo monorepo, you must add a config file by hand. The `turbo login` command works only with the official Vercel server.
+To enable a custom remote caching server in your Turborepo monorepo, you must
+either add a config file by hand or set local environment variables.
+
+## Config file
+
+You must add the config file by hand. The `turbo login` command works only with the official Vercel server.
 
 1. create `.turbo` folder at the root of your monorepo
 2. create `config.json` file inside it, and add these properties:
@@ -37,9 +42,23 @@ For example:
   //...
   ```
 
-## Enable remote caching in Docker
+### Enable remote caching in Docker
 For some reason, the `.turbo/config.json` is not working in Docker containers. In order to enable remote caching in Docker, you need to pass the configuration via CLI arguments.
 
 ```json
     "build": "turbo run build --team=\"team_awesome\" --token=\"turbotoken\" --api=\"https://your-caching.server.dev\"",
 ```
+
+## Local environment variables
+
+You can also configure your developer environment by setting the following
+environment variables:
+
+| Variable      | Type   | Description |
+| ------------- | ------ | ----------- |
+| `TURBO_API`   | string | The address of a running `turborepo-remote-cache` server |
+| `TURBO_TEAM`  | string | The team id (see *Config file* above)|
+| `TURBO_TOKEN` | string | Your secret key. This must be the same as the `TURBO_TOKEN` variable set on your turborepo-remote-cache server |
+
+**Note, these environment variables are used by the Turborepo CLI, so should not
+be confused with the environment variables used to configure your server!**

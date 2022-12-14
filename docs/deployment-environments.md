@@ -2,6 +2,7 @@
 layout: default
 title: Deployment Environments
 nav_order: 4
+has_children: true
 ---
 
 # Deployment Environments
@@ -9,6 +10,7 @@ nav_order: 4
 - [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on Docker](#deploy-on-docker)
 - [Deploy on DigitalOcean](#deploy-on-digitalocean)
+- [Deploy on AWS Lambda](#deploy-on-aws-lambda)
 - [Remoteless with npx](#deploy-remoteless-with-npx)
 
 ## Deploy on Vercel
@@ -44,7 +46,12 @@ The server can be easily deployed on DigitalOcean App Service.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
+[![Deploy to
+DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
+
+## Deploy on AWS Lambda
+This server can be deployed as an AWS Lambda Function. See this
+[guide](https://ducktors.github.io/turborepo-remote-cache/running-in-lambda) on deployment steps.
 
 ## Deploy "remoteless" with npx
 If you have Node.js installed, you can run the server simply by typing
