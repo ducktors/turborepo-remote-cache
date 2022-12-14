@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Turborepo remote cache server",
   "main": "build",
   "author": "Maksim Sinik <maksim@sinik.it>",

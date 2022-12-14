@@ -1,3 +1,33 @@
+# [1.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.9.0...v1.10.0) (2022-12-14)
+
+
+### Bug Fixes
+
+* fix navigation ([9aa97f2](https://github.com/ducktors/turborepo-remote-cache/commit/9aa97f2e2c52ff81907f0bcc87f010fe36768b62))
+* Move lambda docs into deployment instructions ([65a42ec](https://github.com/ducktors/turborepo-remote-cache/commit/65a42ecdc25713bd81a0357e922a74ad21cce123))
+
+
+### Features
+
+* add docs on local environment variables ([cb0c35f](https://github.com/ducktors/turborepo-remote-cache/commit/cb0c35fae323d722c1180eb2a21c2ded4b808b11))
+* how to run in aws lambda ([ff30348](https://github.com/ducktors/turborepo-remote-cache/commit/ff30348b6d132116e641ae1c5fd5cbe32ad84b19))
+* provide aws proxy handler ([9dcf280](https://github.com/ducktors/turborepo-remote-cache/commit/9dcf280d478e9289c6e44d3afa73c80e27725422))
+
+# [1.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.9.0...v1.10.0) (2022-12-14)
+
+
+### Bug Fixes
+
+* fix navigation ([9aa97f2](https://github.com/ducktors/turborepo-remote-cache/commit/9aa97f2e2c52ff81907f0bcc87f010fe36768b62))
+* Move lambda docs into deployment instructions ([65a42ec](https://github.com/ducktors/turborepo-remote-cache/commit/65a42ecdc25713bd81a0357e922a74ad21cce123))
+
+
+### Features
+
+* add docs on local environment variables ([cb0c35f](https://github.com/ducktors/turborepo-remote-cache/commit/cb0c35fae323d722c1180eb2a21c2ded4b808b11))
+* how to run in aws lambda ([ff30348](https://github.com/ducktors/turborepo-remote-cache/commit/ff30348b6d132116e641ae1c5fd5cbe32ad84b19))
+* provide aws proxy handler ([9dcf280](https://github.com/ducktors/turborepo-remote-cache/commit/9dcf280d478e9289c6e44d3afa73c80e27725422))
+
 # [1.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.8.0...v1.9.0) (2022-12-13)
 
 
