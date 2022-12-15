@@ -3,6 +3,7 @@ layout: default
 title: Deployment Environments
 nav_order: 4
 has_children: true
+has_toc: false
 ---
 
 # Deployment Environments
@@ -46,8 +47,7 @@ The server can be easily deployed on DigitalOcean App Service.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy to
-DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
 
 ## Deploy on AWS Lambda
 This server can be deployed as an AWS Lambda Function. See this
