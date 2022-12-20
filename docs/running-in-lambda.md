@@ -94,9 +94,9 @@ variables:
 
 | Variable            | Value              |
 |--------------------|--------------------|
-| `STORAGE_PATH`     | <your_bucket_name> | 
+| `STORAGE_PATH`     | *your_bucket_name* | 
 | `STORAGE_PROVIDER` | s3                 |
-| `TURBO_TOKEN`      | <your_secret_key>  |
+| `TURBO_TOKEN`      | *your_secret_key*  |
 
 *See [Environment
 variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
