@@ -1,3 +1,17 @@
+## [1.10.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.0...v1.10.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* minor doc fixes ([4c5e166](https://github.com/ducktors/turborepo-remote-cache/commit/4c5e166e405551db577615023e72ebd11718d07b))
+
+## [1.10.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.0...v1.10.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* minor doc fixes ([4c5e166](https://github.com/ducktors/turborepo-remote-cache/commit/4c5e166e405551db577615023e72ebd11718d07b))
+
 # [1.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.9.0...v1.10.0) (2022-12-14)
 
 
