@@ -42,7 +42,7 @@
     "boom": "7.3.0",
     "close-with-grace": "1.1.0",
     "env-schema": "5.1.0",
-    "fastify": "3.25.0",
+    "fastify": "3.29.4",
     "fastify-autoload": "3.9.0",
     "fastify-plugin": "3.0.0",
     "fs-blob-store": "6.0.0",
