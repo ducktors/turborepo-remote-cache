@@ -1,3 +1,17 @@
+## [1.10.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.1...v1.10.2) (2023-01-16)
+
+
+### Bug Fixes
+
+* update fastify to v3.29.4 ([b2133a5](https://github.com/ducktors/turborepo-remote-cache/commit/b2133a58f3e7fa2074cd2bdef63c2fecf42c0dfd))
+
+## [1.10.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.1...v1.10.2) (2023-01-16)
+
+
+### Bug Fixes
+
+* update fastify to v3.29.4 ([b2133a5](https://github.com/ducktors/turborepo-remote-cache/commit/b2133a58f3e7fa2074cd2bdef63c2fecf42c0dfd))
+
 ## [1.10.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.0...v1.10.1) (2022-12-20)
 
 
