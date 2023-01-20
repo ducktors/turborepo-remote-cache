@@ -24,7 +24,8 @@ Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/co
 
 ## Configure Google Cloud Storage
 1. Create a [bucket](https://console.cloud.google.com/storage/browser) (or use an existing one)
-1. Create a new [service account](https://console.cloud.google.com/iam-admin/serviceaccounts) with a role of `Storage Object Viewer` and `Storage Object Creator`.
+2. Create a new [service account](https://console.cloud.google.com/iam-admin/serviceaccounts).
+3. Grant the role `Storage Object Admin` to the service account on the bucket.
   ```sh
   # .env
   STORAGE_PROVIDER=google-cloud-storage
