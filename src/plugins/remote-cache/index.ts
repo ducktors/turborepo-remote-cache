@@ -54,6 +54,7 @@ async function turboRemoteCache(
       privateKey: instance.config.GCS_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       projectId: instance.config.GCS_PROJECT_ID,
       useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
+      connectionString: instance.config.ABS_CONNECTION_STRING,
     }),
   )
 
