@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - main
-      
+
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
           configFile: commitlint.config.js
           failOnWarnings: false
           helpURL: https://github.com/ducktors/turborepo-remote-cache#how-to-commit
-  
+
   build:
     runs-on: ${{ matrix.os }}
     name: Build
@@ -76,6 +76,8 @@ jobs:
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
 
   docker:
     name: Docker Build
