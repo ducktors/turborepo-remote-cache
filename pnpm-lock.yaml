@@ -43,7 +43,7 @@ specifiers:
   fastify-autoload: 3.9.0
   fastify-plugin: 3.0.0
   fs-blob-store: 6.0.0
-  husky: ^7.0.4
+  husky: ^8.0.3
   hyperid: 2.3.1
   make-promises-safe: 5.1.0
   npm-run-all: ^4.1.5
@@ -111,7 +111,7 @@ devDependencies:
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-prettier: 4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq
-  husky: 7.0.4
+  husky: 8.0.3
   npm-run-all: 4.1.5
   prettier: 2.8.3
   rimraf: 3.0.2
@@ -3678,9 +3678,9 @@ packages:
     resolution: {integrity: sha512-un3ZAcNQGI7RzaWGZzQDH47HETM4Wrj6z6E4TId8Yeq9w5ZKUVB1nrT2jwFheTUjEmqcgTjXDc959jum+ai1kQ==}
     dev: true
 
-  /husky/7.0.4:
-    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
-    engines: {node: '>=12'}
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: true
 
