@@ -13,6 +13,7 @@ export enum STORAGE_PROVIDERS {
   S3 = 'S3',
   s3 = 's3',
   GOOGLE_CLOUD_STORAGE = 'google-cloud-storage',
+  AZURE_BLOB_STORAGE = 'azure-blob-storage',
 }
 
 const schema = Type.Object(
@@ -42,6 +43,9 @@ const schema = Type.Object(
     GCS_PROJECT_ID: Type.Optional(Type.String()),
     GCS_CLIENT_EMAIL: Type.Optional(Type.String()),
     GCS_PRIVATE_KEY: Type.Optional(Type.String()),
+
+    // Azure Blob Storage credentials
+    ABS_CONNECTION_STRING: Type.Optional(Type.String()),
   },
   {
     additionalProperties: false,
