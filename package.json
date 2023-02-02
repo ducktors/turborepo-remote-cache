@@ -45,7 +45,7 @@
     "env-schema": "5.1.0",
     "fastify": "3.29.4",
     "fastify-autoload": "3.9.0",
-    "fastify-plugin": "3.0.0",
+    "fastify-plugin": "4.5.0",
     "fs-blob-store": "6.0.0",
     "hyperid": "2.3.1",
     "make-promises-safe": "5.1.0",
