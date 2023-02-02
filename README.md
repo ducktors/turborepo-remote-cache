@@ -1,7 +1,7 @@
 ![Turborepo Remote Cache](https://user-images.githubusercontent.com/6388707/149501949-9a385f04-ec94-45f4-9ea9-d211be123071.png)
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache)](https://github.com/ducktors/turborepo-remote-cache/releases) [![CI](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml) [![Release](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml) [![Docker](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/bbb26ca5247dee70dde0/maintainability)](https://codeclimate.com/github/ducktors/turborepo-remote-cache/maintainability) [![Coverage Status](https://coveralls.io/repos/github/ducktors/turborepo-remote-cache/badge.svg?branch=main)](https://coveralls.io/github/ducktors/turborepo-remote-cache?branch=main) [![Docker Pulls](https://img.shields.io/docker/pulls/fox1t/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/fox1t/turborepo-remote-cache) [![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)](https://www.npmjs.com/package/turborepo-remote-cache) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -81,6 +81,7 @@ fix: fix a bug ---> 1.0.x
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Klaitos"><img src="https://avatars.githubusercontent.com/u/644360?v=4?s=100" width="100px;" alt="Christopher Brookes"/><br /><sub><b>Christopher Brookes</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=Klaitos" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/adriantr"><img src="https://avatars.githubusercontent.com/u/48787209?v=4?s=100" width="100px;" alt="Adrian Trzeciak"/><br /><sub><b>Adrian Trzeciak</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=adriantr" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
