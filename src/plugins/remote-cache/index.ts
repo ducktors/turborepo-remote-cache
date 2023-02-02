@@ -1,6 +1,13 @@
 import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
-import { getArtifact, putArtifact, artifactsEvents, headArtifact, getStatus } from './routes'
+import {
+  getArtifact,
+  putArtifact,
+  artifactsEvents,
+  headArtifact,
+  getStatus,
+  getHealth,
+} from './routes'
 import { createLocation } from './storage'
 import { STORAGE_PROVIDERS } from '../../env'
 
@@ -33,6 +40,10 @@ async function turboRemoteCache(
     let authHeader = request.headers['authorization']
     authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 
+    if (request.url.includes('health')) {
+      return
+    }
+
     if (!authHeader) {
       throw badRequest(`Missing Authorization header`)
     }
@@ -57,6 +68,10 @@ async function turboRemoteCache(
       connectionString: instance.config.ABS_CONNECTION_STRING,
     }),
   )
+
+  await instance.register(async i => {
+    i.route(getHealth)
+  })
 
   await instance.register(
     async function (i) {

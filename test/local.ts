@@ -165,4 +165,12 @@ test(`local'`, async t => {
     t2.equal(response.statusCode, 200)
     t2.same(response.json(), { status: 'enabled' })
   })
+  t.test('should return 200 when GET health is called', async t2 => {
+    t2.plan(1)
+    const response = await app.inject({
+      method: 'GET',
+      url: `/health`,
+    })
+    t2.equal(response.statusCode, 200)
+  })
 })
