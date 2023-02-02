@@ -147,6 +147,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "adriantr",
+      "name": "Adrian Trzeciak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48787209?v=4",
+      "profile": "https://github.com/adriantr",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
