@@ -8,6 +8,10 @@ import {
   createGoogleCloudStorage,
   type GoogleCloudStorageOptions as GCSOpts,
 } from './google-cloud-storage'
+import {
+  createAzureBlobStorage,
+  type AzureBlobStorageOptions as AzureBlobStorageOpts,
+} from './azure-blob-storage'
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
@@ -16,13 +20,14 @@ const TURBO_CACHE_USE_TMP_FOLDER = true as const
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
 type GoogleCloudStorageOptions = Omit<GCSOpts, 'bucket'> & LocalOptions
+type AzureBlobStorageOptions = Omit<AzureBlobStorageOpts, 'bucket'> & LocalOptions
 
 type ProviderOptions<Provider extends STORAGE_PROVIDERS> = Provider extends STORAGE_PROVIDERS.LOCAL
   ? LocalOptions
   : Provider extends STORAGE_PROVIDERS.S3
   ? S3Options
-  : Provider extends STORAGE_PROVIDERS.s3
-  ? S3Options
+  : Provider extends STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
+  ? AzureBlobStorageOptions
   : Provider extends STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
   ? GoogleCloudStorageOptions
   : never
@@ -52,6 +57,10 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
       const { clientEmail, privateKey, projectId } = providerOptions as GoogleCloudStorageOptions
       return createGoogleCloudStorage({ bucket: path, clientEmail, privateKey, projectId })
+    }
+    case STORAGE_PROVIDERS.AZURE_BLOB_STORAGE: {
+      const { connectionString } = providerOptions as AzureBlobStorageOptions
+      return createAzureBlobStorage({ containerName: path, connectionString })
     }
     default:
       throw new Error(
