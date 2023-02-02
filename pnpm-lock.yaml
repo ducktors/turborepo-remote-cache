@@ -33,7 +33,7 @@ specifiers:
   coveralls: ^3.1.1
   cross-env: ^7.0.3
   cz-conventional-changelog: ^3.3.0
-  dotenv: ^14.1.0
+  dotenv: ^16.0.3
   env-schema: 5.1.0
   esbuild: ^0.14.5
   eslint: ^8.4.1
@@ -106,7 +106,7 @@ devDependencies:
   coveralls: 3.1.1
   cross-env: 7.0.3
   cz-conventional-changelog: 3.3.0
-  dotenv: 14.3.2
+  dotenv: 16.0.3
   esbuild: 0.14.54
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
@@ -2329,15 +2329,9 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /dotenv/14.3.2:
-    resolution: {integrity: sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==}
-    engines: {node: '>=12'}
-    dev: true
-
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /duplexer2/0.1.4:
     resolution: {integrity: sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==}
