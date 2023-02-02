@@ -1,3 +1,17 @@
+# [1.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.2...v1.11.0) (2023-02-02)
+
+
+### Features
+
+* add azure blob storage support ([c4bd04d](https://github.com/ducktors/turborepo-remote-cache/commit/c4bd04dfc0b1c987f8eb954e387750edf9d61b0b))
+
+# [1.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.2...v1.11.0) (2023-02-02)
+
+
+### Features
+
+* add azure blob storage support ([c4bd04d](https://github.com/ducktors/turborepo-remote-cache/commit/c4bd04dfc0b1c987f8eb954e387750edf9d61b0b))
+
 ## [1.10.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.1...v1.10.2) (2023-01-16)
 
 
