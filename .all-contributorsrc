@@ -149,6 +149,15 @@
       ]
     },
     {
+      "login": "izi-p",
+      "name": "Pierre S.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10976962?v=4",
+      "profile": "https://github.com/izi-p",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "adriantr",
       "name": "Adrian Trzeciak",
       "avatar_url": "https://avatars.githubusercontent.com/u/48787209?v=4",
@@ -156,7 +165,7 @@
       "contributions": [
         "code"
       ]
-    }
+    }, 
   ],
   "contributorsPerLine": 7,
   "skipCi": true,
