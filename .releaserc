@@ -27,7 +27,7 @@
     [
       "@semantic-release/github",
       {
-        "successComment": false
+        "successComment": true
       }
     ]
   ]

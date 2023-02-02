@@ -7,8 +7,10 @@ on:
   push:
     branches:
       - main
-      
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   commitlint:
@@ -26,7 +28,7 @@ jobs:
           configFile: commitlint.config.js
           failOnWarnings: false
           helpURL: https://github.com/ducktors/turborepo-remote-cache#how-to-commit
-  
+
   build:
     runs-on: ${{ matrix.os }}
     name: Build
@@ -76,6 +78,8 @@ jobs:
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
 
   docker:
     name: Docker Build
@@ -105,7 +109,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           platforms: linux/x86_64,linux/arm64
