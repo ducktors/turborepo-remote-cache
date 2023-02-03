@@ -13,6 +13,7 @@ export const getArtifact: RouteOptions<
   }
 > = {
   method: 'GET',
+  exposeHeadRoute: false,
   url: '/artifacts/:id',
   schema: artifactsRouteSchema,
   async handler(req, reply) {
