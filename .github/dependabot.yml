@@ -1,7 +1,36 @@
 version: 2
 updates:
-  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore(deps)"
+    assignees:
+      - "matteovivona"
+    reviewers:
+      - "matteovivona"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "chore(deps)"
+    assignees:
+      - "matteovivona"
+    reviewers:
+      - "matteovivona"
+      
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore(deps)"
+    assignees:
+      - "matteovivona"
+    reviewers:
+      - "matteovivona"
+      
+

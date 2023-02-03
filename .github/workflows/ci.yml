@@ -77,6 +77,7 @@ jobs:
       - name: CodeClimate
         continue-on-error: true
         uses: paambaati/codeclimate-action@v3.2.0
+        continue-on-error: true
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
         with:
