@@ -1,3 +1,17 @@
+# [1.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.11.0...v1.12.0) (2023-02-03)
+
+
+### Features
+
+* **docker:** update nodes on docker and nvmrc ([f24352e](https://github.com/ducktors/turborepo-remote-cache/commit/f24352ef107dbb8d1894e92c4b79326400a91a4a))
+
+# [1.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.11.0...v1.12.0) (2023-02-03)
+
+
+### Features
+
+* **docker:** update nodes on docker and nvmrc ([f24352e](https://github.com/ducktors/turborepo-remote-cache/commit/f24352ef107dbb8d1894e92c4b79326400a91a4a))
+
 # [1.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.10.2...v1.11.0) (2023-02-02)
 
 
