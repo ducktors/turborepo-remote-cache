@@ -50,7 +50,7 @@ specifiers:
   pino: 6.13.3
   pino-pretty: 7.3.0
   prettier: ^2.5.1
-  rimraf: ^3.0.2
+  rimraf: ^4.1.2
   s3-blob-store: 4.1.1
   s3rver: ^3.7.1
   semantic-release: ^19.0.5
@@ -114,7 +114,7 @@ devDependencies:
   husky: 8.0.3
   npm-run-all: 4.1.5
   prettier: 2.8.3
-  rimraf: 3.0.2
+  rimraf: 4.1.2
   s3rver: 3.7.1
   semantic-release: 19.0.5
   tap: 15.2.3_6qtx7vkbdhwvdm4crzlegk4mvi
@@ -5645,6 +5645,12 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rimraf/4.1.2:
+    resolution: {integrity: sha512-BlIbgFryTbw3Dz6hyoWFhKk+unCcHMSkZGrTFVAx2WmttdBSonsdtRlwiuTbDqTKr+UlXIUqJVS4QT5tUzGENQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /rollup/2.79.1:
