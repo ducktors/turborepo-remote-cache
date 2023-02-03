@@ -33,7 +33,7 @@ specifiers:
   coveralls: ^3.1.1
   cross-env: ^7.0.3
   cz-conventional-changelog: ^3.3.0
-  dotenv: ^14.1.0
+  dotenv: ^16.0.3
   env-schema: 5.1.0
   esbuild: ^0.14.5
   eslint: ^8.4.1
@@ -43,14 +43,14 @@ specifiers:
   fastify-autoload: 3.9.0
   fastify-plugin: 3.0.0
   fs-blob-store: 6.0.0
-  husky: ^7.0.4
-  hyperid: 2.3.1
+  husky: ^8.0.3
+  hyperid: 3.1.1
   make-promises-safe: 5.1.0
   npm-run-all: ^4.1.5
   pino: 6.13.3
   pino-pretty: 7.3.0
   prettier: ^2.5.1
-  rimraf: ^3.0.2
+  rimraf: ^4.1.2
   s3-blob-store: 4.1.1
   s3rver: ^3.7.1
   semantic-release: ^19.0.5
@@ -77,7 +77,7 @@ dependencies:
   fastify-autoload: 3.9.0
   fastify-plugin: 3.0.0
   fs-blob-store: 6.0.0
-  hyperid: 2.3.1
+  hyperid: 3.1.1
   make-promises-safe: 5.1.0
   pino: 6.13.3
   pino-pretty: 7.3.0
@@ -106,15 +106,15 @@ devDependencies:
   coveralls: 3.1.1
   cross-env: 7.0.3
   cz-conventional-changelog: 3.3.0
-  dotenv: 14.3.2
+  dotenv: 16.0.3
   esbuild: 0.14.54
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-prettier: 4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq
-  husky: 7.0.4
+  husky: 8.0.3
   npm-run-all: 4.1.5
   prettier: 2.8.3
-  rimraf: 3.0.2
+  rimraf: 4.1.2
   s3rver: 3.7.1
   semantic-release: 19.0.5
   tap: 15.2.3_6qtx7vkbdhwvdm4crzlegk4mvi
@@ -2329,15 +2329,9 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /dotenv/14.3.2:
-    resolution: {integrity: sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==}
-    engines: {node: '>=12'}
-    dev: true
-
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /duplexer2/0.1.4:
     resolution: {integrity: sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==}
@@ -3678,14 +3672,14 @@ packages:
     resolution: {integrity: sha512-un3ZAcNQGI7RzaWGZzQDH47HETM4Wrj6z6E4TId8Yeq9w5ZKUVB1nrT2jwFheTUjEmqcgTjXDc959jum+ai1kQ==}
     dev: true
 
-  /husky/7.0.4:
-    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
-    engines: {node: '>=12'}
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: true
 
-  /hyperid/2.3.1:
-    resolution: {integrity: sha512-mIbI7Ymn6MCdODaW1/6wdf5lvvXzmPsARN4zTLakMmcziBOuP4PxCBJvHF6kbAIHX6H4vAELx/pDmt0j6Th5RQ==}
+  /hyperid/3.1.1:
+    resolution: {integrity: sha512-RveV33kIksycSf7HLkq1sHB5wW0OwuX8ot8MYnY++gaaPXGFfKpBncHrAWxdpuEeRlazUMGWefwP1w6o6GaumA==}
     dependencies:
       uuid: 8.3.2
       uuid-parse: 1.1.0
@@ -5651,6 +5645,12 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rimraf/4.1.2:
+    resolution: {integrity: sha512-BlIbgFryTbw3Dz6hyoWFhKk+unCcHMSkZGrTFVAx2WmttdBSonsdtRlwiuTbDqTKr+UlXIUqJVS4QT5tUzGENQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /rollup/2.79.1:
