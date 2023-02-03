@@ -44,7 +44,7 @@ specifiers:
   fastify-plugin: 3.0.0
   fs-blob-store: 6.0.0
   husky: ^8.0.3
-  hyperid: 2.3.1
+  hyperid: 3.1.1
   make-promises-safe: 5.1.0
   npm-run-all: ^4.1.5
   pino: 6.13.3
@@ -77,7 +77,7 @@ dependencies:
   fastify-autoload: 3.9.0
   fastify-plugin: 3.0.0
   fs-blob-store: 6.0.0
-  hyperid: 2.3.1
+  hyperid: 3.1.1
   make-promises-safe: 5.1.0
   pino: 6.13.3
   pino-pretty: 7.3.0
@@ -3678,8 +3678,8 @@ packages:
     hasBin: true
     dev: true
 
-  /hyperid/2.3.1:
-    resolution: {integrity: sha512-mIbI7Ymn6MCdODaW1/6wdf5lvvXzmPsARN4zTLakMmcziBOuP4PxCBJvHF6kbAIHX6H4vAELx/pDmt0j6Th5RQ==}
+  /hyperid/3.1.1:
+    resolution: {integrity: sha512-RveV33kIksycSf7HLkq1sHB5wW0OwuX8ot8MYnY++gaaPXGFfKpBncHrAWxdpuEeRlazUMGWefwP1w6o6GaumA==}
     dependencies:
       uuid: 8.3.2
       uuid-parse: 1.1.0
