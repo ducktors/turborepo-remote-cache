@@ -25,7 +25,7 @@ export const getArtifact: RouteOptions<
 
     try {
       const artifact = await this.location.getCachedArtifact(artifactId, teamId)
-      reply.send(artifact)
+      return reply.send(artifact)
     } catch (err) {
       throw notFound(`Artifact not found`, err)
     }
