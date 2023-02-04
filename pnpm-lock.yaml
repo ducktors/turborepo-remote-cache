@@ -40,7 +40,7 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   fastify: 3.29.4
-  fastify-autoload: 3.9.0
+  fastify-autoload: 3.13.0
   fastify-plugin: 4.5.0
   fs-blob-store: 6.0.0
   husky: ^8.0.3
@@ -74,7 +74,7 @@ dependencies:
   close-with-grace: 1.1.0
   env-schema: 5.1.0
   fastify: 3.29.4
-  fastify-autoload: 3.9.0
+  fastify-autoload: 3.13.0
   fastify-plugin: 4.5.0
   fs-blob-store: 6.0.0
   hyperid: 3.1.1
@@ -2967,11 +2967,18 @@ packages:
       strnum: 1.0.5
     dev: true
 
-  /fastify-autoload/3.9.0:
-    resolution: {integrity: sha512-GNal/ijLiuwCJBmr7oVVQH/cuDQ9ytm/HbDZLbSWSGr3GW8doGp88vChN3SN87o99isL65whgoqwB97E+XoegQ==}
+  /fastify-autoload/3.12.0:
+    resolution: {integrity: sha512-qm8HG8V24A0AdcIjGMMTnyKQj6yzEbdcXHbWjzPtYPReGo4D4Ki7oRLDocYQJVpaOxlcLJSbadfMhZTu3+G6oQ==}
     dependencies:
       pkg-up: 3.1.0
       semver: 7.3.8
+    dev: false
+
+  /fastify-autoload/3.13.0:
+    resolution: {integrity: sha512-+Dbsf7wUxf9KLBHnbcdI1MTUGPHAnjWnbbq1bZm4+b2ghX+goK8HBkWOpS4JK1GAiripoDoyUBw18wu8uDZKuA==}
+    dependencies:
+      fastify-autoload-deprecated: /fastify-autoload/3.12.0
+      process-warning: 1.0.0
     dev: false
 
   /fastify-plugin/4.5.0:
