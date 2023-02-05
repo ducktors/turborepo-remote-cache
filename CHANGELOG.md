@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.0...v1.12.1) (2023-02-05)
+
+
+### Bug Fixes
+
+* **deps:** update fastify-autoload, ajv and env-schema ([b2ded8f](https://github.com/ducktors/turborepo-remote-cache/commit/b2ded8fd8a2ed1ac00462a725b06236a61079ae7))
+
 # [1.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.11.0...v1.12.0) (2023-02-03)
 
 
