@@ -34,7 +34,7 @@ specifiers:
   cross-env: ^7.0.3
   cz-conventional-changelog: ^3.3.0
   dotenv: ^16.0.3
-  env-schema: 5.1.0
+  env-schema: 5.2.0
   esbuild: ^0.14.5
   eslint: ^8.4.1
   eslint-config-prettier: ^8.3.0
@@ -72,7 +72,7 @@ dependencies:
   azure-storage: 2.10.7
   boom: 7.3.0
   close-with-grace: 1.1.0
-  env-schema: 5.1.0
+  env-schema: 5.2.0
   fastify: 3.29.4
   fastify-autoload: 3.13.0
   fastify-plugin: 4.5.0
@@ -2398,8 +2398,8 @@ packages:
       java-properties: 1.0.2
     dev: true
 
-  /env-schema/5.1.0:
-    resolution: {integrity: sha512-hbu+aC1nddO+tPPgw/guQRNY5CzkgplFu1WbmdiQimy4lcwPCteuKFvxF9uHSU/HkXNlIWR+WC0B53VG21aOxQ==}
+  /env-schema/5.2.0:
+    resolution: {integrity: sha512-36/6cZ+zIbcPA2ANrzp7vTz2bS8/zdZaq2RPFqJVtCGJ4P55EakgJ1BeKP8RMvEmM7ndrnHdJXzL3J1dHrEm1w==}
     dependencies:
       ajv: 8.11.0
       dotenv: 16.0.3
