@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.1...v1.12.2) (2023-02-06)
+
+
+### Bug Fixes
+
+* **deps:** bump tslib from 2.3.1 to 2.5.0 ([18cffd8](https://github.com/ducktors/turborepo-remote-cache/commit/18cffd83338378e8ac2a0b4e5e20d7afbda1db67))
+
 ## [1.12.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.0...v1.12.1) (2023-02-05)
 
 
