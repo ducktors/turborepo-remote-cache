@@ -58,7 +58,7 @@
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@commitlint/prompt": "^17.1.2",
-    "@cspotcode/source-map-support": "^0.7.0",
+    "@cspotcode/source-map-support": "^0.8.1",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
