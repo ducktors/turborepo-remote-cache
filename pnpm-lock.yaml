@@ -7,7 +7,7 @@ specifiers:
   '@commitlint/prompt': ^17.1.2
   '@cspotcode/source-map-support': ^0.7.0
   '@fastify/aws-lambda': ^3.1.3
-  '@google-cloud/storage': 6.9.1
+  '@google-cloud/storage': 6.9.2
   '@hapi/boom': 9.1.4
   '@semantic-release/changelog': ^6.0.1
   '@semantic-release/commit-analyzer': ^9.0.2
@@ -63,7 +63,7 @@ specifiers:
 dependencies:
   '@commitlint/lint': 17.4.2
   '@fastify/aws-lambda': 3.2.0
-  '@google-cloud/storage': 6.9.1
+  '@google-cloud/storage': 6.9.2
   '@hapi/boom': 9.1.4
   '@sinclair/typebox': 0.23.1
   '@vercel/node': 1.12.1
@@ -587,8 +587,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /@google-cloud/storage/6.9.1:
-    resolution: {integrity: sha512-mhbRfrDgV7qM8HGn12p3dpT87Azt94s9YRzr8qR+o/ptksAkCApspzlNS2mUEeoXUMmnpwcdF2GGNpd4+6NuVw==}
+  /@google-cloud/storage/6.9.2:
+    resolution: {integrity: sha512-TIQ6G+QzHb/hR/7AIH4OU+z8fXqCLM7JiqO+nGxw61os4YxCWPD2ajW+pzz7VY5k2VtqzhoMFA6rjIfw39wJmQ==}
     engines: {node: '>=12'}
     dependencies:
       '@google-cloud/paginator': 3.0.7
