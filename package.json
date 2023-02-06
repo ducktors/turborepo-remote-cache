@@ -52,7 +52,7 @@
     "pino": "6.13.3",
     "pino-pretty": "7.3.0",
     "s3-blob-store": "4.1.1",
-    "tslib": "2.3.1"
+    "tslib": "2.5.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
