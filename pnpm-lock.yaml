@@ -8,7 +8,7 @@ specifiers:
   '@cspotcode/source-map-support': ^0.8.1
   '@fastify/aws-lambda': ^3.1.3
   '@google-cloud/storage': 6.4.1
-  '@hapi/boom': 9.1.4
+  '@hapi/boom': 10.0.0
   '@semantic-release/changelog': ^6.0.1
   '@semantic-release/commit-analyzer': ^9.0.2
   '@semantic-release/git': ^10.0.1
@@ -64,7 +64,7 @@ dependencies:
   '@commitlint/lint': 17.4.2
   '@fastify/aws-lambda': 3.2.0
   '@google-cloud/storage': 6.4.1
-  '@hapi/boom': 9.1.4
+  '@hapi/boom': 10.0.0
   '@sinclair/typebox': 0.23.1
   '@vercel/node': 1.12.1
   ajv: 8.12.0
@@ -620,14 +620,14 @@ packages:
       - supports-color
     dev: false
 
-  /@hapi/boom/9.1.4:
-    resolution: {integrity: sha512-Ls1oH8jaN1vNsqcaHVYJrKmgMcKsC1wcp8bujvXrHaAqD2iDYq3HoOwsxwo09Cuda5R5nC0o0IxlrlTuvPuzSw==}
+  /@hapi/boom/10.0.0:
+    resolution: {integrity: sha512-1YVs9tLHhypBqqinKQRqh7FUERIolarQApO37OWkzD+z6y6USi871Sv746zBPKcIOBuI6g6y4FrwX87mmJ90Gg==}
     dependencies:
-      '@hapi/hoek': 9.3.0
+      '@hapi/hoek': 10.0.1
     dev: false
 
-  /@hapi/hoek/9.3.0:
-    resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
+  /@hapi/hoek/10.0.1:
+    resolution: {integrity: sha512-CvlW7jmOhWzuqOqiJQ3rQVLMcREh0eel4IBnxDx2FAcK8g7qoJRQK4L1CPBASoCY6y8e6zuCy3f2g+HWdkzcMw==}
     dev: false
 
   /@humanwhocodes/config-array/0.11.8:
