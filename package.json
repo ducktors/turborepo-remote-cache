@@ -24,7 +24,8 @@
     "commitlint": "commitlint",
     "semantic-release": "semantic-release",
     "commit": "npx git-cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "check-updates": "pnpm outdated --recursive --long"
   },
   "repository": {
     "type": "git",
@@ -38,9 +39,8 @@
     "@sinclair/typebox": "0.25.21",
     "@vercel/node": "1.12.1",
     "ajv": "8.12.0",
-    "aws-sdk": "2.1308.0",
+    "aws-sdk": "2.1310.0",
     "azure-storage": "^2.10.7",
-    "boom": "7.3.0",
     "close-with-grace": "1.1.0",
     "env-schema": "5.2.0",
     "fastify": "3.29.4",
@@ -65,11 +65,10 @@
     "@semantic-release/github": "^8.0.6",
     "@semantic-release/npm": "^9.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
-    "@types/node": "^18.11.18",
-    "@types/pino": "^7.0.5",
+    "@types/node": "^18.13.0",
     "@types/tap": "^15.0.5",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
-    "@typescript-eslint/parser": "^5.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "commitizen": "^4.2.5",
     "commitlint-config-cz": "^0.13.3",
     "commitlint-plugin-function-rules": "^1.7.1",
@@ -87,9 +86,9 @@
     "rimraf": "^4.1.2",
     "s3rver": "^3.7.1",
     "semantic-release": "^20.1.0",
-    "tap": "^15.1.5",
+    "tap": "^16.3.4",
     "ts-node": "^10.4.0",
-    "tsup": "^6.5.0",
+    "tsup": "^6.6.0",
     "typescript": "^4.5.4"
   },
   "bugs": {
