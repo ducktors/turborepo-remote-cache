@@ -38,7 +38,7 @@
     "@sinclair/typebox": "0.25.21",
     "@vercel/node": "1.12.1",
     "ajv": "8.12.0",
-    "aws-sdk": "2.1053.0",
+    "aws-sdk": "2.1308.0",
     "azure-storage": "^2.10.7",
     "boom": "7.3.0",
     "close-with-grace": "1.1.0",
