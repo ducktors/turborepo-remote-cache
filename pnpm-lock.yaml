@@ -15,7 +15,7 @@ specifiers:
   '@semantic-release/github': ^8.0.6
   '@semantic-release/npm': ^9.0.1
   '@semantic-release/release-notes-generator': ^10.0.3
-  '@sinclair/typebox': 0.23.1
+  '@sinclair/typebox': 0.25.21
   '@types/node': ^18.11.18
   '@types/pino': ^7.0.5
   '@types/tap': ^15.0.5
@@ -65,7 +65,7 @@ dependencies:
   '@fastify/aws-lambda': 3.2.0
   '@google-cloud/storage': 6.4.1
   '@hapi/boom': 9.1.4
-  '@sinclair/typebox': 0.23.1
+  '@sinclair/typebox': 0.25.21
   '@vercel/node': 1.12.1
   ajv: 8.12.0
   aws-sdk: 2.1053.0
@@ -1002,8 +1002,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sinclair/typebox/0.23.1:
-    resolution: {integrity: sha512-XsmyWfps86gFmZhK97HDesbCe/pR+8qf/VveZaADI6oCk0cHGq6WeKdUHM/a8NeSetv/vpUf19ubwU34C2PVWw==}
+  /@sinclair/typebox/0.25.21:
+    resolution: {integrity: sha512-gFukHN4t8K4+wVC+ECqeqwzBDeFeTzBXroBTqE6vcWrQGbEUpHO7LYdG0f4xnvYq4VOEwITSlHlp0JBAIFMS/g==}
     dev: false
 
   /@tootallnate/once/2.0.0:
