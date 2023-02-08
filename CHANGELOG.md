@@ -1,3 +1,15 @@
+## [1.12.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.2...v1.12.3) (2023-02-08)
+
+
+### Bug Fixes
+
+* **deps:** bump @google-cloud/storage from 6.4.1 to 6.9.1 ([c6901c8](https://github.com/ducktors/turborepo-remote-cache/commit/c6901c84ac39f58ae9e2d4ec10eed69ca089a03c))
+* **deps:** bump @google-cloud/storage to 6.9.2 ([8e5c327](https://github.com/ducktors/turborepo-remote-cache/commit/8e5c327cb197dfbb356ae6fa4771b6c1fe286a27))
+* **deps:** bump @hapi/boom from 9.1.4 to 10.0.0 ([6efbff4](https://github.com/ducktors/turborepo-remote-cache/commit/6efbff4bef3aa6979935dce34050fe35e693170d))
+* **deps:** bump @sinclair/typebox from 0.23.1 to 0.25.21 ([48b0047](https://github.com/ducktors/turborepo-remote-cache/commit/48b0047cb54dd22b7be395eaa141706e949e2e15))
+* **deps:** bump aws-sdk from 2.1053.0 to 2.1308.0 ([a34ab72](https://github.com/ducktors/turborepo-remote-cache/commit/a34ab725d73e7cd94708062dd8df7fc651e77be4))
+* **deps:** bump pino-pretty from 7.3.0 to 9.1.1 ([207a9e6](https://github.com/ducktors/turborepo-remote-cache/commit/207a9e65a8eda33fda6f3f8b68933056f877c16c))
+
 ## [1.12.2](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.1...v1.12.2) (2023-02-06)
 
 
