@@ -4,8 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 0
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "fix(deps)"
+      prefix-development: "chore(deps):"
     assignees:
       - "matteovivona"
     reviewers:
@@ -16,21 +18,19 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(actions)"
     assignees:
       - "matteovivona"
     reviewers:
       - "matteovivona"
-      
+
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "fix(docker)"
     assignees:
       - "matteovivona"
     reviewers:
       - "matteovivona"
-      
-
