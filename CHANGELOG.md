@@ -1,3 +1,16 @@
+# [1.13.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.3...v1.13.0) (2023-02-10)
+
+
+### Bug Fixes
+
+* return the reply object ([4d0b3cb](https://github.com/ducktors/turborepo-remote-cache/commit/4d0b3cbf42a735c5581c1b5567f71e220e29afee))
+* Set content type explicitly ([8f87111](https://github.com/ducktors/turborepo-remote-cache/commit/8f87111ad727ecf4ddc2e7660e750126f47268ec))
+
+
+### Features
+
+* update to fastify 4 ([0384fb4](https://github.com/ducktors/turborepo-remote-cache/commit/0384fb4362a0364771c0c9c3644df59f4aaa096f))
+
 ## [1.12.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.12.2...v1.12.3) (2023-02-08)
 
 
