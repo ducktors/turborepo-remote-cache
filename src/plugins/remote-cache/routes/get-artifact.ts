@@ -13,6 +13,7 @@ export const getArtifact: RouteOptions<
   }
 > = {
   method: 'GET',
+  exposeHeadRoute: false,
   url: '/artifacts/:id',
   schema: artifactsRouteSchema,
   async handler(req, reply) {
@@ -24,7 +25,8 @@ export const getArtifact: RouteOptions<
 
     try {
       const artifact = await this.location.getCachedArtifact(artifactId, teamId)
-      reply.send(artifact)
+      reply.header('Content-Type', 'application/octet-stream')
+      return reply.send(artifact)
     } catch (err) {
       throw notFound(`Artifact not found`, err)
     }
