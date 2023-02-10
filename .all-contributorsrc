@@ -156,6 +156,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "danielmitrov",
+      "name": "Daniel Mitrov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21154704?v=4",
+      "profile": "http://danielmitrov.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
