@@ -20,7 +20,7 @@
       ]
     },
     {
-      "login": "tehKapa",
+      "login": "matteovivona",
       "name": "Matteo Vivona",
       "avatar_url": "https://avatars.githubusercontent.com/u/6388707?v=4",
       "profile": "http://matteovivona.it",
@@ -158,6 +158,14 @@
       ]
     },
     {
+      "login": "danielmitrov",
+      "name": "Daniel Mitrov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21154704?v=4",
+      "profile": "http://danielmitrov.com",
+      "contributions": [
+        "code"
+      ]
+    }, 
       "login": "adriantr",
       "name": "Adrian Trzeciak",
       "avatar_url": "https://avatars.githubusercontent.com/u/48787209?v=4",
@@ -165,7 +173,7 @@
       "contributions": [
         "code"
       ]
-    }, 
+    }
   ],
   "contributorsPerLine": 7,
   "skipCi": true,
