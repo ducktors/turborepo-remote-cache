@@ -6,7 +6,7 @@ nav_order: 3
 
 # Supported Storage Providers
 
-## AWS 
+## AWS S3
 
 ### Credentials and Region
 
@@ -56,3 +56,9 @@ Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/co
   GCS_CLIENT_EMAIL=
   GCS_PRIVATE_KEY=
   ```
+  
+##  Azure Blob Storage
+
+1. Create a new Blob Storage
+2. On "Security + networking" tab, copy one of `Connection string` on "Access keys" blade
+3. Set `ABS_CONNECTION_STRING` with Connection string value
