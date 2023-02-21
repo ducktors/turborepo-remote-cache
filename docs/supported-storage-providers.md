@@ -6,6 +6,11 @@ nav_order: 3
 
 # Supported Storage Providers
 
+- [x] Local filesystem
+- [x] AWS S3
+- [x] Google Cloud Storage
+- [x] Azure Blob Storage
+
 ## AWS Credentials and Region
 
 AWS credentials and configuration are loaded as described in the AWS SDK documentation:

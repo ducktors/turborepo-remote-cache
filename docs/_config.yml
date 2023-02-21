@@ -1,5 +1,5 @@
 title: Turborepo Remote Cache
-description: Open source implementation of the Turborepo custom remote cache server.
+description: Open source implementation of the Turborepo Remote Cache Server.
 remote_theme: just-the-docs/just-the-docs
 search_enabled: true
 heading_anchors: true
