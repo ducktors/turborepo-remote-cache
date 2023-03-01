@@ -27,7 +27,7 @@ For example:
   "apiUrl": "http://localhost:3000"
 }
 ```
-  3. Modify your Turborepo top-level config. From v1.8.x you need to specify the TURBO_TOKEN in the `~/.config/turbo/config.json` folder on your machine.   
+  3. Modify your Turborepo top-level config. From v1.8.x you need to specify the TURBO_TOKEN in the `~/.config/turbo/config.json` file on your PC.   
   
 For example:
 
