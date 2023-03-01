@@ -27,26 +27,30 @@ For example:
   "apiUrl": "http://localhost:3000"
 }
 ```
-  3. Modify your Turborepo top-level `build` script, adding the `--token=` parameter.
+  3. Modify your Turborepo top-level config. From v1.8.x you need to specify the TURBO_TOKEN in the `~/.config/turbo/config.json` file on your PC.   
+  
+For example:
+
+`.turbo/config.json`
+```json
+{
+  "token": "token"
+}
+```
   __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) section for more info.__
 
-  For example:
+## Enable remote caching in Docker
+In order to enable remote caching in Docker, you need to tweak the Dockerfile like this:
 
-  `package.json`
-  ```jsonc
-  //...
-    "build": "turbo run build --token=\"yourToken\"",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  //...
-  ```
+```
+ENV TURBO_TOKEN=token
 
-### Enable remote caching in Docker
-For some reason, the `.turbo/config.json` is not working in Docker containers. In order to enable remote caching in Docker, you need to pass the configuration via CLI arguments.
+COPY turbo.json ./
+COPY .turbo/config.json ./.turbo/
+COPY .git/ ./.git/
 
-```json
-    "build": "turbo run build --team=\"team_awesome\" --token=\"turbotoken\" --api=\"https://your-caching.server.dev\"",
+RUN pnpm turbo build
+RUN rm -rf .git
 ```
 
 ## Local environment variables

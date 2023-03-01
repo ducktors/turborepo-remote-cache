@@ -6,6 +6,11 @@ nav_order: 3
 
 # Supported Storage Providers
 
+- [x] Local filesystem
+- [x] AWS S3
+- [x] Google Cloud Storage
+- [x] Azure Blob Storage
+
 ## AWS S3
 
 ### Credentials and Region
@@ -23,8 +28,6 @@ If running in an AWS Lambda Function, temporary credentials (including an
 configure these.
 
 Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
-
-
 
 
 ## Google Cloud Storage
