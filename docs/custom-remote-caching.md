@@ -13,8 +13,8 @@ either add a config file by hand or set local environment variables.
 
 You must add the config file by hand. The `turbo login` command works only with the official Vercel server.
 
-1. create `.turbo` folder at the root of your monorepo
-2. create `config.json` file inside it, and add these properties:
+1. Create `.turbo` folder at the root of your monorepo
+2. Create `config.json` file inside it, and add these properties:
     - `teamId`: it could be any string that starts with `"team_"`. This property will be used as a cache storage folder for the current repository. Ex. `team_myteam`
     - `apiUrl`: address of a running `turborepo-remote-cache` server.
 
@@ -23,27 +23,32 @@ For example:
 `.turbo/config.json`
 ```json
 {
-  "teamId": "team_FcALQN9XEVbeJ1NjTQoS9Wup",
+  "teamId": "team_myteam",
   "apiUrl": "http://localhost:3000"
 }
 ```
-  3. Modify your Turborepo top-level config. From v1.8.x you need to specify the TURBO_TOKEN in the `~/.config/turbo/config.json` file on your PC.   
+
+3. Export TURBO_TOKEN variable or modify your Turborepo top-level build script, adding the --token= parameter.
   
 For example:
 
-`.turbo/config.json`
+
+`package.json`
 ```json
-{
-  "token": "token"
-}
+//...
+  "build": "turbo run build --token=\"yourToken\"",
+  "dev": "turbo run dev --parallel",
+  "lint": "turbo run lint",
+  "format": "prettier --write \"**/*.{ts,tsx,md}\""
+//...
 ```
-  __Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) section for more info.__
+__Note: The token value must be the same used for your `TURBO_TOKEN` env var. See [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) section for more info.__
 
 ## Enable remote caching in Docker
-In order to enable remote caching in Docker, you need to tweak the Dockerfile like this:
+In order to enable remote caching in Docker, you need to pass TURBO_TOKEN inside Dockerfile.
 
 ```
-ENV TURBO_TOKEN=token
+ENV TURBO_TOKEN=
 
 COPY turbo.json ./
 COPY .turbo/config.json ./.turbo/
