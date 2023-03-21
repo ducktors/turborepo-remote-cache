@@ -12,16 +12,30 @@
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
 It supports several storage providers and deploys environments. Moreover, the project provides __"deploy to "__ buttons for one-click deployments whenever possible.
 
-## Index
+## Free Hosted Remote Cache for OSS Projects
+
+Our vision as a collective includes helping and making the development of open-source projects as accessible as possible.
+
+We have made available for free three remote servers (Europe, North America, and Asia) that you can use to speed up the build of your projects!
+
+| Server | Status | 
+| -- | -- | 
+| Europe | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskr.svg)](https://betteruptime.com/?utm_source=status_badge)| 
+| North America |  [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/msks.svg)](https://betteruptime.com/?utm_source=status_badge)| 
+| Asia | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskt.svg)](https://betteruptime.com/?utm_source=status_badge) | 
+
+[Read more about and how to use it in the documentation.](https://ducktors.github.io/turborepo-remote-cache/free-hosted-remote-cache)
+
+## Notable projects that use TRRC
+
+- [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
+- [Lambda](https://github.com/cvle/turborepo-cache-lambda)
+
+## Documentation
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 - [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
 - [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
-## Supported Storage Providers
-- [x] Local filesystem
-- [x] AWS S3
-- [x] Google Cloud Storage
-- [x] Azure Blob Storage
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 

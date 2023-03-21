@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Docker Cache
-        run: docker buildx build --platform linux/x86_64 --rm --push --target build --cache-from fox1t/turborepo-remote-cache:cache -t fox1t/turborepo-remote-cache:cache .
+        run: docker buildx build --platform linux/x86_64 --rm --push --target build --cache-from ducktors/turborepo-remote-cache:cache -t ducktors/turborepo-remote-cache:cache .
 
   build-linux-arm64:
     name: Build linux/arm64 Docker cache
@@ -40,4 +40,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Docker Cache
-        run: docker buildx build --platform linux/arm64 --rm --push --target build --cache-from fox1t/turborepo-remote-cache:cache -t fox1t/turborepo-remote-cache:cache .
+        run: docker buildx build --platform linux/arm64 --rm --push --target build --cache-from ducktors/turborepo-remote-cache:cache -t ducktors/turborepo-remote-cache:cache .
