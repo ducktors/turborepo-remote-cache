@@ -1,3 +1,11 @@
+# [1.14.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.13.3...v1.14.0) (2023-03-21)
+
+
+### Features
+
+* unprotected health route ([7f68884](https://github.com/ducktors/turborepo-remote-cache/commit/7f6888494ae0e5e23a440df6c811e684ec6fa7ef))
+* unprotected unversioned health route ([3fe7e2c](https://github.com/ducktors/turborepo-remote-cache/commit/3fe7e2cc5f3028ddcdd927e9c020c0772304c719))
+
 ## [1.13.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.13.2...v1.13.3) (2023-03-21)
 
 
