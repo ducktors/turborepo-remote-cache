@@ -3,7 +3,6 @@ name: CI
 on:
   merge_group:
   pull_request:
-  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
