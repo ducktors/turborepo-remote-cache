@@ -28,20 +28,6 @@ async function turboRemoteCache(
     },
   )
 
-  const tokens = new Set<string>(allowedTokens)
-  instance.addHook('onRequest', async function (request) {
-    let authHeader = request.headers['authorization']
-    authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
-
-    if (!authHeader) {
-      throw badRequest(`Missing Authorization header`)
-    }
-    const [, token] = authHeader.split('Bearer ')
-    if (!tokens.has(token)) {
-      throw unauthorized(`Invalid authorization token`)
-    }
-  })
-
   instance.decorate(
     'location',
     createLocation(provider, {
@@ -60,10 +46,31 @@ async function turboRemoteCache(
 
   await instance.register(
     async function (i) {
+      const tokens = new Set<string>(allowedTokens)
+
+      i.addHook('onRequest', async function (request) {
+        let authHeader = request.headers['authorization']
+        authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
+
+        if (!authHeader) {
+          throw badRequest(`Missing Authorization header`)
+        }
+        const [, token] = authHeader.split('Bearer ')
+        if (!tokens.has(token)) {
+          throw unauthorized(`Invalid authorization token`)
+        }
+      })
+
       i.route(getArtifact)
       i.route(headArtifact)
       i.route(putArtifact)
       i.route(artifactsEvents)
+    },
+    { prefix: `/${apiVersion}` },
+  )
+
+  await instance.register(
+    async i => {
       i.route(getStatus)
     },
     { prefix: `/${apiVersion}` },
