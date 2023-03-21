@@ -87,32 +87,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get package version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
-        with:
-          path: .
-      - name: Set correct environment
-        run: |
-          TAG=${{ steps.package-version.outputs.current-version}}
-          echo "TAG=$TAG" >> "$GITHUB_ENV"
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: fox1t/turborepo-remote-cache
-          flavor: latest=true
-          tags: type=raw,value=${{ env.TAG }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Build and push
+      - name: Test commit Build
         uses: docker/build-push-action@v4
         with:
           context: .
           platforms: linux/x86_64,linux/arm64
           push: false
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ducktors/turborepo-remote-cache:local
           cache-from: |
-            fox1t/turborepo-remote-cache:cache
+            ducktors/turborepo-remote-cache:cache
