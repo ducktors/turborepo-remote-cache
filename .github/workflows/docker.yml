@@ -24,8 +24,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: fox1t/turborepo-remote-cache
-          flavor: latest=true
+          images: ducktors/turborepo-remote-cache
+          flavor: latest=false
           tags: type=raw,value=${{ env.TAG }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -44,4 +44,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: |
-            fox1t/turborepo-remote-cache:cache
+            ducktors/turborepo-remote-cache:cache
