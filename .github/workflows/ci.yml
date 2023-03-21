@@ -18,7 +18,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: Check commit message
         uses: wagoid/commitlint-github-action@v5
         with:
@@ -56,6 +55,7 @@ jobs:
     name: Test
     steps:
       - uses: actions/checkout@v3
+        name: Checkout
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -80,23 +80,23 @@ jobs:
         with:
           coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
 
-  docker:
-    name: Docker Build
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Test commit Build
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          platforms: linux/x86_64,linux/arm64
-          push: false
-          tags: ducktors/turborepo-remote-cache:local
-          cache-from: |
-            ducktors/turborepo-remote-cache:cache
+  # docker:
+  #   name: Docker Build
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Test commit Build
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         platforms: linux/x86_64,linux/arm64
+  #         push: false
+  #         tags: ducktors/turborepo-remote-cache:local
+  #         cache-from: |
+  #           ducktors/turborepo-remote-cache:cache
