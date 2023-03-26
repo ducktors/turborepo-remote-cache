@@ -12,6 +12,8 @@
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
 It supports several storage providers and deploys environments. Moreover, the project provides __"deploy to "__ buttons for one-click deployments whenever possible.
 
+> [Legacy fox1t/turborepo-remote-cache image will be redirected to ducktors/turborepo-remote-cache.](https://github.com/ducktors/turborepo-remote-cache/issues/157)
+
 ## Free Hosted Remote Cache for OSS Projects
 
 Our vision as a collective includes helping and making the development of open-source projects as accessible as possible.
