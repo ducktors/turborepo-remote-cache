@@ -1,3 +1,12 @@
+## [1.14.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.14.0...v1.14.1) (2023-03-27)
+
+
+### Bug Fixes
+
+* **docker:** bump node from `f605fcd` to `ffc770c` ([3524d08](https://github.com/ducktors/turborepo-remote-cache/commit/3524d088e4fa730bd3203c4d0426d2e12aa73851))
+* **docker:** bump node from `f605fcd` to `ffc770c` ([b731acd](https://github.com/ducktors/turborepo-remote-cache/commit/b731acdc3c9f062b5c9609689337417549df249f))
+* update fastify/aws-lambda ([45cc851](https://github.com/ducktors/turborepo-remote-cache/commit/45cc85185ede652d5b20e2ea05eeba553f4e6c21))
+
 # [1.14.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.13.3...v1.14.0) (2023-03-21)
 
 
