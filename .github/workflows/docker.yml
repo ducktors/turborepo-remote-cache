@@ -44,4 +44,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: |
-            ducktors/turborepo-remote-cache:cache
+            ducktors/turborepo-remote-cache:latest
