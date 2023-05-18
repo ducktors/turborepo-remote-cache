@@ -6,6 +6,7 @@ import { env } from './env'
 
 const app = createApp({
   trustProxy: true,
+  bodyLimit: process.env.BODY_LIMIT !== undefined ? Number(process.env.BODY_LIMIT) : undefined,
 })
 
 closeWithGrace(
