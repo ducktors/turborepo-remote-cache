@@ -36,6 +36,5 @@ Variables can be set according to the following parameters of each server. It is
 | -- | -- | -- | -- |
 | Europe | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskr.svg)](https://betteruptime.com/?utm_source=status_badge)|  `https://eu.trrc.ducktors.dev` |`turbotoken-oss-europe1` |  
 | North America |  [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/msks.svg)](https://betteruptime.com/?utm_source=status_badge)| `https://us.trrc.ducktors.dev` |`turbotoken-oss-usa1` |
-| Asia |  [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskt.svg)](https://betteruptime.com/?utm_source=status_badge) |`https://as.trrc.ducktors.dev`|`turbotoken-oss-asia1` |
 
 

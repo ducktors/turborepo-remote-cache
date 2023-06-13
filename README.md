@@ -18,13 +18,14 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 Our vision as a collective includes helping and making the development of open-source projects as accessible as possible.
 
-We have made available for free three remote servers (Europe, North America, and Asia) that you can use to speed up the build of your projects!
+We have made available for free three remote servers (Europe and North America) that you can use to speed up the build of your projects!
+
+Update: From June 13, 2023 we removed the server in Asia
 
 | Server | Status | 
 | -- | -- | 
 | Europe | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskr.svg)](https://betteruptime.com/?utm_source=status_badge)| 
 | North America |  [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/msks.svg)](https://betteruptime.com/?utm_source=status_badge)| 
-| Asia | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskt.svg)](https://betteruptime.com/?utm_source=status_badge) | 
 
 [Read more about and how to use it in the documentation.](https://ducktors.github.io/turborepo-remote-cache/free-hosted-remote-cache)
 
