@@ -5,6 +5,11 @@ parent: Deployment Environments
 nav_order: 1
 ---
 
+# Update: 06 July 2023
+
+Due to the high costs that were not justified by the actual usage, we have decided to discontinue our free hosted remote cache service. We apologize for any inconvenience this may cause and hope to bring the service back in the future.
+---
+
 # Disclaimer
 The maintainers and contributors of the GitHub Ducktors organization assumes no responsibility for errors or omissions in the artifacts/cache of Turborepo Remote Cache Free Servers.
 
@@ -34,7 +39,5 @@ Variables can be set according to the following parameters of each server. It is
 
 | Server |  Status | TURBO_API | TURBO_TOKEN |
 | -- | -- | -- | -- |
-| Europe | [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/mskr.svg)](https://betteruptime.com/?utm_source=status_badge)|  `https://eu.trrc.ducktors.dev` |`turbotoken-oss-europe1` |  
-| North America |  [![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/msks.svg)](https://betteruptime.com/?utm_source=status_badge)| `https://us.trrc.ducktors.dev` |`turbotoken-oss-usa1` |
 
 
