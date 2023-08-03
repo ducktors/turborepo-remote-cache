@@ -24,6 +24,25 @@ jobs:
           failOnWarnings: false
           helpURL: https://github.com/ducktors/turborepo-remote-cache#how-to-commit
 
+  install:
+    runs-on: ${{ matrix.os }}
+    name: Install
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install with npm
+        run: npm install turborepo-remote-cache
+      - name: Install with yarn
+        run: yarn add turborepo-remote-cache
+
   build:
     runs-on: ${{ matrix.os }}
     name: Build
