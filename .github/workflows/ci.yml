@@ -40,9 +40,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install with npm
-        run: npm install turborepo-remote-cache
+        run: |
+          cd ${{ github.workspace }}
+          mkdir npm-repro
+          cd npm-repro
+          npm init -y
+          npm install turborepo-remote-cache
       - name: Install with yarn
-        run: yarn add turborepo-remote-cache
+        run: |
+          cd ${{ github.workspace }}
+          mkdir yarn-repro
+          cd yarn-repro
+          npm init -y
+          yarn add turborepo-remote-cache
 
   build:
     runs-on: ${{ matrix.os }}
