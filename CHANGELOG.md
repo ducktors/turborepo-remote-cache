@@ -1,3 +1,10 @@
+## [1.14.4](https://github.com/ducktors/turborepo-remote-cache/compare/v1.14.3...v1.14.4) (2023-08-03)
+
+
+### Bug Fixes
+
+* remove pnpm from package engine ([ce435e0](https://github.com/ducktors/turborepo-remote-cache/commit/ce435e0566e73498bb09e02144d8478e8428cbc1))
+
 ## [1.14.3](https://github.com/ducktors/turborepo-remote-cache/compare/v1.14.2...v1.14.3) (2023-07-21)
 
 
