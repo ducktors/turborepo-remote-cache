@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Release
     permissions:
-      contents: write
+      contents: write 
+      issues: write 
+      pull-requests: write 
+      id-token: write 
     steps:
       - uses: actions/checkout@v3
         name: Checkout
@@ -28,6 +31,8 @@ jobs:
           version: 8
       - name: Install dependencies
         run: pnpm install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: pnpm audit signatures
       - name: Release
         env:
           GH_TOKEN: ${{ secrets.DUCKTORS_PAT }}
