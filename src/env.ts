@@ -22,6 +22,8 @@ const schema = Type.Object(
     TURBO_TOKEN: Type.String({ separator: ',' }),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
+    LOG_TYPE: Type.Optional(Type.String({ default: 'stdout' })),
+    LOG_DIR: Type.Optional(Type.String({ default: 'server.log' })),
     STORAGE_PROVIDER: Type.Optional(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
