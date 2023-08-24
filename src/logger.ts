@@ -12,12 +12,12 @@ const PinoLevelToSeverityLookup = {
 
 let logDestination
 
-if (env.LOG_TYPE === 'file') {
-  logDestination = Pino.destination(env.LOG_DIR)
-} else if (env.LOG_TYPE === 'stdout') {
+if (env.LOG_MODE === 'file') {
+  logDestination = Pino.destination(env.LOG_FILE)
+} else if (env.LOG_MODE === 'stdout') {
   logDestination = process.stdout
 } else {
-  throw new Error('Invalid LOG_TYPE. Allowed values are "file" or "stdout".')
+  throw new Error('Invalid LOG_MODE. Allowed values are "file" or "stdout".')
 }
 
 export const logger = Pino(
