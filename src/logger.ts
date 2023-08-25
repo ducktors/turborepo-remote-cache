@@ -1,5 +1,6 @@
 import Pino from 'pino'
 import { env } from './env'
+
 const PinoLevelToSeverityLookup = {
   trace: 'DEBUG',
   debug: 'DEBUG',
@@ -9,18 +10,31 @@ const PinoLevelToSeverityLookup = {
   fatal: 'CRITICAL',
 } as const
 
-export const logger = Pino({
-  level: env.LOG_LEVEL,
-  messageKey: 'message',
-  redact: ['req.headers.authorization'],
-  formatters: {
-    level(label, number) {
-      return {
-        severity: PinoLevelToSeverityLookup[label] || PinoLevelToSeverityLookup['info'],
-        level: number,
-      }
+let logDestination
+
+if (env.LOG_MODE === 'file') {
+  logDestination = Pino.destination(env.LOG_FILE)
+} else if (env.LOG_MODE === 'stdout') {
+  logDestination = process.stdout
+} else {
+  throw new Error('Invalid LOG_MODE. Allowed values are "file" or "stdout".')
+}
+
+export const logger = Pino(
+  {
+    level: env.LOG_LEVEL,
+    messageKey: 'message',
+    redact: ['req.headers.authorization'],
+    formatters: {
+      level(label, number) {
+        return {
+          severity: PinoLevelToSeverityLookup[label] || PinoLevelToSeverityLookup['info'],
+          level: number,
+        }
+      },
     },
   },
-})
+  logDestination,
+)
 
 export default logger
