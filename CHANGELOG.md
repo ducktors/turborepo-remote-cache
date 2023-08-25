@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.14.7...v1.15.0) (2023-08-25)
+
+
+### Features
+
+* allow logging on file ([2f0b9c0](https://github.com/ducktors/turborepo-remote-cache/commit/2f0b9c07834b7798dba14b1475eb4420a52c325b))
+
 ## [1.14.7](https://github.com/ducktors/turborepo-remote-cache/compare/v1.14.6...v1.14.7) (2023-08-21)
 
 
