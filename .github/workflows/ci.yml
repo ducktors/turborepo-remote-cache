@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Check commit message
@@ -33,7 +33,7 @@ jobs:
         node-version: [18.x, 20.x]
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -62,7 +62,7 @@ jobs:
         node-version: [18.x, 20.x]
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
       - name: Use Node.js
         uses: actions/setup-node@v3
