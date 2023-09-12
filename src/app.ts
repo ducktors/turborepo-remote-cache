@@ -1,9 +1,9 @@
+import { isBoom } from '@hapi/boom'
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
 import hyperid from 'hyperid'
-import { isBoom } from '@hapi/boom'
-import remoteCache from './plugins/remote-cache'
-import config from './plugins/config'
 import { logger } from './logger'
+import config from './plugins/config'
+import remoteCache from './plugins/remote-cache'
 
 const uuid = hyperid({ urlSafe: true })
 

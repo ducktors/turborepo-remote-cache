@@ -1,5 +1,9 @@
 import type { Server } from 'http'
-import type { RouteOptions, RawRequestDefaultExpression, RawReplyDefaultExpression } from 'fastify'
+import type {
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
+  RouteOptions,
+} from 'fastify'
 
 export const artifactsEvents: RouteOptions<
   Server,

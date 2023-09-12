@@ -1,7 +1,11 @@
 import type { Server } from 'http'
-import type { RouteOptions, RawRequestDefaultExpression, RawReplyDefaultExpression } from 'fastify'
-import { notFound, badRequest } from '@hapi/boom'
-import { type Querystring, type Params, artifactsRouteSchema } from './schema'
+import { badRequest, notFound } from '@hapi/boom'
+import type {
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
+  RouteOptions,
+} from 'fastify'
+import { type Params, type Querystring, artifactsRouteSchema } from './schema'
 
 export const headArtifact: RouteOptions<
   Server,
@@ -23,10 +27,13 @@ export const headArtifact: RouteOptions<
     }
 
     try {
-      const artifact = await this.location.existsCachedArtifact(artifactId, teamId)
+      const artifact = await this.location.existsCachedArtifact(
+        artifactId,
+        teamId,
+      )
       reply.send(artifact)
     } catch (err) {
-      throw notFound(`Artifact not found`, err)
+      throw notFound('Artifact not found', err)
     }
   },
 }
