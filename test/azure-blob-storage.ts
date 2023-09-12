@@ -7,7 +7,6 @@ import fsbs from 'fs-blob-store'
 import { tmpdir } from 'os'
 import fs from 'fs'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let store: any = undefined
 
 const createStore = container => {
