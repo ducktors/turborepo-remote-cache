@@ -1,5 +1,9 @@
 import type { Server } from 'http'
-import type { RawReplyDefaultExpression, RawRequestDefaultExpression, RouteOptions } from 'fastify'
+import type {
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
+  RouteOptions,
+} from 'fastify'
 import { type Params, type Querystring } from './schema'
 import { statusRouteSchema } from './status-schema'
 

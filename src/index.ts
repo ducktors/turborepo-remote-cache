@@ -1,5 +1,5 @@
-import 'make-promises-safe'
 import closeWithGrace from 'close-with-grace'
+import 'make-promises-safe'
 
 import { createApp } from './app'
 import { env } from './env'
@@ -21,7 +21,7 @@ closeWithGrace(
   },
 )
 
-app.listen({ host: '0.0.0.0', port: env.PORT }, err => {
+app.listen({ host: '0.0.0.0', port: env.PORT }, (err) => {
   if (err) {
     app.log.error(err)
     process.exit(1)
