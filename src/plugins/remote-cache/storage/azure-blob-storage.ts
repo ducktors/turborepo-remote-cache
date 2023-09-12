@@ -1,5 +1,5 @@
-import { StorageProvider } from './index'
 import { createBlobService } from 'azure-storage'
+import { StorageProvider } from './index'
 
 export interface AzureBlobStorageOptions {
   containerName: string
@@ -15,15 +15,26 @@ export function createAzureBlobStorage({
 
   return {
     exists: (artifactPath, cb) => {
-      blobService.doesBlobExist(containerName, artifactPath, {}, (error, result) =>
-        cb(error, result.exists),
+      blobService.doesBlobExist(
+        containerName,
+        artifactPath,
+        {},
+        (error, result) => cb(error, result.exists),
       )
     },
     createReadStream(artifactPath) {
-      return blobService.createReadStream(containerName, artifactPath, emptyCb) as NodeJS.ReadStream
+      return blobService.createReadStream(
+        containerName,
+        artifactPath,
+        emptyCb,
+      ) as NodeJS.ReadStream
     },
     createWriteStream(artifactPath) {
-      return blobService.createWriteStreamToBlockBlob(containerName, artifactPath, {})
+      return blobService.createWriteStreamToBlockBlob(
+        containerName,
+        artifactPath,
+        {},
+      )
     },
   }
 }

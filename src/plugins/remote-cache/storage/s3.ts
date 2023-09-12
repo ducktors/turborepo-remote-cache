@@ -1,5 +1,5 @@
-import s3 from 's3-blob-store'
 import aws from 'aws-sdk'
+import s3 from 's3-blob-store'
 
 export interface S3Options {
   accessKey?: string
@@ -29,7 +29,9 @@ export function createS3({
       : {}),
     ...(region ? { region } : {}),
     ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
-    ...(process.env.NODE_ENV === 'test' ? { sslEnabled: false, s3ForcePathStyle: true } : {}),
+    ...(process.env.NODE_ENV === 'test'
+      ? { sslEnabled: false, s3ForcePathStyle: true }
+      : {}),
   })
 
   const location = s3({

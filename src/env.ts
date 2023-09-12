@@ -1,6 +1,6 @@
+import { Static, Type } from '@sinclair/typebox'
 import Ajv from 'ajv'
 import envSchema from 'env-schema'
-import { Type, Static } from '@sinclair/typebox'
 
 enum NODE_ENVS {
   PRODUCTION = 'production',
@@ -18,7 +18,9 @@ export enum STORAGE_PROVIDERS {
 
 const schema = Type.Object(
   {
-    NODE_ENV: Type.Optional(Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION })),
+    NODE_ENV: Type.Optional(
+      Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION }),
+    ),
     TURBO_TOKEN: Type.String({ separator: ',' }),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),

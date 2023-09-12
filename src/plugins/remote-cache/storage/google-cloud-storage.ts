@@ -1,5 +1,5 @@
-import { StorageProvider } from './index'
 import { Storage } from '@google-cloud/storage'
+import { StorageProvider } from './index'
 
 export interface GoogleCloudStorageOptions {
   bucket: string
@@ -41,7 +41,9 @@ export function createGoogleCloudStorage({
       turboBucket.file(artifactPath).exists(cb)
     },
     createReadStream(artifactPath) {
-      return turboBucket.file(artifactPath).createReadStream() as NodeJS.ReadStream
+      return turboBucket
+        .file(artifactPath)
+        .createReadStream() as NodeJS.ReadStream
     },
     createWriteStream(artifactPath) {
       return turboBucket.file(artifactPath).createWriteStream()

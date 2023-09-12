@@ -1,8 +1,14 @@
-import { FastifyInstance } from 'fastify'
 import { badRequest, unauthorized } from '@hapi/boom'
-import { getArtifact, putArtifact, artifactsEvents, headArtifact, getStatus } from './routes'
-import { createLocation } from './storage'
+import { FastifyInstance } from 'fastify'
 import { STORAGE_PROVIDERS } from '../../env'
+import {
+  artifactsEvents,
+  getArtifact,
+  getStatus,
+  headArtifact,
+  putArtifact,
+} from './routes'
+import { createLocation } from './storage'
 
 async function turboRemoteCache(
   instance: FastifyInstance,
@@ -13,7 +19,11 @@ async function turboRemoteCache(
   },
 ) {
   const bodyLimit = <number>instance.config.BODY_LIMIT
-  const { allowedTokens, apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
+  const {
+    allowedTokens,
+    apiVersion = 'v8',
+    provider = STORAGE_PROVIDERS.LOCAL,
+  } = options
   if (!(Array.isArray(allowedTokens) && allowedTokens.length)) {
     throw new Error(
       `'allowedTokens' options must be a string[], ${typeof allowedTokens} provided instead`,
@@ -49,15 +59,15 @@ async function turboRemoteCache(
       const tokens = new Set<string>(allowedTokens)
 
       i.addHook('onRequest', async function (request) {
-        let authHeader = request.headers['authorization']
+        let authHeader = request.headers.authorization
         authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 
         if (!authHeader) {
-          throw badRequest(`Missing Authorization header`)
+          throw badRequest('Missing Authorization header')
         }
         const [, token] = authHeader.split('Bearer ')
         if (!tokens.has(token)) {
-          throw unauthorized(`Invalid authorization token`)
+          throw unauthorized('Invalid authorization token')
         }
       })
 
@@ -70,7 +80,7 @@ async function turboRemoteCache(
   )
 
   await instance.register(
-    async i => {
+    async (i) => {
       i.route(getStatus)
     },
     { prefix: `/${apiVersion}` },

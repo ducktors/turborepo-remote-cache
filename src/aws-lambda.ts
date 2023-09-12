@@ -5,4 +5,4 @@ const app = createApp({
   trustProxy: true,
 })
 
-export const handler = awsLambdaFastify(app, { enforceBase64: _ => true })
+export const handler = awsLambdaFastify(app, { enforceBase64: (_) => true })
