@@ -13,7 +13,7 @@ through creating:
 - An S3 bucket to store the artifacts
 - An IAM role to grant the Lambda permission to access the bucket
 - The Lambda function
-- An HTTP API Gateway
+- A Lambda Function URL
 - Configuring your repository to use the new API
 
 ## Create S3 Bucket to store artifacts
@@ -94,7 +94,7 @@ variables:
 
 | Variable            | Value              |
 |--------------------|--------------------|
-| `STORAGE_PATH`     | *your_bucket_name* | 
+| `STORAGE_PATH`     | *your_bucket_name* |
 | `STORAGE_PROVIDER` | s3                 |
 | `TURBO_TOKEN`      | *your_secret_key*  |
 
@@ -102,26 +102,21 @@ variables:
 variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 for more information on configuring these.*
 
-### ARN
+### Function URL
 
-Copy your Lambda's ARN for the next step.
+Under your Lambda **Configuration**, head to **Function URL** and click on **Create function URL**.
 
-## Create an HTTP API Gateway
+Select **Auth type**: `NONE`.
 
-Go to the API Gateway service, and choose **Create**. Under **HTTP API** click
-on **Build**. 
+Open Additional settings and enable **CORS** with the following settings:
 
-Under **Integrations** click on **Add integration**. Choose **Lambda** and
-search for your Lambda's ARN. Enter an API name such as `turborepo-cache-api`.
+- Allow origin: `*`
+- Allow headers: `*`
+- Allow methods: `*`
 
-Under **Configure routes** leave the **Method** as `ANY` and change the
-**Resource path** to `$default`. Click on **Next**.
+Click on **Save**.
 
-On the **Configure stages** screen, leave the stage name as `$default` and click
-on **Next**, then on the **Review and create** screen click on **Create**.
-
-You have now created your API Gateway. Copy the **Invoke URL** and use this to
-set up your repository.
+Copy the **Function URL** and use this to set up your repository.
 
 ## Configuring your repository to use the new API
 
