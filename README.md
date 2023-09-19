@@ -18,6 +18,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
 - [Lambda](https://github.com/cvle/turborepo-cache-lambda)
+- [AWS CDK Construct](https://github.com/NimmLor/cdk-turborepo-remote-cache)
 
 ## Documentation
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
