@@ -10,6 +10,9 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   NPM_CONFIG_PROVENANCE: true
 
+permissions:
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
