@@ -27,7 +27,7 @@ We are committed to providing timely security updates and patches. When vulnerab
 We actively manage project dependencies to ensure they are up to date and include the latest security patches. We regularly review and update dependencies, following industry best practices for secure dependency management.
 
 ### Communication
-Security-related information will be shared with our project users through the Discussion section.
+Security-related information will be shared with our project users through the Security section.
 
 ### Review and Revision
 We regularly review and update our security policy to reflect changes in our project, emerging security threats, and best practices. We welcome feedback and suggestions from the community to help us improve the security of our project.
