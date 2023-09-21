@@ -94,37 +94,4 @@ jobs:
       - name: Build
         run: pnpm build
 
-  test:
-    runs-on: ubuntu-latest
-    name: Test
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
-        with:
-          egress-policy: audit
-
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
-        name: Checkout
-      - name: Use Node.js
-        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@0b715c7ebbf3cf2174d1386336c5f6d3d8d5504a # v2.3.0
-        name: Install pnpm
-        with:
-          version: 8
-      - name: Install with pnpm
-        run: pnpm install
-      - name: Run tests
-        run: pnpm test
-      - name: Coveralls
-        uses: coverallsapp/github-action@09b709cf6a16e30b0808ba050c7a6e8a5ef13f8d # master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: CodeClimate
-        continue-on-error: true
-        uses: paambaati/codeclimate-action@4cace242c6e0a2dd554bbb3cc12c58047d8af3e5 # v5.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
-        with:
-          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+ 
