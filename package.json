@@ -13,6 +13,7 @@
     "preinstall": "npx only-allow pnpm",
     "prebuild": "pnpm lint && rimraf ./dist",
     "build": "tsc -p ./tsconfig.json",
+    "build:docker": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps dist/index.js",
     "lint": "biome check src test",
     "fmt": "biome format src test",
@@ -86,6 +87,14 @@
     "node": ">=18.0.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "keywords": ["turborepo", "monorepo", "remote", "cache"],
-  "files": ["dist", "vercel.json"]
+  "keywords": [
+    "turborepo",
+    "monorepo",
+    "remote",
+    "cache"
+  ],
+  "files": [
+    "dist",
+    "vercel.json"
+  ]
 }
