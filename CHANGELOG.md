@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.15.1...v2.0.0) (2023-09-22)
+
+
+### Features
+
+* update package.json exports field ([17f9c6f](https://github.com/ducktors/turborepo-remote-cache/commit/17f9c6ff67bd30f433dcb63d73c642464d8a6344))
+* use tsx, biome and node --test ([61f018a](https://github.com/ducktors/turborepo-remote-cache/commit/61f018a10aaa6bd833b3a9055c1c596c6b00037c))
+
+
+### BREAKING CHANGES
+
+* use ES2022 and ESM as compile target
+
 ## [1.15.1](https://github.com/ducktors/turborepo-remote-cache/compare/v1.15.0...v1.15.1) (2023-09-20)
 
 
