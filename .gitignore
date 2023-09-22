@@ -63,3 +63,4 @@ junit-testresults.xml
 
 # Misc
 .DS_Store
+build
