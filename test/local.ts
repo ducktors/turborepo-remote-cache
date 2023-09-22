@@ -1,30 +1,59 @@
-import { join } from 'path'
-import dotenv from 'dotenv'
-dotenv.config({ path: join(__dirname, '.env.local') })
-import crypto from 'crypto'
-import { test } from 'tap'
-import { createApp } from '../src/app'
+import assert from 'node:assert/strict'
+import crypto from 'node:crypto'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { test } from 'node:test'
 
-test(`local'`, async (t) => {
+const testEnv = {
+  NODE_ENV: 'test',
+  PORT: 3000,
+  LOG_LEVEL: 'info',
+  LOG_MODE: 'stdout',
+  LOG_FILE: 'server.log',
+  TURBO_TOKEN: ['changeme'],
+  STORAGE_PROVIDER: 'local',
+  STORAGE_PATH: join(tmpdir(), 'turborepo-remote-cache-test'),
+}
+
+test('local storage', async (t) => {
+  /**
+   * MOCKS
+   */
+  Object.assign(process.env, testEnv)
+  const { env } = await import('../src/env.js')
+  t.mock.method(env, 'get', () => {
+    return testEnv
+  })
+  /**
+   * END MOCKS
+   */
+  const { createApp } = await import('../src/app.js')
   const artifactId = crypto.randomBytes(20).toString('hex')
   const teamId = 'superteam'
   const app = createApp({ logger: false })
   await app.ready()
 
-  t.test('should return 400 when missing authorization header', async (t2) => {
-    t2.plan(2)
-    const response = await app.inject({
-      method: 'GET',
-      url: '/v8/artifacts/not-found',
-      headers: {},
-    })
-    t2.equal(response.statusCode, 400)
-    t2.equal(response.json().message, 'Missing Authorization header')
+  await t.test('loads correct env vars', async () => {
+    assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
+    assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
   })
-  t.test(
+
+  await t.test(
+    'should return 400 when missing authorization header',
+    async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/v8/artifacts/not-found',
+        headers: {},
+      })
+      assert.equal(response.statusCode, 400)
+      assert.equal(response.json().message, 'Missing Authorization header')
+    },
+  )
+
+  await t.test(
     'should return 401 when wrong authorization token is provided',
-    async (t2) => {
-      t2.plan(2)
+    async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/not-found',
@@ -32,14 +61,14 @@ test(`local'`, async (t) => {
           authorization: 'wrong token',
         },
       })
-      t2.equal(response.statusCode, 401)
-      t2.equal(response.json().message, 'Invalid authorization token')
+      assert.equal(response.statusCode, 401)
+      assert.equal(response.json().message, 'Invalid authorization token')
     },
   )
-  t.test(
+
+  await t.test(
     'should return 400 when missing teamId query parameter',
-    async (t2) => {
-      t2.plan(2)
+    async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/not-found',
@@ -47,15 +76,15 @@ test(`local'`, async (t) => {
           authorization: 'Bearer changeme',
         },
       })
-      t2.equal(response.statusCode, 400)
-      t2.equal(
+      assert.equal(response.statusCode, 400)
+      assert.equal(
         response.json().message,
         "querystring should have required property 'teamId'",
       )
     },
   )
-  t.test('should return 404 on cache miss', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should return 404 on cache miss', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v8/artifacts/not-found',
@@ -66,11 +95,11 @@ test(`local'`, async (t) => {
         teamId: 'superteam',
       },
     })
-    t2.equal(response.statusCode, 404)
-    t2.equal(response.json().message, 'Artifact not found')
+    assert.equal(response.statusCode, 404)
+    assert.equal(response.json().message, 'Artifact not found')
   })
-  t.test('should upload an artifact', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should upload an artifact', async () => {
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -83,11 +112,11 @@ test(`local'`, async (t) => {
       },
       payload: Buffer.from('test cache data'),
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
-  t.test('should download an artifact', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should download an artifact', async () => {
     const response = await app.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -98,11 +127,11 @@ test(`local'`, async (t) => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.body, 'test cache data')
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.body, 'test cache data')
   })
-  t.test('should verify artifact exists', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should verify artifact exists', async () => {
     const response = await app.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
@@ -113,11 +142,11 @@ test(`local'`, async (t) => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.body, '')
+    assert.equal(response.statusCode, 200)
+    assert.equal(response.body, '')
   })
-  t.test('should verify artifact does not exist', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should verify artifact does not exist', async () => {
     const response = await app.inject({
       method: 'HEAD',
       url: '/v8/artifacts/not-found',
@@ -128,11 +157,11 @@ test(`local'`, async (t) => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 404)
-    t2.equal(response.json().message, 'Artifact not found')
+    assert.equal(response.statusCode, 404)
+    assert.equal(response.json().message, 'Artifact not found')
   })
-  t.test('should upload an artifact when slug is used', async (t2) => {
-    t2.plan(2)
+
+  await t.test('should upload an artifact when slug is used', async () => {
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -145,13 +174,13 @@ test(`local'`, async (t) => {
       },
       payload: Buffer.from('test cache data'),
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
-  t.test(
+
+  await t.test(
     'should return 200 when POST artifacts/events is called',
-    async (t2) => {
-      t2.plan(2)
+    async () => {
       const response = await app.inject({
         method: 'POST',
         url: '/v8/artifacts/events',
@@ -161,14 +190,14 @@ test(`local'`, async (t) => {
         },
         payload: Buffer.from('test cache data'),
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.json(), {})
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), {})
     },
   )
-  t.test(
+
+  await t.test(
     'should return 200 when GET artifacts/status is calle with auth header',
-    async (t2) => {
-      t2.plan(2)
+    async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/status',
@@ -176,20 +205,20 @@ test(`local'`, async (t) => {
           authorization: 'Bearer changeme',
         },
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.json(), { status: 'enabled' })
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), { status: 'enabled' })
     },
   )
-  t.test(
+
+  await t.test(
     'should return 200 when GET artifacts/status is calle without auth header',
-    async (t2) => {
-      t2.plan(2)
+    async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/status',
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.json(), { status: 'enabled' })
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), { status: 'enabled' })
     },
   )
 })

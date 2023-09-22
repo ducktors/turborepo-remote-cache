@@ -5,7 +5,11 @@ import type {
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
-import { type Params, type Querystring, artifactsRouteSchema } from './schema'
+import {
+  type Params,
+  type Querystring,
+  artifactsRouteSchema,
+} from './schema.js'
 
 export const getArtifact: RouteOptions<
   Server,

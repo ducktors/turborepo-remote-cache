@@ -1,17 +1,17 @@
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { STORAGE_PROVIDERS } from '../../../env'
+import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
   createAzureBlobStorage,
-} from './azure-blob-storage'
+} from './azure-blob-storage.js'
 import {
   type GoogleCloudStorageOptions as GCSOpts,
   createGoogleCloudStorage,
-} from './google-cloud-storage'
-import { type LocalOptions as LocalOpts, createLocal } from './local'
-import { type S3Options as S3Opts, createS3 } from './s3'
+} from './google-cloud-storage.js'
+import { type LocalOptions as LocalOpts, createLocal } from './local.js'
+import { type S3Options as S3Opts, createS3 } from './s3.js'
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
@@ -24,13 +24,13 @@ type AzureBlobStorageOptions = Omit<AzureBlobStorageOpts, 'bucket'> &
   LocalOptions
 
 type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
-  Provider extends STORAGE_PROVIDERS.LOCAL
+  Provider extends typeof STORAGE_PROVIDERS.LOCAL
     ? LocalOptions
-    : Provider extends STORAGE_PROVIDERS.S3
+    : Provider extends typeof STORAGE_PROVIDERS.S3
     ? S3Options
-    : Provider extends STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
+    : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
     ? AzureBlobStorageOptions
-    : Provider extends STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
+    : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
     ? GoogleCloudStorageOptions
     : never
 

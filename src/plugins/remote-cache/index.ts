@@ -1,14 +1,14 @@
 import { badRequest, unauthorized } from '@hapi/boom'
 import { FastifyInstance } from 'fastify'
-import { STORAGE_PROVIDERS } from '../../env'
+import { STORAGE_PROVIDERS } from '../../env.js'
 import {
   artifactsEvents,
   getArtifact,
   getStatus,
   headArtifact,
   putArtifact,
-} from './routes'
-import { createLocation } from './storage'
+} from './routes/index.js'
+import { createLocation } from './storage/index.js'
 
 async function turboRemoteCache(
   instance: FastifyInstance,

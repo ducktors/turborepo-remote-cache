@@ -1,5 +1,5 @@
-import { createBlobService } from 'azure-storage'
-import { StorageProvider } from './index'
+import azure from 'azure-storage'
+import { StorageProvider } from './index.js'
 
 export interface AzureBlobStorageOptions {
   containerName: string
@@ -10,7 +10,7 @@ export function createAzureBlobStorage({
   containerName,
   connectionString,
 }: AzureBlobStorageOptions): StorageProvider {
-  const blobService = createBlobService(connectionString)
+  const blobService = azure.createBlobService(connectionString)
   const emptyCb = () => null
 
   return {

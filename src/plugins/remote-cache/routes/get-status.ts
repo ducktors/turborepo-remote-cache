@@ -4,8 +4,8 @@ import type {
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
-import { type Params, type Querystring } from './schema'
-import { statusRouteSchema } from './status-schema'
+import { type Params, type Querystring } from './schema.js'
+import { statusRouteSchema } from './status-schema.js'
 
 export const getStatus: RouteOptions<
   Server,

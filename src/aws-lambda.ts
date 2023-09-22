@@ -1,5 +1,5 @@
 import awsLambdaFastify from '@fastify/aws-lambda'
-import { createApp } from './app'
+import { createApp } from './app.js'
 
 const app = createApp({
   trustProxy: true,

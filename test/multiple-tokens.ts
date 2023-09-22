@@ -1,13 +1,28 @@
-import { join } from 'path'
-import dotenv from 'dotenv'
-dotenv.config({ path: join(__dirname, '.env.multipletokens') })
-import { test } from 'tap'
-import { createApp } from '../src/app'
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
 
-test('should return array with multiple tokens', async (t) => {
-  t.plan(2)
+const testEnv = {
+  NODE_ENV: 'test',
+  PORT: 3000,
+  LOG_LEVEL: 'info',
+  LOG_MODE: 'stdout',
+  LOG_FILE: 'server.log',
+  TURBO_TOKEN: 'changeme,changeme2,changeme3',
+  STORAGE_PROVIDER: 'local',
+  STORAGE_PATH: 'turborepo-remote-cache-test',
+}
+Object.assign(process.env, testEnv)
+
+test('should run with multiple tokens', async () => {
+  const { createApp } = await import('../src/app.js')
   const app = createApp({ logger: false })
   await app.ready()
-  t.type(app.config.TURBO_TOKEN, Array)
-  t.same(app.config.TURBO_TOKEN, ['changeme', 'changeme2', 'changeme3'])
+
+  assert.equal(Array.isArray(app.config.TURBO_TOKEN), true)
+  assert.equal(app.config.TURBO_TOKEN.length, 3)
+  assert.deepEqual(app.config.TURBO_TOKEN, [
+    'changeme',
+    'changeme2',
+    'changeme3',
+  ])
 })

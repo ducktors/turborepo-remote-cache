@@ -1,5 +1,5 @@
-import { Storage } from '@google-cloud/storage'
-import { StorageProvider } from './index'
+import GCS from '@google-cloud/storage'
+import { StorageProvider } from './index.js'
 
 export interface GoogleCloudStorageOptions {
   bucket: string
@@ -10,9 +10,9 @@ export interface GoogleCloudStorageOptions {
 
 function createStorage({ clientEmail, privateKey, projectId }) {
   if (!clientEmail || !privateKey || !projectId) {
-    return new Storage()
+    return new GCS.Storage()
   } else {
-    return new Storage({
+    return new GCS.Storage({
       projectId,
       credentials: {
         client_email: clientEmail,
