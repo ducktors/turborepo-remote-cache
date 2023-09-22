@@ -2,8 +2,19 @@
   "name": "turborepo-remote-cache",
   "version": "1.15.1",
   "description": "Turborepo remote cache server",
-  "main": "./dist/index.js",
+  "main": "./dist/app.js",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/app.js",
+      "require": "./dist/app.js"
+    },
+    "./aws-lambda": {
+      "import": "./dist/aws-lambda.js",
+      "require": "./dist/aws-lambda.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "Maksim Sinik <maksim@sinik.it>",
   "license": "MIT",
   "bin": {
@@ -87,14 +98,6 @@
     "node": ">=18.0.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "keywords": [
-    "turborepo",
-    "monorepo",
-    "remote",
-    "cache"
-  ],
-  "files": [
-    "dist",
-    "vercel.json"
-  ]
+  "keywords": ["turborepo", "monorepo", "remote", "cache"],
+  "files": ["dist", "vercel.json"]
 }

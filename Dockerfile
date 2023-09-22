@@ -49,4 +49,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 
 ENTRYPOINT ["dumb-init"]
-CMD ["node", "--enable-source-maps", "build/index.js"]
+CMD ["node", "--enable-source-maps", "dist/index.js"]
