@@ -1,7 +1,15 @@
 import type { Server } from 'http'
-import type { RouteOptions, RawRequestDefaultExpression, RawReplyDefaultExpression } from 'fastify'
-import { notFound, badRequest } from '@hapi/boom'
-import { type Querystring, type Params, artifactsRouteSchema } from './schema'
+import { badRequest, notFound } from '@hapi/boom'
+import type {
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
+  RouteOptions,
+} from 'fastify'
+import {
+  type Params,
+  type Querystring,
+  artifactsRouteSchema,
+} from './schema.js'
 
 export const getArtifact: RouteOptions<
   Server,
@@ -28,7 +36,7 @@ export const getArtifact: RouteOptions<
       reply.header('Content-Type', 'application/octet-stream')
       return reply.send(artifact)
     } catch (err) {
-      throw notFound(`Artifact not found`, err)
+      throw notFound('Artifact not found', err)
     }
   },
 }

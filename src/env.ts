@@ -1,24 +1,29 @@
+import { Static, Type } from '@sinclair/typebox'
 import Ajv from 'ajv'
-import envSchema from 'env-schema'
-import { Type, Static } from '@sinclair/typebox'
+import { envSchema } from 'env-schema'
 
-enum NODE_ENVS {
-  PRODUCTION = 'production',
-  DEVELOPMENT = 'development',
-  TEST = 'test',
-}
+const NODE_ENVS = {
+  PRODUCTION: 'production',
+  DEVELOPMENT: 'development',
+  TEST: 'test',
+} as const
+type NODE_ENVS = typeof NODE_ENVS[keyof typeof NODE_ENVS]
 
-export enum STORAGE_PROVIDERS {
-  LOCAL = 'local',
-  S3 = 'S3',
-  s3 = 's3',
-  GOOGLE_CLOUD_STORAGE = 'google-cloud-storage',
-  AZURE_BLOB_STORAGE = 'azure-blob-storage',
-}
+export const STORAGE_PROVIDERS = {
+  LOCAL: 'local',
+  S3: 'S3',
+  s3: 's3',
+  GOOGLE_CLOUD_STORAGE: 'google-cloud-storage',
+  AZURE_BLOB_STORAGE: 'azure-blob-storage',
+} as const
+export type STORAGE_PROVIDERS =
+  typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
 
 const schema = Type.Object(
   {
-    NODE_ENV: Type.Optional(Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION })),
+    NODE_ENV: Type.Optional(
+      Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION }),
+    ),
     TURBO_TOKEN: Type.String({ separator: ',' }),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
@@ -53,8 +58,9 @@ const schema = Type.Object(
     additionalProperties: false,
   },
 )
-export const env = envSchema<Static<typeof schema>>({
-  ajv: new Ajv({
+const _env = envSchema<Static<typeof schema>>({
+  // we call the default method because Ajv provides wrong types. ref https://github.com/ajv-validator/ajv/issues/2132
+  ajv: new Ajv.default({
     removeAdditional: true,
     useDefaults: true,
     coerceTypes: true,
@@ -63,3 +69,10 @@ export const env = envSchema<Static<typeof schema>>({
   dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT ? true : false,
   schema,
 })
+
+// we export an object so we can mock the env value while testing. In fact exported vars in are not mockable in ESM
+export const env = {
+  get() {
+    return _env
+  },
+}

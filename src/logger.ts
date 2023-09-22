@@ -1,5 +1,5 @@
 import Pino from 'pino'
-import { env } from './env'
+import { env as _env } from './env.js'
 
 const PinoLevelToSeverityLookup = {
   trace: 'DEBUG',
@@ -11,6 +11,8 @@ const PinoLevelToSeverityLookup = {
 } as const
 
 let logDestination
+
+const env = _env.get()
 
 if (env.LOG_MODE === 'file') {
   logDestination = Pino.destination(env.LOG_FILE)
@@ -28,7 +30,8 @@ export const logger = Pino(
     formatters: {
       level(label, number) {
         return {
-          severity: PinoLevelToSeverityLookup[label] || PinoLevelToSeverityLookup['info'],
+          severity:
+            PinoLevelToSeverityLookup[label] || PinoLevelToSeverityLookup.info,
           level: number,
         }
       },

@@ -18,7 +18,7 @@ RUN pnpm --ignore-scripts --frozen-lockfile install
 COPY . $HOME/node/
 
 # compile typescript and build all production stuff
-RUN pnpm build
+RUN pnpm build:docker
 
 # remove dev dependencies and files that are not needed in production
 RUN rm -rf node_modules
@@ -49,4 +49,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 
 ENTRYPOINT ["dumb-init"]
-CMD ["node", "--enable-source-maps", "build/index.js"]
+CMD ["node", "--enable-source-maps", "dist/index.js"]

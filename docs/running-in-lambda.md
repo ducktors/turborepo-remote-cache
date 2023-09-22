@@ -72,7 +72,7 @@ Create a new package for your Lambda handler, and add `turborepo-remote-cache`
 as a dependency. Your `index.js` handler code should look like this:
 
 ```js
-export { handler } from 'turborepo-remote-cache/build/aws-lambda';
+export { handler } from 'turborepo-remote-cache/aws-lambda';
 ```
 
 *Note - You will need to bundle dependencies and upload the handler code. How
@@ -80,7 +80,7 @@ you choose to do this is outside the scope of this guide, but one method to
 consider is using `esbuild`:*
 
 ```
-esbuild src/index.js --bundle --platform=node --outfile=build/index.js
+esbuild src/index.js --bundle --platform=node --outfile=dist/index.js
 ```
 
 ### Configuration

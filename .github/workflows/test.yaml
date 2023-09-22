@@ -30,8 +30,8 @@ jobs:
           version: 8
       - name: Install with pnpm
         run: pnpm install
-      - name: Run tests
-        run: pnpm test
+      - name: Run tests with coverage
+        run: pnpm test:coverage
       - name: Coveralls
         uses: coverallsapp/github-action@09b709cf6a16e30b0808ba050c7a6e8a5ef13f8d # master
         with:

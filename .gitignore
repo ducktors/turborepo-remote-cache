@@ -55,7 +55,7 @@ jspm_packages
 .env
 
 # Compiled app
-build
+dist
 
 # TAP files
 out.tap
@@ -63,3 +63,4 @@ junit-testresults.xml
 
 # Misc
 .DS_Store
+build

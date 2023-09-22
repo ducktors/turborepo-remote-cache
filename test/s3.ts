@@ -1,66 +1,104 @@
-import { join } from 'path'
-import dotenv from 'dotenv'
-dotenv.config({ path: join(__dirname, '.env.s3') })
-import crypto from 'crypto'
-import { test } from 'tap'
+import assert from 'node:assert/strict'
+import crypto from 'node:crypto'
+import { tmpdir } from 'node:os'
+import { test } from 'node:test'
 import S3erver from 's3rver'
-import { tmpdir } from 'os'
-import { createApp } from '../src/app'
+
+const testEnv = {
+  NODE_ENV: 'test',
+  PORT: 3000,
+  LOG_LEVEL: 'info',
+  LOG_MODE: 'stdout',
+  LOG_FILE: 'server.log',
+  TURBO_TOKEN: ['changeme'],
+  STORAGE_PROVIDER: 's3',
+  STORAGE_PATH: 'turborepo-remote-cache-test',
+  AWS_ACCESS_KEY_ID: 'S3RVER',
+  AWS_SECRET_ACCESS_KEY: 'S3RVER',
+  AWS_REGION: '',
+  S3_ENDPOINT: 'http://localhost:4568',
+}
+Object.assign(process.env, testEnv)
 
 const server = new S3erver({
   directory: tmpdir(),
   silent: true,
   configureBuckets: [
     {
-      name: process.env.STORAGE_PATH as string,
+      name: process.env.STORAGE_PATH,
     },
   ],
 })
 
-server.run(err => {
-  if (err) throw err
-  test(`s3'`, async t => {
+server.run((err) => {
+  assert.equal(err, null)
+  test('Amazon S3', async (t) => {
     const artifactId = crypto.randomBytes(20).toString('hex')
     const teamId = 'superteam'
+
+    const { createApp } = await import('../src/app.js')
     const app = createApp({ logger: false })
     await app.ready()
 
-    t.test('should return 400 when missing authorization header', async t2 => {
-      t2.plan(2)
-      const response = await app.inject({
-        method: 'GET',
-        url: '/v8/artifacts/not-found',
-        headers: {},
-      })
-      t2.equal(response.statusCode, 400)
-      t2.equal(response.json().message, 'Missing Authorization header')
+    await t.test('loads correct env vars', async () => {
+      assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
+      assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
+      assert.equal(app.config.AWS_ACCESS_KEY_ID, testEnv.AWS_ACCESS_KEY_ID)
+      assert.equal(
+        app.config.AWS_SECRET_ACCESS_KEY,
+        testEnv.AWS_SECRET_ACCESS_KEY,
+      )
+      assert.equal(app.config.AWS_REGION, testEnv.AWS_REGION)
+      assert.equal(app.config.S3_ENDPOINT, testEnv.S3_ENDPOINT)
     })
-    t.test('should return 401 when wrong authorization token is provided', async t2 => {
-      t2.plan(2)
-      const response = await app.inject({
-        method: 'GET',
-        url: '/v8/artifacts/not-found',
-        headers: {
-          authorization: 'wrong token',
-        },
-      })
-      t2.equal(response.statusCode, 401)
-      t2.equal(response.json().message, 'Invalid authorization token')
-    })
-    t.test('should return 400 when missing teamId query parameter', async t2 => {
-      t2.plan(2)
-      const response = await app.inject({
-        method: 'GET',
-        url: '/v8/artifacts/not-found',
-        headers: {
-          authorization: 'Bearer changeme',
-        },
-      })
-      t2.equal(response.statusCode, 400)
-      t2.equal(response.json().message, "querystring should have required property 'teamId'")
-    })
-    t.test('should return 404 on cache miss', async t2 => {
-      t2.plan(2)
+
+    await t.test(
+      'should return 400 when missing authorization header',
+      async () => {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/v8/artifacts/not-found',
+          headers: {},
+        })
+        assert.equal(response.statusCode, 400)
+        assert.equal(response.json().message, 'Missing Authorization header')
+      },
+    )
+
+    await t.test(
+      'should return 401 when wrong authorization token is provided',
+      async () => {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/v8/artifacts/not-found',
+          headers: {
+            authorization: 'wrong token',
+          },
+        })
+        assert.equal(response.statusCode, 401)
+        assert.equal(response.json().message, 'Invalid authorization token')
+      },
+    )
+
+    await t.test(
+      'should return 400 when missing teamId query parameter',
+      async () => {
+        const response = await app.inject({
+          method: 'GET',
+          url: '/v8/artifacts/not-found',
+          headers: {
+            authorization: 'Bearer changeme',
+          },
+        })
+        assert.equal(response.statusCode, 400)
+        assert.equal(
+          response.json().message,
+          "querystring should have required property 'teamId'",
+        )
+      },
+    )
+
+    await t.test('should return 404 on cache miss', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/not-found',
@@ -71,11 +109,11 @@ server.run(err => {
           teamId: 'superteam',
         },
       })
-      t2.equal(response.statusCode, 404)
-      t2.equal(response.json().message, 'Artifact not found')
+      assert.equal(response.statusCode, 404)
+      assert.equal(response.json().message, 'Artifact not found')
     })
-    t.test('should upload an artifact', async t2 => {
-      t2.plan(2)
+
+    await t.test('should upload an artifact', async () => {
       const response = await app.inject({
         method: 'PUT',
         url: `/v8/artifacts/${artifactId}`,
@@ -88,11 +126,11 @@ server.run(err => {
         },
         payload: Buffer.from('test cache data'),
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
     })
-    t.test('should download an artifact', async t2 => {
-      t2.plan(2)
+
+    await t.test('should download an artifact', async () => {
       const response = await app.inject({
         method: 'GET',
         url: `/v8/artifacts/${artifactId}`,
@@ -103,11 +141,11 @@ server.run(err => {
           teamId,
         },
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.body, 'test cache data')
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.body, 'test cache data')
     })
-    t.test('should verify artifact exists', async t2 => {
-      t2.plan(2)
+
+    await t.test('should verify artifact exists', async () => {
       const response = await app.inject({
         method: 'HEAD',
         url: `/v8/artifacts/${artifactId}`,
@@ -118,14 +156,14 @@ server.run(err => {
           teamId,
         },
       })
-      t2.equal(response.statusCode, 200)
-      t2.same(response.body, '')
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.body, '')
     })
-    t.test('should verify artifact does not exist', async t2 => {
-      t2.plan(2)
+
+    await t.test('should verify artifact does not exist', async () => {
       const response = await app.inject({
         method: 'HEAD',
-        url: `/v8/artifacts/not-found`,
+        url: '/v8/artifacts/not-found',
         headers: {
           authorization: 'Bearer changeme',
         },
@@ -133,11 +171,11 @@ server.run(err => {
           teamId,
         },
       })
-      t2.equal(response.statusCode, 404)
-      t2.equal(response.json().message, 'Artifact not found')
+      assert.equal(response.statusCode, 404)
+      assert.equal(response.json().message, 'Artifact not found')
     })
 
-    t.teardown(() => {
+    t.after(() => {
       server.close()
     })
   })

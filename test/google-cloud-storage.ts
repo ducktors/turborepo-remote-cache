@@ -1,90 +1,135 @@
-import { join } from 'path'
-import dotenv from 'dotenv'
-dotenv.config({ path: join(__dirname, '.env.google-cloud-storage') })
-import crypto from 'crypto'
-import tap from 'tap'
-import fs from 'fs'
+import assert from 'node:assert/strict'
+import crypto from 'node:crypto'
+import fs from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { test } from 'node:test'
 import fsbs from 'fs-blob-store'
-import { tmpdir } from 'os'
 
-class GCSMockBucket {
-  path: string
-
-  constructor(bucket: string) {
-    this.path = join(tmpdir(), bucket)
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path)
+class GCSMock {
+  bucket(bucket: string) {
+    const path = join(tmpdir(), bucket)
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path)
     }
-  }
 
-  file(filePath: string) {
-    const store = fsbs(this.path)
     return {
-      exists: cb => {
-        return store.exists(filePath, cb)
-      },
-      createReadStream() {
-        return store.createReadStream(filePath)
-      },
-      createWriteStream() {
-        return store.createWriteStream(filePath)
+      file: (filePath: string) => {
+        const store = fsbs(path)
+        return {
+          exists: (cb) => {
+            return store.exists(filePath, cb)
+          },
+          createReadStream() {
+            return store.createReadStream(filePath)
+          },
+          createWriteStream() {
+            return store.createWriteStream(filePath)
+          },
+        }
       },
     }
   }
 }
+const commonTestEnv = {
+  NODE_ENV: 'test',
+  PORT: 3000,
+  LOG_LEVEL: 'info',
+  LOG_MODE: 'stdout',
+  LOG_FILE: 'server.log',
+  TURBO_TOKEN: ['changeme'],
+  STORAGE_PROVIDER: 'google-cloud-storage',
+  STORAGE_PATH: 'turborepo-remote-cache-test',
+}
 
-const mockApp = tap.mock('../src/app', {
-  '@google-cloud/storage': {
-    Storage: class MockStorage {
-      bucket(name: string) {
-        return new GCSMockBucket(name)
-      }
-    },
-  },
-})
+test('Google Cloud Storage', async (t) => {
+  /**
+   * MOCKS
+   */
+  const testEnv = {
+    ...commonTestEnv,
+    GCS_PROJECT_ID: 'some-storage',
+    GCS_CLIENT_EMAIL: 'service-account@some-storage.iam.gserviceaccount.com',
+    GCS_PRIVATE_KEY:
+      '-----BEGIN PRIVATE KEY-----\nFooBarKey\n-----END PRIVATE KEY-----\n',
+  }
+  Object.assign(process.env, testEnv)
+  const { env } = await import('../src/env.js')
+  t.mock.method(env, 'get', () => {
+    return testEnv
+  })
+  const { default: GCS } = await import('@google-cloud/storage')
+  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
+    return GCSMock
+  })
+  /**
+   * END MOCKS
+   */
 
-tap.test('Google Cloud Storage', async t => {
   const artifactId = crypto.randomBytes(20).toString('hex')
   const teamId = 'superteam'
-  const app = mockApp.createApp({ logger: false })
+
+  const { createApp } = await import('../src/app.js')
+
+  const app = createApp({ logger: false })
   await app.ready()
 
-  t.test('should return 400 when missing authorization header', async t2 => {
-    t2.plan(2)
-    const response = await app.inject({
-      method: 'GET',
-      url: '/v8/artifacts/not-found',
-      headers: {},
-    })
-    t2.equal(response.statusCode, 400)
-    t2.equal(response.json().message, 'Missing Authorization header')
+  await t.test('loads correct env vars', async () => {
+    assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
+    assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
+    assert.equal(app.config.GCS_PROJECT_ID, testEnv.GCS_PROJECT_ID)
+    assert.equal(app.config.GCS_CLIENT_EMAIL, testEnv.GCS_CLIENT_EMAIL)
+    assert.equal(app.config.GCS_PRIVATE_KEY, testEnv.GCS_PRIVATE_KEY)
   })
-  t.test('should return 401 when wrong authorization token is provided', async t2 => {
-    t2.plan(2)
-    const response = await app.inject({
-      method: 'GET',
-      url: '/v8/artifacts/not-found',
-      headers: {
-        authorization: 'wrong token',
-      },
-    })
-    t2.equal(response.statusCode, 401)
-    t2.equal(response.json().message, 'Invalid authorization token')
+
+  await t.test('creates a GCS storage instance', async () => {
+    assert.equal(mockedGCS.mock.calls.length, 1)
   })
-  t.test('should return 400 when missing teamId query parameter', async t2 => {
-    t2.plan(2)
-    const response = await app.inject({
-      method: 'GET',
-      url: '/v8/artifacts/not-found',
-      headers: {
-        authorization: 'Bearer changeme',
-      },
-    })
-    t2.equal(response.statusCode, 400)
-    t2.equal(response.json().message, "querystring should have required property 'teamId'")
-  })
-  t.test('should return 404 on cache miss', async t2 => {
-    t2.plan(2)
+
+  await t.test(
+    'should return 400 when missing authorization header',
+    async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/v8/artifacts/not-found',
+        headers: {},
+      })
+      assert.equal(response.statusCode, 400)
+      assert.equal(response.json().message, 'Missing Authorization header')
+    },
+  )
+  await t.test(
+    'should return 401 when wrong authorization token is provided',
+    async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/v8/artifacts/not-found',
+        headers: {
+          authorization: 'wrong token',
+        },
+      })
+      assert.equal(response.statusCode, 401)
+      assert.equal(response.json().message, 'Invalid authorization token')
+    },
+  )
+  await t.test(
+    'should return 400 when missing teamId query parameter',
+    async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/v8/artifacts/not-found',
+        headers: {
+          authorization: 'Bearer changeme',
+        },
+      })
+      assert.equal(response.statusCode, 400)
+      assert.equal(
+        response.json().message,
+        "querystring should have required property 'teamId'",
+      )
+    },
+  )
+  await t.test('should return 404 on cache miss', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v8/artifacts/not-found',
@@ -95,11 +140,10 @@ tap.test('Google Cloud Storage', async t => {
         teamId: 'superteam',
       },
     })
-    t2.equal(response.statusCode, 404)
-    t2.equal(response.json().message, 'Artifact not found')
+    assert.equal(response.statusCode, 404)
+    assert.equal(response.json().message, 'Artifact not found')
   })
-  t.test('should upload an artifact', async t2 => {
-    t2.plan(2)
+  await t.test('should upload an artifact', async () => {
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -112,11 +156,10 @@ tap.test('Google Cloud Storage', async t => {
       },
       payload: Buffer.from('test cache data'),
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
-  t.test('should download an artifact', async t2 => {
-    t2.plan(2)
+  await t.test('should download an artifact', async () => {
     const response = await app.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -127,11 +170,10 @@ tap.test('Google Cloud Storage', async t => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.body, 'test cache data')
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.body, 'test cache data')
   })
-  t.test('should verify artifact exists', async t2 => {
-    t2.plan(2)
+  await t.test('should verify artifact exists', async () => {
     const response = await app.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
@@ -142,14 +184,13 @@ tap.test('Google Cloud Storage', async t => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.body, '')
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.body, '')
   })
-  t.test('should verify artifact does not exist', async t2 => {
-    t2.plan(2)
+  await t.test('should verify artifact does not exist', async () => {
     const response = await app.inject({
       method: 'HEAD',
-      url: `/v8/artifacts/not-found`,
+      url: '/v8/artifacts/not-found',
       headers: {
         authorization: 'Bearer changeme',
       },
@@ -157,11 +198,10 @@ tap.test('Google Cloud Storage', async t => {
         teamId,
       },
     })
-    t2.equal(response.statusCode, 404)
-    t2.equal(response.json().message, 'Artifact not found')
+    assert.equal(response.statusCode, 404)
+    assert.equal(response.json().message, 'Artifact not found')
   })
-  t.test('should upload an artifact when slug is used', async t2 => {
-    t2.plan(2)
+  await t.test('should upload an artifact when slug is used', async () => {
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -174,45 +214,70 @@ tap.test('Google Cloud Storage', async t => {
       },
       payload: Buffer.from('test cache data'),
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
-  t.test('should return 200 when POST artifacts/events is called', async t2 => {
-    t2.plan(2)
-    const response = await app.inject({
-      method: 'POST',
-      url: `/v8/artifacts/events`,
-      headers: {
-        authorization: 'Bearer changeme',
-        'content-type': 'application/octet-stream',
-      },
-      payload: Buffer.from('test cache data'),
-    })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), {})
-  })
-})
-
-dotenv.config({ path: join(__dirname, '.env.google-cloud-storage.adc'), override: true })
-const mockAppADC = tap.mock('../src/app', {
-  '@google-cloud/storage': {
-    Storage: class MockStorage {
-      bucket(name: string) {
-        return new GCSMockBucket(name)
-      }
+  await t.test(
+    'should return 200 when POST artifacts/events is called',
+    async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/v8/artifacts/events',
+        headers: {
+          authorization: 'Bearer changeme',
+          'content-type': 'application/octet-stream',
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), {})
     },
-  },
+  )
 })
 
-tap.test('Google Cloud Storage', async t => {
+test('Google Cloud Storage ADC', async (t) => {
+  const testEnv = {
+    ...commonTestEnv,
+    GCS_PROJECT_ID: '',
+    GCS_CLIENT_EMAIL: '',
+    GCS_PRIVATE_KEY: '',
+  }
+  Object.assign(process.env, testEnv)
+  /**
+   * MOCKS
+   */
+  const { default: GCS } = await import('@google-cloud/storage')
+  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
+    return GCSMock
+  })
+  const { env } = await import('../src/env.js')
+  t.mock.method(env, 'get', () => {
+    return testEnv
+  })
+  /**
+   * END MOCKS
+   */
+
   const artifactId = crypto.randomBytes(20).toString('hex')
-  const teamId = 'superteam'
-  const app = mockAppADC.createApp({ logger: false })
+  const teamId = 'superteam2'
+
+  const { createApp } = await import('../src/app.js')
+  const app = createApp({ logger: false })
   await app.ready()
 
-  t.test('should upload an artifact when using ADC credentials', async t2 => {
-    t2.plan(2)
+  await t.test('loads correct env vars', async () => {
+    assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
+    assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
+    assert.equal(app.config.GCS_PROJECT_ID, testEnv.GCS_PROJECT_ID)
+    assert.equal(app.config.GCS_CLIENT_EMAIL, testEnv.GCS_CLIENT_EMAIL)
+    assert.equal(app.config.GCS_PRIVATE_KEY, testEnv.GCS_PRIVATE_KEY)
+  })
 
+  await t.test('creates a GCS storage instance', async () => {
+    assert.equal(mockedGCS.mock.calls.length, 1)
+  })
+
+  await t.test('uploads an artifact', async () => {
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -225,7 +290,7 @@ tap.test('Google Cloud Storage', async t => {
       },
       payload: Buffer.from('test cache data'),
     })
-    t2.equal(response.statusCode, 200)
-    t2.same(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.equal(response.statusCode, 200)
+    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
   })
 })

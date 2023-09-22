@@ -1,17 +1,17 @@
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { STORAGE_PROVIDERS } from '../../../env'
-import { createS3, type S3Options as S3Opts } from './s3'
-import { createLocal, type LocalOptions as LocalOpts } from './local'
+import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
-  createGoogleCloudStorage,
-  type GoogleCloudStorageOptions as GCSOpts,
-} from './google-cloud-storage'
-import {
-  createAzureBlobStorage,
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
-} from './azure-blob-storage'
+  createAzureBlobStorage,
+} from './azure-blob-storage.js'
+import {
+  type GoogleCloudStorageOptions as GCSOpts,
+  createGoogleCloudStorage,
+} from './google-cloud-storage.js'
+import { type LocalOptions as LocalOpts, createLocal } from './local.js'
+import { type S3Options as S3Opts, createS3 } from './s3.js'
 
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
@@ -20,21 +20,26 @@ const TURBO_CACHE_USE_TMP_FOLDER = true as const
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
 type GoogleCloudStorageOptions = Omit<GCSOpts, 'bucket'> & LocalOptions
-type AzureBlobStorageOptions = Omit<AzureBlobStorageOpts, 'bucket'> & LocalOptions
+type AzureBlobStorageOptions = Omit<AzureBlobStorageOpts, 'bucket'> &
+  LocalOptions
 
-type ProviderOptions<Provider extends STORAGE_PROVIDERS> = Provider extends STORAGE_PROVIDERS.LOCAL
-  ? LocalOptions
-  : Provider extends STORAGE_PROVIDERS.S3
-  ? S3Options
-  : Provider extends STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
-  ? AzureBlobStorageOptions
-  : Provider extends STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
-  ? GoogleCloudStorageOptions
-  : never
+type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
+  Provider extends typeof STORAGE_PROVIDERS.LOCAL
+    ? LocalOptions
+    : Provider extends typeof STORAGE_PROVIDERS.S3
+    ? S3Options
+    : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
+    ? AzureBlobStorageOptions
+    : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
+    ? GoogleCloudStorageOptions
+    : never
 
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {
-  exists: (artifactPath: string, cb: (err: Error | null, exists?: boolean) => void) => void
+  exists: (
+    artifactPath: string,
+    cb: (err: Error | null, exists?: boolean) => void,
+  ) => void
   createReadStream: (artifactPath: string) => NodeJS.ReadStream
   createWriteStream: (artifactPath: string) => NodeJS.WritableStream
 }
@@ -43,7 +48,10 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
   provider: Provider,
   providerOptions: ProviderOptions<Provider>,
 ): StorageProvider {
-  const { path = TURBO_CACHE_FOLDER_NAME, useTmp = TURBO_CACHE_USE_TMP_FOLDER } = providerOptions
+  const {
+    path = TURBO_CACHE_FOLDER_NAME,
+    useTmp = TURBO_CACHE_USE_TMP_FOLDER,
+  } = providerOptions
 
   switch (provider) {
     case STORAGE_PROVIDERS.LOCAL: {
@@ -51,12 +59,19 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
     }
     case STORAGE_PROVIDERS.S3:
     case STORAGE_PROVIDERS.s3: {
-      const { accessKey, secretKey, region, endpoint } = providerOptions as S3Options
+      const { accessKey, secretKey, region, endpoint } =
+        providerOptions as S3Options
       return createS3({ accessKey, secretKey, bucket: path, region, endpoint })
     }
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
-      const { clientEmail, privateKey, projectId } = providerOptions as GoogleCloudStorageOptions
-      return createGoogleCloudStorage({ bucket: path, clientEmail, privateKey, projectId })
+      const { clientEmail, privateKey, projectId } =
+        providerOptions as GoogleCloudStorageOptions
+      return createGoogleCloudStorage({
+        bucket: path,
+        clientEmail,
+        privateKey,
+        projectId,
+      })
     }
     case STORAGE_PROVIDERS.AZURE_BLOB_STORAGE: {
       const { connectionString } = providerOptions as AzureBlobStorageOptions
@@ -107,8 +122,15 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     })
   }
 
-  async function createCachedArtifact(artifactId: string, teamId: string, artifact: Readable) {
-    return pipeline(artifact, location.createWriteStream(join(teamId, artifactId)))
+  async function createCachedArtifact(
+    artifactId: string,
+    teamId: string,
+    artifact: Readable,
+  ) {
+    return pipeline(
+      artifact,
+      location.createWriteStream(join(teamId, artifactId)),
+    )
   }
 
   return {
@@ -121,9 +143,13 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 declare module 'fastify' {
   interface FastifyInstance {
     location: {
-      existsCachedArtifact: ReturnType<typeof createLocation>['existsCachedArtifact']
+      existsCachedArtifact: ReturnType<
+        typeof createLocation
+      >['existsCachedArtifact']
       getCachedArtifact: ReturnType<typeof createLocation>['getCachedArtifact']
-      createCachedArtifact: ReturnType<typeof createLocation>['createCachedArtifact']
+      createCachedArtifact: ReturnType<
+        typeof createLocation
+      >['createCachedArtifact']
     }
   }
 }

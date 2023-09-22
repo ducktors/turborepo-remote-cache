@@ -23,10 +23,16 @@ jobs:
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@d882d12c64e032187b2edb46d3a0d003b7a43598 # v2.4.0
+        name: Install pnpm
+        with:
+          version: 8
+      - name: Install with pnpm
+        run: pnpm install --frozen-lockfile
       - name: Check commit message
         uses: wagoid/commitlint-github-action@6319f54d83768b60acd6fd60e61007ccc583e62f # v5.4.3
         with:
-          configFile: commitlint.config.js
+          configFile: commitlint.config.cjs
           failOnWarnings: false
           helpURL: https://github.com/ducktors/turborepo-remote-cache#how-to-commit
 
@@ -93,5 +99,3 @@ jobs:
         run: pnpm lint
       - name: Build
         run: pnpm build
-
- 

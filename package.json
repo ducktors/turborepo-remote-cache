@@ -2,25 +2,38 @@
   "name": "turborepo-remote-cache",
   "version": "1.15.1",
   "description": "Turborepo remote cache server",
-  "main": "build",
+  "main": "./dist/app.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/app.js",
+      "require": "./dist/app.js"
+    },
+    "./aws-lambda": {
+      "import": "./dist/aws-lambda.js",
+      "require": "./dist/aws-lambda.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "Maksim Sinik <maksim@sinik.it>",
   "license": "MIT",
   "bin": {
-    "turborepo-remote-cache": "./build/cli.js"
+    "turborepo-remote-cache": "./dist/cli.js"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "prebuild": "pnpm lint && rimraf ./build",
+    "prebuild": "pnpm lint && rimraf ./dist",
     "build": "tsc -p ./tsconfig.json",
-    "start": "node --enable-source-maps build/index.js",
-    "lint": "eslint --ext .ts --no-error-on-unmatched-pattern \"src/**/*.ts\" \"test/**/*.ts\"",
-    "dev": "tsup --watch --onSuccess \"run-p dev:start check:types\"",
-    "dev:start": "node --inspect -r @cspotcode/source-map-support/register -r dotenv/config build/index.js",
+    "build:docker": "tsc -p ./tsconfig.json",
+    "start": "node --enable-source-maps dist/index.js",
+    "lint": "biome check src test",
+    "fmt": "biome format src test",
+    "dev": "run-p dev:start check:types",
+    "dev:start": "tsx watch --inspect --env-file=.env src/index.ts",
     "check:types": "tsc -p ./tsconfig.json --noEmit",
-    "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --ts",
-    "posttest": "tap --coverage-report=lcov --no-browser",
-    "test:watch": "pnpm test -- --watch",
-    "test:report": "pnpm test -- --output-file=out.tap && tap-mocha-reporter xunit < out.tap > junit-testresults.xml",
+    "test": "tsx --test ./test/*.ts",
+    "test:watch": "tsx --watch --test ./test/*.ts",
+    "test:coverage": "c8 --all --src src --reporter lcov --reporter text tsx --test ./test/*.ts",
     "commitlint": "commitlint",
     "semantic-release": "semantic-release",
     "commit": "npx git-cz",
@@ -46,69 +59,45 @@
     "fastify-plugin": "4.5.0",
     "fs-blob-store": "6.0.0",
     "hyperid": "3.1.1",
-    "make-promises-safe": "5.1.0",
     "pino": "6.13.3",
     "pino-pretty": "9.1.1",
-    "s3-blob-store": "4.1.1",
-    "tslib": "2.5.0"
+    "s3-blob-store": "4.1.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.2.2",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@commitlint/lint": "^17.7.0",
     "@commitlint/prompt": "^17.7.1",
-    "@cspotcode/source-map-support": "^0.8.1",
+    "@ducktors/tsconfig": "^1.0.0",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/commit-analyzer": "^11.0.0",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.1.0",
-    "@semantic-release/npm": "^9.0.1",
-    "@semantic-release/release-notes-generator": "^10.0.3",
-    "@types/node": "^18.17.9",
-    "@types/tap": "^15.0.5",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "commitizen": "^4.2.5",
+    "@semantic-release/github": "^9.0.6",
+    "@semantic-release/npm": "^11.0.0",
+    "@semantic-release/release-notes-generator": "^12.0.0",
+    "@types/node": "^20.6.3",
+    "c8": "^8.0.1",
+    "commitizen": "^4.3.0",
     "commitlint-config-cz": "^0.13.3",
-    "commitlint-plugin-function-rules": "^1.7.1",
-    "coveralls": "^3.1.1",
-    "cross-env": "^7.0.3",
+    "commitlint-plugin-function-rules": "^2.0.2",
     "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^16.3.1",
-    "esbuild": "^0.17.19",
-    "eslint": "^8.47.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "fastify-tsconfig": "^2.0.0",
     "husky": "^8.0.3",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.8",
-    "rimraf": "^4.4.1",
+    "rimraf": "^4.1.2",
     "s3rver": "^3.7.1",
-    "semantic-release": "^20.1.3",
-    "tap": "^16.3.8",
-    "ts-node": "^10.4.0",
-    "tsup": "^6.7.0",
-    "typescript": "^4.5.4"
+    "semantic-release": "^22.0.1",
+    "tsx": "^3.12.10",
+    "typescript": "^5.2.2"
   },
   "bugs": {
     "url": "https://github.com/ducktors/turborepo-remote-cache/issues"
   },
   "homepage": "https://github.com/ducktors/turborepo-remote-cache#readme",
-  "directories": {
-    "test": "test"
-  },
   "engines": {
-    "node": ">=16.20"
+    "node": ">=18.0.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "keywords": [
-    "turborepo",
-    "monorepo",
-    "remote",
-    "cache"
-  ],
-  "files": [
-    "build",
-    "vercel.json"
-  ]
+  "keywords": ["turborepo", "monorepo", "remote", "cache"],
+  "files": ["dist", "vercel.json"]
 }
