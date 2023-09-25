@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.0...v2.0.1) (2023-09-25)
+
+
+### Bug Fixes
+
+* update Vercel function handler ([8f9d5bb](https://github.com/ducktors/turborepo-remote-cache/commit/8f9d5bb1bca9c583fa7d698148e0f96bd81cc2b1))
+
 # [2.0.0](https://github.com/ducktors/turborepo-remote-cache/compare/v1.15.1...v2.0.0) (2023-09-22)
 
 
