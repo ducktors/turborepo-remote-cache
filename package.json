@@ -49,7 +49,6 @@
     "@google-cloud/storage": "6.9.2",
     "@hapi/boom": "10.0.0",
     "@sinclair/typebox": "0.25.21",
-    "@vercel/node": "1.12.1",
     "ajv": "8.12.0",
     "aws-sdk": "2.1310.0",
     "azure-storage": "^2.10.7",
@@ -98,14 +97,6 @@
     "node": ">=18.0.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "keywords": [
-    "turborepo",
-    "monorepo",
-    "remote",
-    "cache"
-  ],
-  "files": [
-    "dist",
-    "vercel.json"
-  ]
+  "keywords": ["turborepo", "monorepo", "remote", "cache"],
+  "files": ["api", "dist", "vercel.json"]
 }
