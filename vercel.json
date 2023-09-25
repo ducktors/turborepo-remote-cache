@@ -1,15 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "./src/vercel.ts",
-      "use": "@vercel/node"
-    }
-  ],
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/src/vercel.ts"
+      "destination": "/api/vercel.js"
     }
   ]
 }
