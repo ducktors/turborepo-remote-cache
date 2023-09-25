@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
@@ -97,6 +97,15 @@
     "node": ">=18.0.0"
   },
   "packageManager": "pnpm@8.6.3",
-  "keywords": ["turborepo", "monorepo", "remote", "cache"],
-  "files": ["api", "dist", "vercel.json"]
+  "keywords": [
+    "turborepo",
+    "monorepo",
+    "remote",
+    "cache"
+  ],
+  "files": [
+    "api",
+    "dist",
+    "vercel.json"
+  ]
 }
