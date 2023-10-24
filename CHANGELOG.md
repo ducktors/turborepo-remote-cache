@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.2...v2.0.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* **docker:** bump node from 18.18.1-alpine3.17 to 18.18.2-alpine3.17 ([e993fdf](https://github.com/ducktors/turborepo-remote-cache/commit/e993fdf79545ee0a3cdceab9886cc8de8a5635b2))
+
 ## [2.0.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.1...v2.0.2) (2023-10-13)
 
 
