@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM} node:18.18.1-alpine3.17@sha256:01aeb04977ab8b8894f34cd26a61eaab54fb11c3295b29428c7968b900394fd5 as build
+FROM --platform=${TARGETPLATFORM} node:21.0.0-alpine3.17@sha256:6abd1eabeba303403a2ffbbbd104e21b01d37b1e39faecabac32211b595402cb as build
 
 # set app basepath
 ENV HOME=/home/app
@@ -26,7 +26,7 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 RUN rm -rf $PROJECT_WORKDIR/.pnpm-store
 
 # start new image for lower size
-FROM --platform=${TARGETPLATFORM} node:18.18.1-alpine3.17@sha256:01aeb04977ab8b8894f34cd26a61eaab54fb11c3295b29428c7968b900394fd5
+FROM --platform=${TARGETPLATFORM} node:21.0.0-alpine3.17@sha256:6abd1eabeba303403a2ffbbbd104e21b01d37b1e39faecabac32211b595402cb
 
 # dumb-init registers signal handlers for every signal that can be caught
 RUN apk update && apk add --no-cache dumb-init
