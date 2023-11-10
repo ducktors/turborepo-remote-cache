@@ -73,7 +73,9 @@ async function turboRemoteCache(
 
       i.route(getArtifact)
       i.route(headArtifact)
-      i.route(putArtifact)
+      if (!instance.config.READ_ONLY_MODE) {
+        i.route(putArtifact);
+      }
       i.route(artifactsEvents)
     },
     { prefix: `/${apiVersion}` },
