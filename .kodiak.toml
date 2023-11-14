@@ -1,2 +1,14 @@
 # .kodiak.toml
+# https://kodiakhq.com/docs/config-reference
 version = 1
+
+[merge]
+automerge_label = "automerge"
+blocking_labels = ["do not merge"]
+delete_branch_on_merge = true
+prioritize_ready_to_merge = true
+message.include_pull_request_author = true
+
+[update]
+autoupdate_label = "autoupdate"
+always = false
