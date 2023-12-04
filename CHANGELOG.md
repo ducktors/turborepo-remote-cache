@@ -1,3 +1,10 @@
+## [2.0.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.6...v2.0.7) (2023-12-04)
+
+
+### Bug Fixes
+
+* **docker:** bump node from `4b30609` to `984d561` ([7e66ca3](https://github.com/ducktors/turborepo-remote-cache/commit/7e66ca31c48960f5fc839accf298a6ad043573f9))
+
 ## [2.0.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.5...v2.0.6) (2023-11-30)
 
 
