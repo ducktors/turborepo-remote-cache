@@ -106,5 +106,12 @@
     "api",
     "dist",
     "vercel.json"
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "xml2js@<0.5.0": ">=0.5.0",
+      "semver@>=7.0.0 <7.5.2": ">=7.5.2",
+      "tough-cookie@<4.1.3": ">=4.1.3"
+    }
+  }
 }
