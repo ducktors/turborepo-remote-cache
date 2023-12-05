@@ -1,3 +1,10 @@
+## [2.0.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.7...v2.0.8) (2023-12-05)
+
+
+### Bug Fixes
+
+* add pnpm overrides ([e0eecad](https://github.com/ducktors/turborepo-remote-cache/commit/e0eecad383a862dd700d34f00ee24ffb238c0ffc))
+
 ## [2.0.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.6...v2.0.7) (2023-12-04)
 
 
