@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v3.6.0
       - name: Setup Pages
-        uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382 # v3.0.6
+        uses: actions/configure-pages@b8130d9ab958b325bbde9786d62f2c97a9885a0e # v3.0.7
       - name: Build
         uses: actions/jekyll-build-pages@e4ef22193c23ea849fc3fea6dbce69da1ee65b6d # v1.0.9
         with:
