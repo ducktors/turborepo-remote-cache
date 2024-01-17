@@ -45,3 +45,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
         with:
           coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+          coverageCommand: pnpm test:coverage
