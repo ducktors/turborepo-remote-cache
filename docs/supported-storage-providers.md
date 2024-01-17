@@ -8,6 +8,7 @@ nav_order: 3
 
 - [x] Local filesystem
 - [x] AWS S3
+- [x] DigitalOcean Spaces
 - [x] Google Cloud Storage
 - [x] Azure Blob Storage
 
@@ -28,6 +29,19 @@ If running in an AWS Lambda Function, temporary credentials (including an
 configure these.
 
 Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
+
+
+### DigitalOcean Spaces
+
+DigitalOcean Spaces is an S3-compatible object storage that this project also supports.
+
+1. Create a [Space](https://cloud.digitalocean.com/spaces)
+2. Generate a new [spaces access key](https://cloud.digitalocean.com/account/api/spaces)
+3. Fill in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables based on the access key you created.
+4. Set `AWS_REGION` to `us-east-1` - [Explanation](https://docs.digitalocean.com/products/spaces/how-to/use-aws-sdks/#configure-a-client)
+5. Set `STORAGE_PATH` to the name of the Space you created.
+6. Set `S3_ENDPOINT` to the endpoint of the Space you created. For example, `https://nyc3.digitaloceanspaces.com`.
+7. Set `STORAGE_PROVIDER` to `s3`.
 
 
 ## Google Cloud Storage
