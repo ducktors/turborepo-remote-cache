@@ -192,6 +192,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "warflash",
+      "name": "Nils Wiesinger",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22006082?v=4",
+      "profile": "https://github.com/warflash",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
