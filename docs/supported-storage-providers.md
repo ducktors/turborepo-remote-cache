@@ -25,18 +25,18 @@ For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_
 `~/.aws/credentials` with AWS credentials.
 
 If running in an AWS Lambda Function, temporary credentials (including an
-`AWS_SESSION_TOKEN`) are automatically created and you do not need to manually
+`AWS_SESSION_TOKEN`) are automatically created. You do not need to manually
 configure these.
 
-Specify the region using the `AWS_REGION` environment variable, or in `~/.aws/config`.
+Specify the region using the `AWS_REGION` environment variable or in `~/.aws/config`.
 
 
 ### DigitalOcean Spaces
 
 DigitalOcean Spaces is an S3-compatible object storage that this project also supports.
 
-1. Create a [Space](https://cloud.digitalocean.com/spaces)
-2. Generate a new [spaces access key](https://cloud.digitalocean.com/account/api/spaces)
+1. Create a [Space](https://cloud.digitalocean.com/spaces).
+2. Generate a new [spaces access key](https://cloud.digitalocean.com/account/api/spaces).
 3. Fill in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables based on the access key you created.
 4. Set `AWS_REGION` to `us-east-1` - [Explanation](https://docs.digitalocean.com/products/spaces/how-to/use-aws-sdks/#configure-a-client)
 5. Set `STORAGE_PATH` to the name of the Space you created.
@@ -46,7 +46,7 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 
 ## Google Cloud Storage
 
-1. Create a [bucket](https://console.cloud.google.com/storage/browser) (or use an existing one)
+1. Create a [bucket](https://console.cloud.google.com/storage/browser) (or use an existing one).
 2. Create a new [service account](https://console.cloud.google.com/iam-admin/serviceaccounts).
 3. Grant the role `Storage Object Admin` to the service account on the bucket.
   ```sh
@@ -76,6 +76,6 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
   
 ##  Azure Blob Storage
 
-1. Create a new Blob Storage
-2. On "Security + networking" tab, copy one of `Connection string` on "Access keys" blade
-3. Set `ABS_CONNECTION_STRING` with Connection string value
+1. Create a new Blob Storage.
+2. On "Security + networking" tab, copy one of `Connection string` on "Access keys" blade.
+3. Set `ABS_CONNECTION_STRING` to the connection string.

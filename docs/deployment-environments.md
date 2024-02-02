@@ -15,7 +15,7 @@ has_toc: false
 - [Remoteless with npx](#deploy-remoteless-with-npx)
 
 ## Deploy on Vercel
-The server can be easily deployed as Vercel Function using the deploy button.
+The server can be easily deployed as a Vercel Serverless Function using the deploy button.
 
 __Note: Local storage isn't supported for this deployment method.__
 
@@ -24,7 +24,7 @@ __Note: Local storage isn't supported for this deployment method.__
 ## Deploy on Docker
 You can find the image on the [dockerhub](https://hub.docker.com/r/ducktors/turborepo-remote-cache).
 
-1. create an `.env` file, containing all of the env vars you need. Check [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) for more info.
+1. create an `.env` file containing all the env vars you need. Check [environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) for more info.
 ```sh
 NODE_ENV=
 PORT=
@@ -43,7 +43,7 @@ docker run --env-file=.env -p 3000:3000 ducktors/turborepo-remote-cache
 ```
 
 ## Deploy on DigitalOcean
-The server can be easily deployed on DigitalOcean App Service.
+The server can be easily deployed on DigitalOcean App Services.
 
 __Note: Local storage isn't supported for this deployment method.__
 

@@ -16,12 +16,12 @@ through creating:
 - A Lambda Function URL
 - Configuring your repository to use the new API
 
-## Create S3 Bucket to store artifacts
+## Create an S3 Bucket to store artifacts
 First, create an S3 Bucket with a unique name, such as `turborepo-cache-udaw82`.
 Leave **Block all public access** ticked to ensure your artifacts remain
 private.
 
-*Note - to prevent this bucket from growing forever, you may want to create a
+*Note: To prevent this bucket from growing forever, you may want to create a
 **Lifecyle rule** to expire cache objects that are older than a certain number
 of days.*
 
@@ -68,7 +68,7 @@ created. Click on **Create function**.
 
 ### Handler code
 
-Create a new package for your Lambda handler, and add `turborepo-remote-cache`
+Create a new package for your Lambda handler and add `turborepo-remote-cache`
 as a dependency. Your `index.js` handler code should look like this:
 
 ```js
