@@ -12,3 +12,10 @@ message.include_pull_request_author = true
 [update]
 autoupdate_label = "autoupdate"
 always = false
+
+[merge.automerge_dependencies]
+versions = ["minor", "patch"]
+usernames = ["dependabot"]
+
+[approve]
+auto_approve_usernames = ["dependabot"]
