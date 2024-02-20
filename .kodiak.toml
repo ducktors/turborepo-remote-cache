@@ -10,5 +10,11 @@ prioritize_ready_to_merge = true
 message.include_pull_request_author = true
 
 [update]
-autoupdate_label = "autoupdate"
-always = false
+always = true
+
+[merge.automerge_dependencies]
+versions = ["minor", "patch"]
+usernames = ["dependabot"]
+
+[approve]
+auto_approve_usernames = ["dependabot"]
