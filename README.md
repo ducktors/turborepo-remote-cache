@@ -2,15 +2,16 @@
 ![TURBOREPO REMOTE CACHE](https://user-images.githubusercontent.com/1620916/216358708-cb0a18c6-4f5b-4565-a101-77ee89272180.png)
 
 ---
+
 ![remote_cache_1](https://user-images.githubusercontent.com/1620916/216358421-36a63b0e-d1f6-484f-a4ca-6a7119cc0816.jpg)
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/ducktors/turborepo-remote-cache)](https://github.com/ducktors/turborepo-remote-cache/releases) [![CI](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/ci.yml) [![Test](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/test.yaml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/test.yaml) [![Release](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/release.yml) [![Docker](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml/badge.svg)](https://github.com/ducktors/turborepo-remote-cache/actions/workflows/docker.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/bbb26ca5247dee70dde0/maintainability)](https://codeclimate.com/github/ducktors/turborepo-remote-cache/maintainability) [![Coverage Status](https://coveralls.io/repos/github/ducktors/turborepo-remote-cache/badge.svg?branch=main)](https://coveralls.io/github/ducktors/turborepo-remote-cache?branch=main) [![Docker Pulls](https://img.shields.io/docker/pulls/ducktors/turborepo-remote-cache?logo=docker)](https://hub.docker.com/r/ducktors/turborepo-remote-cache) [![npm](https://img.shields.io/npm/dt/turborepo-remote-cache)](https://www.npmjs.com/package/turborepo-remote-cache) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ducktors/turborepo-remote-cache/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ducktors/turborepo-remote-cache) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-
-This project is an open-source implementation of the [Turborepo custom remote cache server](https://turborepo.org/docs/features/remote-caching#custom-remote-caches). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
-It supports several storage providers and deploys environments. Moreover, the project provides __"deploy to "__ buttons for one-click deployments whenever possible.
+This project is an open-source implementation of the [Turborepo custom remote cache server](https://turbo.build/repo/docs/core-concepts/remote-caching#self-hosting). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
+It supports several storage providers and deploys environments. Moreover, the project provides **"deploy to "** buttons for one-click deployments whenever possible.
 
 > [Legacy fox1t/turborepo-remote-cache image will be redirected to ducktors/turborepo-remote-cache.](https://github.com/ducktors/turborepo-remote-cache/issues/157)
 
@@ -21,6 +22,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [AWS CDK Construct](https://github.com/NimmLor/cdk-turborepo-remote-cache)
 
 ## Documentation
+
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 - [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
@@ -29,27 +31,28 @@ It supports several storage providers and deploys environments. Moreover, the pr
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
 ## Contribute to this project
+
 1. Clone this repository
 
-    ```git clone git@github.com:ducktors/turborepo-remote-cache.git```
+   `git clone git@github.com:ducktors/turborepo-remote-cache.git`
 
 2. Move inside repository folder
 
-    ```cd turborepo-remote-cache```
+   `cd turborepo-remote-cache`
 
 3. Install dependencies
 
-    ```pnpm install```
+   `pnpm install`
 
 4. Copy example variables
 
-    ```cp .env.example .env```
+   `cp .env.example .env`
 
 5. Put your env vars to the `env` file. See [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables) section for more details.
 
 6. Run the project in development mode
 
-    ```pnpm dev```
+   `pnpm dev`
 
 ## How to commit
 
@@ -109,4 +112,3 @@ fix: fix a bug ---> 1.0.x
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
