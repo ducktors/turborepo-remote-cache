@@ -16,8 +16,7 @@ To enable remote caching, you must configure it by hand. In fact, the `turbo log
 First, you need to create the config file:
 
 1. Create the `.turbo` folder at the root of your repository
-2. Create the `config.json` file inside it, and add these two properties:
-    - `teamid`: it could be any string that starts with __`"team_"`__. This property will be used as a cache storage namespace for the current repository. Ex. `team_myteam`
+2. Create the `config.json` file inside it, and add this property:
     - `apiurl`: the address of your `turborepo-remote-cache` server.
 
 For example:
@@ -25,13 +24,25 @@ For example:
 `.turbo/config.json`
 ```json
 {
-  "teamid": "team_myteam",
-  "apiurl": "http://localhost:3000"
+  "apiurl": "http://cache.ducktors.dev"
 }
 ```
-Now, you need to add the remote cache server TURBO_TOKEN to your CI pipeline or development machine. There are three ways to do it:
-1. Set the `TURBO_TOKEN=yourToken` environment variable.
-2. Add the token to the `turbo` global config file. You can find or create it inside the `$XDG_CONFIG_HOME/turborepo/config.json`. To know where the `XDG_CONFIG_HOME` is located on your machine, please check out the [xdg-base-directory](https://github.com/adrg/xdg#xdg-base-directory) documentation.
+
+Now, you need to add these two environment variables TURBO_TEAM and TURBO_TOKEN to your CI pipeline or development machine. There are three ways to do it:
+
+1. Set/export the `TURBO_TEAM=ducktors` and`TURBO_TOKEN=myGeneratedToken` as environment variable.
+2. Add `teamId` and `token` to the *turbo* global config file. You can find or create it inside the `$XDG_CONFIG_HOME/turborepo/config.json`. To know where the`XDG_CONFIG_HOME` is located on your machine, please check out the [xdg-base-directory](https://github.com/adrg/xdg#xdg-base-directory) documentation. For example:
+
+    `.turbo/config.json`
+
+    ```json
+    {
+      "teamid": "ducktors",
+      "token" : "myGeneratedToken",
+      "apiurl": "http://cache.ducktors.dev"
+    }
+    ```
+
 3. Modify your project `package.json` scripts by adding the `--token=yourToken` parameter. __Note: This is a less secure way to do it because the token is committed inside the repository. Prefer the other two whenever possible.__
 
 For example:
@@ -39,7 +50,7 @@ For example:
 `package.json`
 ```jsonc
 //...
-  "build": "turbo run build --token=\"yourToken\"",
+  "build": "turbo run build --teamid=\"ducktors\" --token=\"myGeneratedToken\"",
   "dev": "turbo run dev --parallel",
   "lint": "turbo run lint",
   "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -63,7 +74,13 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 COPY turbo.json ./
 COPY .turbo/config.json ./.turbo/
 
-RUN pnpm turbo build
+RUN --mount=type=bind,source=.git,target=.git \
+    pnpm turbo build
+```
+and build your Remote Cache Server with this command:
+
+```sh
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -f Dockerfile . --build-arg TURBO_TEAM=“ducktors” --build-arg TURBO_TOKEN=“myGeneratedToken“ --no-cache
 ```
 
 ## Local environment variables
