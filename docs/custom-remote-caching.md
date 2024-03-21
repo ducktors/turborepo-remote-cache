@@ -74,7 +74,8 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 COPY turbo.json ./
 COPY .turbo/config.json ./.turbo/
 
-RUN pnpm turbo build
+RUN --mount=type=bind,source=.git,target=.git \
+    pnpm turbo build
 ```
 and build your Remote Cache Server with this command:
 
