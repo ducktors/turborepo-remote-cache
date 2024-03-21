@@ -210,6 +210,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "gustavoam-asdf",
+      "name": "Gustavo Atencio Mauricio",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53370174?v=4",
+      "profile": "https://github.com/gustavoam-asdf",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
