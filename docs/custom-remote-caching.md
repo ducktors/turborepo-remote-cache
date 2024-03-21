@@ -50,17 +50,20 @@ __Note: The token value must be the same as for your server's `TURBO_TOKEN` env 
 
 
 ## Enable remote caching in Docker
-To enable remote caching in Docker, you must pass `TURBO_TOKEN` inside Dockerfile and [mount](https://docs.docker.com/build/guide/mounts/#add-bind-mounts) the `.git` folder to enable the turbo caching. The `.git` mount is accessible during the build stage only and will not be present in the final image.
+To enable remote caching in Docker, you must pass `TURBO_TEAM` and `TURBO_TOKEN` inside Dockerfile as [build args](https://docs.docker.com/build/guide/build-args/).
 For example:
 
-```
-ENV TURBO_TOKEN=
+```Dockerfile
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY turbo.json ./
 COPY .turbo/config.json ./.turbo/
 
-RUN --mount=type=bind,source=.git,target=.git \
-    pnpm turbo build
+RUN pnpm turbo build
 ```
 
 ## Local environment variables
