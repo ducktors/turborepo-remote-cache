@@ -1,3 +1,10 @@
+## [2.0.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.8...v2.0.9) (2024-03-21)
+
+
+### Bug Fixes
+
+* **docs:** use recommended docker config for remote cache ([2f23bf4](https://github.com/ducktors/turborepo-remote-cache/commit/2f23bf4b60c167686307f401f90edb0c547e7832))
+
 ## [2.0.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.7...v2.0.8) (2023-12-05)
 
 
