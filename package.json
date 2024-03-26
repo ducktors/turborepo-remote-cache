@@ -50,7 +50,7 @@
     "@hapi/boom": "10.0.0",
     "@sinclair/typebox": "0.25.21",
     "ajv": "8.12.0",
-    "aws-sdk": "2.1310.0",
+    "aws-sdk": "2.1354.0",
     "azure-storage": "^2.10.7",
     "close-with-grace": "1.1.0",
     "env-schema": "5.2.0",
@@ -59,7 +59,7 @@
     "fs-blob-store": "6.0.0",
     "hyperid": "3.1.1",
     "pino": "6.13.3",
-    "pino-pretty": "9.1.1",
+    "pino-pretty": "10.3.0",
     "s3-blob-store": "4.1.1"
   },
   "devDependencies": {
