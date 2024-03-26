@@ -63,6 +63,20 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         providerOptions as S3Options
       return createS3({ accessKey, secretKey, bucket: path, region, endpoint })
     }
+    case STORAGE_PROVIDERS.MINIO: {
+      const { accessKey, secretKey, region, endpoint } =
+        providerOptions as S3Options
+      return createS3({
+        accessKey,
+        secretKey,
+        bucket: path,
+        region,
+        endpoint,
+        s3OptionsPassthrough: {
+          s3ForcePathStyle: true,
+        },
+      })
+    }
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
       const { clientEmail, privateKey, projectId } =
         providerOptions as GoogleCloudStorageOptions
