@@ -73,9 +73,18 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
   GCS_CLIENT_EMAIL=
   GCS_PRIVATE_KEY=
   ```
-  
+
 ##  Azure Blob Storage
 
 1. Create a new Blob Storage.
 2. On "Security + networking" tab, copy one of `Connection string` on "Access keys" blade.
 3. Set `ABS_CONNECTION_STRING` to the connection string.
+
+## Minio
+1. Create Access key
+2. Fill in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables based on the access key you created.
+3. Create bucket
+4. Set `STORAGE_PATH` to the name of the bucket you created.
+5. Set `AWS_REGION` (can leave blank `S3_REGION=` for none).
+6. Set `STORAGE_PROVIDER` to `minio`.
+7. Set `S3_ENDPOINT` to Minio url (ie `http://127.0.0.1:9000`)
