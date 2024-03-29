@@ -15,6 +15,7 @@ export const STORAGE_PROVIDERS = {
   s3: 's3',
   GOOGLE_CLOUD_STORAGE: 'google-cloud-storage',
   AZURE_BLOB_STORAGE: 'azure-blob-storage',
+  MINIO: 'minio',
 } as const
 export type STORAGE_PROVIDERS =
   typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
