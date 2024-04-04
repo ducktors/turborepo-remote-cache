@@ -32,7 +32,7 @@ jobs:
       - name: Install with pnpm
         run: pnpm install --frozen-lockfile
       - name: Check commit message
-        uses: wagoid/commitlint-github-action@4973fb2da492818040d483817dd647c73b67eb52 # v5.4.6
+        uses: wagoid/commitlint-github-action@3c75220e8d20774b68eea48e869a706ff7249b54 # v6.0.0
         with:
           configFile: commitlint.config.cjs
           failOnWarnings: false
