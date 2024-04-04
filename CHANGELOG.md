@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.9...v2.1.0) (2024-03-29)
+
+
+### Features
+
+* support minio ([0fb851f](https://github.com/ducktors/turborepo-remote-cache/commit/0fb851f9a142df1da64e73149d655f36acbe7e57))
+
 ## [2.0.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.8...v2.0.9) (2024-03-21)
 
 
