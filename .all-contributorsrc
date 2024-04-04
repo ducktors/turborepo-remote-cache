@@ -219,6 +219,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "EWhite613",
+      "name": "Eric White",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9057680?v=4",
+      "profile": "https://github.com/EWhite613",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
