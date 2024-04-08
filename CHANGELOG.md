@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.0...v2.1.1) (2024-04-08)
+
+
+### Bug Fixes
+
+* bump node on dockerfile ([d130524](https://github.com/ducktors/turborepo-remote-cache/commit/d130524e300633ff06ecde8ba0d1b9ecf1df00e9))
+
 # [2.1.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.0.9...v2.1.0) (2024-03-29)
 
 
