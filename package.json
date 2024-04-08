@@ -59,7 +59,7 @@
     "fs-blob-store": "6.0.0",
     "hyperid": "3.1.1",
     "pino": "6.13.3",
-    "pino-pretty": "9.1.1",
+    "pino-pretty": "10.3.0",
     "s3-blob-store": "4.1.1"
   },
   "devDependencies": {
