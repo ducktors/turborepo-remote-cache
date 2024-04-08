@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.1...v2.1.2) (2024-04-08)
+
+
+### Bug Fixes
+
+* package.json to reduce vulnerabilities ([473f191](https://github.com/ducktors/turborepo-remote-cache/commit/473f191ca2545b7fe299d2881e401f0e6bf59220))
+
 ## [2.1.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.0...v2.1.1) (2024-04-08)
 
 
