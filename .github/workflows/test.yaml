@@ -42,7 +42,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: CodeClimate
         continue-on-error: true
-        uses: paambaati/codeclimate-action@a1831d7162ea1fbc612ffe5fb3b90278b7999d59 # v5.0.0
+        uses: paambaati/codeclimate-action@b74bb25d2074a4bc16bd06fffc1b299c07b1f886 # v6.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
         with:
