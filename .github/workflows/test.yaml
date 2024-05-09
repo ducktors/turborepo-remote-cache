@@ -37,7 +37,7 @@ jobs:
       - name: Run tests with coverage
         run: pnpm test:coverage
       - name: Coveralls
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # master
+        uses: coverallsapp/github-action@643bc377ffa44ace6394b2b5d0d3950076de9f63 # master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: CodeClimate
