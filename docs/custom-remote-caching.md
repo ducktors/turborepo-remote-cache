@@ -31,13 +31,13 @@ For example:
 Now, you need to add these two environment variables TURBO_TEAM and TURBO_TOKEN to your CI pipeline or development machine. There are three ways to do it:
 
 1. Set/export the `TURBO_TEAM=ducktors` and`TURBO_TOKEN=myGeneratedToken` as environment variable.
-2. Add `teamId` and `token` to the *turbo* global config file. You can find or create it inside the `$XDG_CONFIG_HOME/turborepo/config.json`. To know where the`XDG_CONFIG_HOME` is located on your machine, please check out the [xdg-base-directory](https://github.com/adrg/xdg#xdg-base-directory) documentation. For example:
+2. Add `team` and `token` to the *turbo* global config file. You can find or create it inside the `$XDG_CONFIG_HOME/turborepo/config.json`. To know where the`XDG_CONFIG_HOME` is located on your machine, please check out the [xdg-base-directory](https://github.com/adrg/xdg#xdg-base-directory) documentation. For example:
 
     `.turbo/config.json`
 
     ```json
     {
-      "teamid": "ducktors",
+      "team": "ducktors",
       "token" : "myGeneratedToken",
       "apiurl": "http://cache.ducktors.dev"
     }
@@ -50,7 +50,7 @@ For example:
 `package.json`
 ```jsonc
 //...
-  "build": "turbo run build --teamid=\"ducktors\" --token=\"myGeneratedToken\"",
+  "build": "turbo run build --team=\"ducktors\" --token=\"myGeneratedToken\"",
   "dev": "turbo run dev --parallel",
   "lint": "turbo run lint",
   "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -90,7 +90,7 @@ You can also configure your development machine by setting the following environ
 | Variable      | Type   | Description |
 | ------------- | ------ | ----------- |
 | `TURBO_API`   | string | The address of a running `turborepo-remote-cache` server |
-| `TURBO_TEAM`  | string | The teamId (see *Config file* above)|
+| `TURBO_TEAM`  | string | The team (see *Config file* above)|
 | `TURBO_TOKEN` | string | Your secret key. This must be the same as the `TURBO_TOKEN` variable set on your turborepo-remote-cache server instance |
 
 **Note: these environment variables are used by the Turborepo CLI** on the development machine or CI pipelines. They are not used by the `turborepo-remote-cache` server.

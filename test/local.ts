@@ -29,7 +29,7 @@ test('local storage', async (t) => {
    */
   const { createApp } = await import('../src/app.js')
   const artifactId = crypto.randomBytes(20).toString('hex')
-  const teamId = 'superteam'
+  const team = 'superteam'
   const app = createApp({ logger: false })
   await app.ready()
 
@@ -67,7 +67,7 @@ test('local storage', async (t) => {
   )
 
   await t.test(
-    'should return 400 when missing teamId query parameter',
+    'should return 400 when missing team query parameter',
     async () => {
       const response = await app.inject({
         method: 'GET',
@@ -79,7 +79,7 @@ test('local storage', async (t) => {
       assert.equal(response.statusCode, 400)
       assert.equal(
         response.json().message,
-        "querystring should have required property 'teamId'",
+        "querystring should have required property 'team'",
       )
     },
   )
@@ -92,7 +92,7 @@ test('local storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId: 'superteam',
+        team: 'superteam',
       },
     })
     assert.equal(response.statusCode, 404)
@@ -108,12 +108,12 @@ test('local storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        teamId,
+        team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
 
   await t.test('should download an artifact', async () => {
@@ -124,7 +124,7 @@ test('local storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -139,7 +139,7 @@ test('local storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -154,7 +154,7 @@ test('local storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 404)
@@ -170,12 +170,12 @@ test('local storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        slug: teamId,
+        slug: team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
 
   await t.test(

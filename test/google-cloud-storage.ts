@@ -67,7 +67,7 @@ test('Google Cloud Storage', async (t) => {
    */
 
   const artifactId = crypto.randomBytes(20).toString('hex')
-  const teamId = 'superteam'
+  const team = 'superteam'
 
   const { createApp } = await import('../src/app.js')
 
@@ -113,7 +113,7 @@ test('Google Cloud Storage', async (t) => {
     },
   )
   await t.test(
-    'should return 400 when missing teamId query parameter',
+    'should return 400 when missing team query parameter',
     async () => {
       const response = await app.inject({
         method: 'GET',
@@ -125,7 +125,7 @@ test('Google Cloud Storage', async (t) => {
       assert.equal(response.statusCode, 400)
       assert.equal(
         response.json().message,
-        "querystring should have required property 'teamId'",
+        "querystring should have required property 'team'",
       )
     },
   )
@@ -137,7 +137,7 @@ test('Google Cloud Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId: 'superteam',
+        team: 'superteam',
       },
     })
     assert.equal(response.statusCode, 404)
@@ -152,12 +152,12 @@ test('Google Cloud Storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        teamId,
+        team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
   await t.test('should download an artifact', async () => {
     const response = await app.inject({
@@ -167,7 +167,7 @@ test('Google Cloud Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -181,7 +181,7 @@ test('Google Cloud Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -195,7 +195,7 @@ test('Google Cloud Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 404)
@@ -210,12 +210,12 @@ test('Google Cloud Storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        slug: teamId,
+        slug: team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
   await t.test(
     'should return 200 when POST artifacts/events is called',
@@ -259,7 +259,7 @@ test('Google Cloud Storage ADC', async (t) => {
    */
 
   const artifactId = crypto.randomBytes(20).toString('hex')
-  const teamId = 'superteam2'
+  const team = 'superteam2'
 
   const { createApp } = await import('../src/app.js')
   const app = createApp({ logger: false })
@@ -286,11 +286,11 @@ test('Google Cloud Storage ADC', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        teamId,
+        team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
 })
