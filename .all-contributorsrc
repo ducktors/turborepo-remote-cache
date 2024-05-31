@@ -228,6 +228,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SaniMusic",
+      "name": "Sani Music",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11148959?v=4",
+      "profile": "https://github.com/SaniMusic",
+      "contributions": [
+        "doc",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
