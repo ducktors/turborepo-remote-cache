@@ -106,9 +106,9 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 ) {
   const location = createStorageLocation(provider, providerOptions)
 
-  async function getCachedArtifact(artifactId: string, teamId: string) {
+  async function getCachedArtifact(artifactId: string, team: string) {
     return new Promise((resolve, reject) => {
-      const artifactPath = join(teamId, artifactId)
+      const artifactPath = join(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
@@ -121,9 +121,9 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     })
   }
 
-  async function existsCachedArtifact(artifactId: string, teamId: string) {
+  async function existsCachedArtifact(artifactId: string, team: string) {
     return new Promise<void>((resolve, reject) => {
-      const artifactPath = join(teamId, artifactId)
+      const artifactPath = join(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
@@ -138,12 +138,12 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 
   async function createCachedArtifact(
     artifactId: string,
-    teamId: string,
+    team: string,
     artifact: Readable,
   ) {
     return pipeline(
       artifact,
-      location.createWriteStream(join(teamId, artifactId)),
+      location.createWriteStream(join(team, artifactId)),
     )
   }
 
