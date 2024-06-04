@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
