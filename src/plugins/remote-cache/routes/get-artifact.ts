@@ -26,13 +26,13 @@ export const getArtifact: RouteOptions<
   schema: artifactsRouteSchema,
   async handler(req, reply) {
     const artifactId = req.params.id
-    const teamId = req.query.teamId ?? req.query.slug // turborepo client passes teamId as slug when --team cli option is used
-    if (!teamId) {
-      throw badRequest(`querystring should have required property 'teamId'`)
+    const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used
+    if (!team) {
+      throw badRequest(`querystring should have required property 'team'`)
     }
 
     try {
-      const artifact = await this.location.getCachedArtifact(artifactId, teamId)
+      const artifact = await this.location.getCachedArtifact(artifactId, team)
       reply.header('Content-Type', 'application/octet-stream')
       return reply.send(artifact)
     } catch (err) {

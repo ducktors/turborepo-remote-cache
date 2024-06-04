@@ -68,7 +68,7 @@ test('Azure Blob Storage', async (t) => {
    */
 
   const artifactId = crypto.randomBytes(20).toString('hex')
-  const teamId = 'superteam'
+  const team = 'superteam'
   const { createApp } = await import('../src/app.js')
   const app = createApp({ logger: false })
   await app.ready()
@@ -111,7 +111,7 @@ test('Azure Blob Storage', async (t) => {
   )
 
   await t.test(
-    'should return 400 when missing teamId query parameter',
+    'should return 400 when missing team query parameter',
     async () => {
       const response = await app.inject({
         method: 'GET',
@@ -123,7 +123,7 @@ test('Azure Blob Storage', async (t) => {
       assert.equal(response.statusCode, 400)
       assert.equal(
         response.json().message,
-        "querystring should have required property 'teamId'",
+        "querystring should have required property 'team'",
       )
     },
   )
@@ -136,7 +136,7 @@ test('Azure Blob Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId: 'superteam',
+        team: 'superteam',
       },
     })
     assert.equal(response.statusCode, 404)
@@ -152,12 +152,12 @@ test('Azure Blob Storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        teamId,
+        team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
 
   await t.test('should download an artifact', async () => {
@@ -168,7 +168,7 @@ test('Azure Blob Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -183,7 +183,7 @@ test('Azure Blob Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 200)
@@ -198,7 +198,7 @@ test('Azure Blob Storage', async (t) => {
         authorization: 'Bearer changeme',
       },
       query: {
-        teamId,
+        team,
       },
     })
     assert.equal(response.statusCode, 404)
@@ -214,12 +214,12 @@ test('Azure Blob Storage', async (t) => {
         'content-type': 'application/octet-stream',
       },
       query: {
-        slug: teamId,
+        slug: team,
       },
       payload: Buffer.from('test cache data'),
     })
     assert.equal(response.statusCode, 200)
-    assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+    assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
   })
 
   await t.test(

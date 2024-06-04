@@ -34,7 +34,7 @@ server.run((err) => {
   assert.equal(err, null)
   test('Minio', async (t) => {
     const artifactId = crypto.randomBytes(20).toString('hex')
-    const teamId = 'superteam'
+    const team = 'superteam'
 
     const { createApp } = await import('../src/app.js')
     const app = createApp({ logger: false })
@@ -81,7 +81,7 @@ server.run((err) => {
     )
 
     await t.test(
-      'should return 400 when missing teamId query parameter',
+      'should return 400 when missing team query parameter',
       async () => {
         const response = await app.inject({
           method: 'GET',
@@ -93,7 +93,7 @@ server.run((err) => {
         assert.equal(response.statusCode, 400)
         assert.equal(
           response.json().message,
-          "querystring should have required property 'teamId'",
+          "querystring should have required property 'team'",
         )
       },
     )
@@ -106,7 +106,7 @@ server.run((err) => {
           authorization: 'Bearer changeme',
         },
         query: {
-          teamId: 'superteam',
+          team: 'superteam',
         },
       })
       assert.equal(response.statusCode, 404)
@@ -122,12 +122,12 @@ server.run((err) => {
           'content-type': 'application/octet-stream',
         },
         query: {
-          teamId,
+          team,
         },
         payload: Buffer.from('test cache data'),
       })
       assert.equal(response.statusCode, 200)
-      assert.deepEqual(response.json(), { urls: [`${teamId}/${artifactId}`] })
+      assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
     })
 
     await t.test('should download an artifact', async () => {
@@ -138,7 +138,7 @@ server.run((err) => {
           authorization: 'Bearer changeme',
         },
         query: {
-          teamId,
+          team,
         },
       })
       assert.equal(response.statusCode, 200)
@@ -153,7 +153,7 @@ server.run((err) => {
           authorization: 'Bearer changeme',
         },
         query: {
-          teamId,
+          team,
         },
       })
       assert.equal(response.statusCode, 200)
@@ -168,7 +168,7 @@ server.run((err) => {
           authorization: 'Bearer changeme',
         },
         query: {
-          teamId,
+          team,
         },
       })
       assert.equal(response.statusCode, 404)
