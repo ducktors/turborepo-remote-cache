@@ -2,6 +2,7 @@ import { Static, Type } from '@sinclair/typebox'
 
 const querystring = Type.Object(
   {
+    teamId: Type.Optional(Type.String()),
     team: Type.Optional(Type.String()),
     slug: Type.Optional(Type.String()),
   },
