@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.4...v2.1.5) (2024-06-04)
+
+
+### Bug Fixes
+
+* use team or fallback to teamId ([85e1bdb](https://github.com/ducktors/turborepo-remote-cache/commit/85e1bdb9900380598cadd721aa097679649cd910))
+
 ## [2.1.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.3...v2.1.4) (2024-05-22)
 
 
