@@ -1,10 +1,7 @@
 import assert from 'node:assert'
 import crypto from 'node:crypto'
-import fs from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { mock, test } from 'node:test'
-import fsbs from 'fs-blob-store'
+import { PassThrough, Readable } from 'node:stream'
+import { afterEach, mock, test } from 'node:test'
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -23,46 +20,37 @@ test('Azure Blob Storage', async (t) => {
   /**
    * MOCKS
    */
-  const { default: azure } = await import('azure-storage')
+  const { BlobServiceClient } = await import('@azure/storage-blob')
 
-  mock.method(azure, 'createBlobService', () => {
-    // biome-ignore lint/suspicious/noExplicitAny: for mocking purposes
-    let store: any = undefined
+  const uploadStream = (stream) => {
+    const writable = new PassThrough()
+    return writable.pipe(stream)
+  }
 
-    const createStore = (container) => {
-      const pathWithPrefix = join(tmpdir(), container)
-      if (!fs.existsSync(pathWithPrefix)) {
-        fs.mkdirSync(pathWithPrefix)
-      }
+  const uploadStreamMock = mock.fn(uploadStream)
 
-      if (!store) {
-        store = fsbs(pathWithPrefix)
-      }
-    }
-    return {
-      doesBlobExist: (container, blob, _, cb) => {
-        createStore(container)
-
-        return store.exists(blob, (error, exists) => cb(error, { exists }))
-      },
-      createReadStream(container, blob, cb) {
-        createStore(container)
-
-        const stream = store.createReadStream(blob)
-
-        // Only for test coverage, because this cb isn't called inside
-        // fs-blob-store, but it is called inside azure createReadStream
-        cb()
-
-        return stream
-      },
-      createWriteStreamToBlockBlob(container, blob) {
-        createStore(container)
-
-        return store.createWriteStream(blob)
-      },
-    }
-  })
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlobClient: (artifactPath) => ({
+        exists: () =>
+          artifactPath.endsWith('not-found')
+            ? Promise.resolve(false)
+            : Promise.resolve(true),
+        download: () => {
+          const readable = new Readable({
+            read(size) {
+              this.push('test cache data')
+              this.push(null)
+            },
+          })
+          return Promise.resolve({ readableStreamBody: readable })
+        },
+      }),
+      getBlockBlobClient: () => ({
+        uploadStream: uploadStreamMock,
+      }),
+    }),
+  }))
   /**
    * END MOCKS
    */
@@ -72,6 +60,10 @@ test('Azure Blob Storage', async (t) => {
   const { createApp } = await import('../src/app.js')
   const app = createApp({ logger: false })
   await app.ready()
+
+  afterEach(() => {
+    mock.restoreAll()
+  })
 
   await t.test('loads correct env vars', async () => {
     assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
@@ -144,6 +136,12 @@ test('Azure Blob Storage', async (t) => {
   })
 
   await t.test('should upload an artifact', async () => {
+    const waitStreamData = (stream): Promise<Buffer> => {
+      return new Promise((resolve) => {
+        stream.on('data', resolve)
+      })
+    }
+
     const response = await app.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -156,8 +154,12 @@ test('Azure Blob Storage', async (t) => {
       },
       payload: Buffer.from('test cache data'),
     })
+    const streamData = await waitStreamData(
+      uploadStreamMock.mock.calls[0].arguments[0],
+    )
     assert.equal(response.statusCode, 200)
     assert.deepEqual(response.json(), { urls: [`${team}/${artifactId}`] })
+    assert.deepEqual(streamData.toString(), 'test cache data')
   })
 
   await t.test('should download an artifact', async () => {
