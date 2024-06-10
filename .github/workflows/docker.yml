@@ -27,17 +27,13 @@ jobs:
         run: |
           TAG=${{ steps.package-version.outputs.current-version}}
           echo "TAG=$TAG" >> "$GITHUB_ENV"
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
-        with:
-          images: ducktors/turborepo-remote-cache
-          flavor: latest=false
-          tags: type=raw,value=${{ env.TAG }}
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
+        
       - name: Login to DockerHub
         uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
@@ -49,6 +45,8 @@ jobs:
           context: .
           platforms: linux/x86_64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ducktors/turborepo-remote-cache:latest
+            ducktors/turborepo-remote-cache:${{ env.TAG }}
           cache-from: |
             ducktors/turborepo-remote-cache:latest
