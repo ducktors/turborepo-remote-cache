@@ -1,3 +1,4 @@
+import { Writable } from 'node:stream'
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
@@ -40,8 +41,8 @@ export interface StorageProvider {
     artifactPath: string,
     cb: (err: Error | null, exists?: boolean) => void,
   ) => void
-  createReadStream: (artifactPath: string) => NodeJS.ReadStream
-  createWriteStream: (artifactPath: string) => NodeJS.WritableStream
+  createReadStream: (artifactPath: string) => Readable
+  createWriteStream: (artifactPath: string) => Writable
 }
 
 function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
