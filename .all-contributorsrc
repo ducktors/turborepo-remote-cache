@@ -238,6 +238,15 @@
         "doc",
         "code"
       ]
+    },
+    {
+      "login": "konclave",
+      "name": "Ivan Vasilev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/875116?v=4",
+      "profile": "https://github.com/konclave",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
