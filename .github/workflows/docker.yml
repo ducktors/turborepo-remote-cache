@@ -15,7 +15,6 @@ jobs:
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
         with:
           egress-policy: audit
-
       - name: Checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - name: Get package version
@@ -27,13 +26,6 @@ jobs:
         run: |
           TAG=${{ steps.package-version.outputs.current-version}}
           echo "TAG=$TAG" >> "$GITHUB_ENV"
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
-        with:
-          images: ducktors/turborepo-remote-cache
-          flavor: latest=false
-          tags: type=raw,value=${{ env.TAG }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
       - name: Set up Docker Buildx
@@ -49,6 +41,8 @@ jobs:
           context: .
           platforms: linux/x86_64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ducktors/turborepo-remote-cache:latest
+            ducktors/turborepo-remote-cache:${{ env.TAG }}
           cache-from: |
             ducktors/turborepo-remote-cache:latest
