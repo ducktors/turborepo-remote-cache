@@ -1,4 +1,5 @@
-import azure from 'azure-storage'
+import { PassThrough } from 'node:stream'
+import { BlobServiceClient } from '@azure/storage-blob'
 import { StorageProvider } from './index.js'
 
 export interface AzureBlobStorageOptions {
@@ -10,31 +11,32 @@ export function createAzureBlobStorage({
   containerName,
   connectionString,
 }: AzureBlobStorageOptions): StorageProvider {
-  const blobService = azure.createBlobService(connectionString)
-  const emptyCb = () => null
+  const blobServiceClient =
+    BlobServiceClient.fromConnectionString(connectionString)
+  const containerClient = blobServiceClient.getContainerClient(containerName)
 
   return {
     exists: (artifactPath, cb) => {
-      blobService.doesBlobExist(
-        containerName,
-        artifactPath,
-        {},
-        (error, result) => cb(error, result.exists),
-      )
+      const blobClient = containerClient.getBlobClient(artifactPath)
+      blobClient.exists().then((exists) => {
+        cb(null, exists)
+      }, cb)
     },
     createReadStream(artifactPath) {
-      return blobService.createReadStream(
-        containerName,
-        artifactPath,
-        emptyCb,
-      ) as NodeJS.ReadStream
+      const blobClient = containerClient.getBlobClient(artifactPath)
+      const stream = new PassThrough()
+      blobClient.download().then((response) => {
+        if (response.readableStreamBody) {
+          response.readableStreamBody.pipe(stream)
+        }
+      })
+      return stream
     },
     createWriteStream(artifactPath) {
-      return blobService.createWriteStreamToBlockBlob(
-        containerName,
-        artifactPath,
-        {},
-      )
+      const blockBlobClient = containerClient.getBlockBlobClient(artifactPath)
+      const stream = new PassThrough()
+      blockBlobClient.uploadStream(stream)
+      return stream
     },
   }
 }
