@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.5...v2.2.0) (2024-06-10)
+
+
+### Features
+
+* **ABS:** replace legacy azure-storage lib with @azure/storage-blob ([806f3c7](https://github.com/ducktors/turborepo-remote-cache/commit/806f3c712477256b4fbad708d73d5dc41773e30f))
+
 ## [2.1.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.4...v2.1.5) (2024-06-04)
 
 
