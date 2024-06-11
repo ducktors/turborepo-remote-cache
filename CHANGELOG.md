@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.0...v2.2.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* raise the bodyLimit to 50MB from 1MB ([968f422](https://github.com/ducktors/turborepo-remote-cache/commit/968f42254053988157cbfef147c73f5d76c22c9a))
+
 # [2.2.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.1.5...v2.2.0) (2024-06-10)
 
 
