@@ -1,0 +1,31 @@
+
+# -*- mode: yaml -*-
+# This example configuration for provides basic automations to get started with gitStream.
+# View the gitStream quickstart for more examples: https://docs.gitstream.cm/examples/
+manifest:
+  version: 1.0
+
+automations:
+  # Post a comment that lists the best experts for the files that were modified.
+  explain_code_experts:
+    if:
+      - true
+    run:
+      - action: explain-code-experts@v1 
+        args:
+          gt: 10 
+
+  # Use codeExperts to assign recommended reviewers 
+  assign_code_experts:
+    # Triggered when someone applies a suggest-reviewer label to a PR.
+    if:
+        - true
+    # More info about code experts
+    # https://docs.gitstream.cm/filter-functions/#codeexperts
+    run:
+      - action: add-reviewers@v1
+        args:
+          reviewers: {{ repo | codeExperts(gt=10) }}
+      - action: explain-code-experts@v1 
+        args:
+          gt: 10 
