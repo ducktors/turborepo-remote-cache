@@ -31,5 +31,7 @@ Paste the results here:
 
 ## Your Environment
 
-- _os_: Mac, Windows, Linux
+- _OS_: Mac, Windows, Linux
+- _Cloud Vendor_: AWS, GCP, Azure, etc.
+- _Turbo Version_: 2.0.6
 - _any other relevant information_
