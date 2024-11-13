@@ -3,8 +3,12 @@ name: Docker
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions: read-all
+
+env:
+  IMAGE_NAME: ducktors/turborepo-remote-cache
 
 jobs:
   docker-build:
@@ -12,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
           egress-policy: audit
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Get package version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@3cf273023a0dda27efcd3164bdfb51908dd46a5b # main
@@ -28,23 +32,24 @@ jobs:
           echo "TAG=$TAG" >> "$GITHUB_ENV"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
-
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
-
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
       - name: Login to DockerHub
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/x86_64,linux/arm64
+          platforms: linux/amd64,linux/arm64
+          file: Dockerfile
           push: true
           tags: |
-            ducktors/turborepo-remote-cache:latest
-            ducktors/turborepo-remote-cache:${{ env.TAG }}
+            ${{env.IMAGE_NAME}}:${{ steps.package-version.outputs.current-version}}
           cache-from: |
-            ducktors/turborepo-remote-cache:latest
+            type=gha
+          cache-to: type=gha,mode=max
+
+
