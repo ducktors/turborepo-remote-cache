@@ -22,10 +22,10 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         name: Checkout
       - name: Use Node.js
-        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: 20
       - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
@@ -37,7 +37,7 @@ jobs:
       - name: Run tests with coverage
         run: pnpm test:coverage
       - name: Coveralls
-        uses: coverallsapp/github-action@43f11c4e058174f808ee9cd63701b6c42fe3f5e3 # master
+        uses: coverallsapp/github-action@cfd0633edbd2411b532b808ba7a8b5e04f76d2c8 # master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: CodeClimate
