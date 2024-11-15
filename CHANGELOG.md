@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.3...v2.2.4) (2024-11-15)
+
+
+### Bug Fixes
+
+* **deps:** bump path-to-regexp from 6.2.1 to 6.3.0 ([60edba9](https://github.com/ducktors/turborepo-remote-cache/commit/60edba97e2faa6d3423111a36ae165384f7f7557))
+
 ## [2.2.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.2...v2.2.3) (2024-11-15)
 
 
