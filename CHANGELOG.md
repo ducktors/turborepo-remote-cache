@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.2...v2.2.3) (2024-11-15)
+
+
+### Bug Fixes
+
+* **deps:** bump micromatch from 4.0.5 to 4.0.8 ([b24e0d3](https://github.com/ducktors/turborepo-remote-cache/commit/b24e0d3fe60439674de888dcee9889cd8451f888))
+
 ## [2.2.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.1...v2.2.2) (2024-11-15)
 
 
