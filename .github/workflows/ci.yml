@@ -46,7 +46,7 @@ jobs:
     name: Install
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x]
         os: [ubuntu-latest, macos-latest]
     steps:
       - name: Harden Runner
@@ -80,7 +80,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x]
         os: [ubuntu-latest]
     steps:
       - name: Harden Runner
