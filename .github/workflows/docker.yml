@@ -7,9 +7,6 @@ on:
 
 permissions: read-all
 
-env:
-  IMAGE_NAME: ducktors/turborepo-remote-cache
-
 jobs:
   docker-build:
     name: Docker Build
@@ -26,6 +23,12 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@3cf273023a0dda27efcd3164bdfb51908dd46a5b # main
         with:
           path: .
+      - name: Set correct environment
+        run: |
+          TAG=${{ steps.package-version.outputs.current-version}}
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
       - name: Login to DockerHub
@@ -41,9 +44,13 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{env.IMAGE_NAME}}:${{ steps.package-version.outputs.current-version}}
+            ducktors/turborepo-remote-cache:${{ steps.package-version.outputs.current-version}}
           cache-from: |
             type=gha
-          cache-to: type=gha,mode=max
+            ducktors/turborepo-remote-cache:latest
+          cache-to: |
+            type=registry,ref=ducktors/turborepo-remote-cache:latest,mode=max
+            type=gha,mode=max
+            
 
 
