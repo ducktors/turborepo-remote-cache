@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.1...v2.2.2) (2024-11-15)
+
+
+### Bug Fixes
+
+* Use BODY_LIMIT when creating app ([c0d999f](https://github.com/ducktors/turborepo-remote-cache/commit/c0d999f7d8ef69950b2fb13374eef65901a1c712))
+
 ## [2.2.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.0...v2.2.1) (2024-06-11)
 
 
