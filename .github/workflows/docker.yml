@@ -7,9 +7,6 @@ on:
 
 permissions: read-all
 
-env:
-  IMAGE_NAME: ducktors/turborepo-remote-cache
-
 jobs:
   docker-build:
     name: Docker Build
@@ -47,9 +44,13 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{env.IMAGE_NAME}}:${{ steps.package-version.outputs.current-version}}
+            ducktors/turborepo-remote-cache:${{ steps.package-version.outputs.current-version}}
           cache-from: |
             type=gha
-          cache-to: type=gha,mode=max
+            ducktors/turborepo-remote-cache:latest
+          cache-to: |
+            type=registry,ref=ducktors/turborepo-remote-cache:latest,mode=max
+            type=gha,mode=max
+            
 
 
