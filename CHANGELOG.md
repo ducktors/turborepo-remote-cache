@@ -1,3 +1,10 @@
+## [2.2.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.4...v2.2.5) (2024-11-19)
+
+
+### Bug Fixes
+
+* **deps:** bump cross-spawn from 6.0.5 to 6.0.6 ([cba4fbd](https://github.com/ducktors/turborepo-remote-cache/commit/cba4fbdc4bafc366a39eb87143d950470ec0f33f))
+
 ## [2.2.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.3...v2.2.4) (2024-11-15)
 
 
