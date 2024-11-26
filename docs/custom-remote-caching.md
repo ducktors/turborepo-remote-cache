@@ -28,30 +28,30 @@ For example:
 }
 ```
 
-Now, you need to add these two environment variables TURBO_TEAM and TURBO_TOKEN to your CI pipeline or development machine. There are three ways to do it:
+Now, you need to configure two additional environment variables, `TURBO_TEAM` and `TURBO_TOKEN`, within your development machine or CI pipeline. There are three ways to do it:
 
-1. Set/export the `TURBO_TEAM=ducktors` and`TURBO_TOKEN=myGeneratedToken` as environment variable.
-2. Add `teamid` and `token` to the *turbo* global config file. You can find or create it inside the `$XDG_CONFIG_HOME/turborepo/config.json`. To know where the`XDG_CONFIG_HOME` is located on your machine, please check out the [xdg-base-directory](https://github.com/adrg/xdg#xdg-base-directory) documentation. For example:
+1. Set/export `TURBO_TEAM=ducktors` and `TURBO_TOKEN=myGeneratedToken` as environment variables.
+2. Add `teamslug` and/or `token` to the `.turbo/config.json` file. __Note: Including the *token* here is a less secure way to do it if you plan to share or commit the config file. Prefer the TURBO_TOKEN environment variable whenever possible__. For example:
 
     `.turbo/config.json`
 
     ```json
     {
-      "teamid": "ducktors",
-      "token": "myGeneratedToken",
-      "experimentalUI": false,
-      "apiurl": "http://cache.ducktors.dev"
+      "apiurl": "http://cache.ducktors.dev",
+      "teamslug": "ducktors",
+      "token": "myGeneratedToken"
     }
     ```
+    - Setting the *TURBO_API*, *TURBO_TEAM*, and/or *TURBO_TOKEN* environment variables will __override__ the `apiurl`, `teamslug`, `token` properties of this file, respectively.
 
-3. Modify your project `package.json` scripts by adding the `--token=yourToken` parameter. __Note: This is a less secure way to do it because the token is committed inside the repository. Prefer the other two whenever possible.__
+3. Modify your project `package.json` scripts by adding the `--team=yourTeam` and `--token=yourToken` parameters. __Note: This is a less secure way to do it because the token is committed inside the repository. Prefer the other two whenever possible.__
 
 For example:
 
 `package.json`
 ```jsonc
 //...
-  "build": "turbo run build --teamid=\"ducktors\" --token=\"myGeneratedToken\"",
+  "build": "turbo run build --team=\"ducktors\" --token=\"myGeneratedToken\"",
   "dev": "turbo run dev --parallel",
   "lint": "turbo run lint",
   "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -62,7 +62,8 @@ __Note: The token value must be the same as for your server's `TURBO_TOKEN` env 
 
 
 ## Enable remote caching in Docker
-To enable remote caching in Docker, you must pass `TURBO_TEAM` and `TURBO_TOKEN` inside Dockerfile as [build args](https://docs.docker.com/build/guide/build-args/).
+To enable remote caching in Docker, you must pass `TURBO_TEAM` and `TURBO_TOKEN` inside Dockerfile as [build args](https://docs.docker.com/build/guide/build-args/) if you have *not* included them within `.turbo/config.json` or added them as parameters within `package.json` (see *Config file* above).
+
 For example:
 
 ```Dockerfile
@@ -78,10 +79,11 @@ COPY .turbo/config.json ./.turbo/
 RUN --mount=type=bind,source=.git,target=.git \
     pnpm turbo build
 ```
+
 and build your Remote Cache Server with this command:
 
 ```sh
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -f Dockerfile . --build-arg TURBO_TEAM=“ducktors” --build-arg TURBO_TOKEN=“myGeneratedToken“ --no-cache
+docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -f Dockerfile . --build-arg TURBO_TEAM="ducktors" --build-arg TURBO_TOKEN="myGeneratedToken" --no-cache
 ```
 
 ## Local environment variables
