@@ -257,6 +257,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mattref",
+      "name": "Matt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/137362246?v=4",
+      "profile": "https://github.com/mattref",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
