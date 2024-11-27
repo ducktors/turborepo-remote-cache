@@ -1,3 +1,10 @@
+## [2.2.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.5...v2.2.6) (2024-11-27)
+
+
+### Bug Fixes
+
+* update fastify and plugins to 5.0 ([d0be6ed](https://github.com/ducktors/turborepo-remote-cache/commit/d0be6edf336919e900091f14f6b5494d45777419))
+
 ## [2.2.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.4...v2.2.5) (2024-11-19)
 
 
