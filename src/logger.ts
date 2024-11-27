@@ -1,4 +1,4 @@
-import Pino from 'pino'
+import { pino } from 'pino'
 import { env as _env } from './env.js'
 
 const PinoLevelToSeverityLookup = {
@@ -15,14 +15,14 @@ let logDestination
 const env = _env.get()
 
 if (env.LOG_MODE === 'file') {
-  logDestination = Pino.destination(env.LOG_FILE)
+  logDestination = pino.destination(env.LOG_FILE)
 } else if (env.LOG_MODE === 'stdout') {
   logDestination = process.stdout
 } else {
   throw new Error('Invalid LOG_MODE. Allowed values are "file" or "stdout".')
 }
 
-export const logger = Pino(
+export const logger = pino(
   {
     level: env.LOG_LEVEL,
     messageKey: 'message',
