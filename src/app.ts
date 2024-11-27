@@ -1,7 +1,7 @@
 import { isBoom } from '@hapi/boom'
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
 import hyperid from 'hyperid'
-import { logger } from './logger.js'
+import { loggerConfig } from './logger.js'
 import config from './plugins/config.js'
 import remoteCache from './plugins/remote-cache/index.js'
 
@@ -9,7 +9,7 @@ const uuid = hyperid({ urlSafe: true })
 
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify({
-    logger,
+    logger: loggerConfig,
     genReqId: () => uuid(),
     ...options,
   })
