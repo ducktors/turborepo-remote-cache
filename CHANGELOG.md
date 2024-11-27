@@ -1,3 +1,11 @@
+## [2.2.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.6...v2.2.7) (2024-11-27)
+
+
+### Bug Fixes
+
+* change logger config ([5c7d495](https://github.com/ducktors/turborepo-remote-cache/commit/5c7d495d1e811f9fe4456b10e0f039d3e76bd9eb))
+* logger options only accepts a configuration object [#479](https://github.com/ducktors/turborepo-remote-cache/issues/479) ([705d9bf](https://github.com/ducktors/turborepo-remote-cache/commit/705d9bfc31b78e2aaf49829c42e0ab3c7726451d))
+
 ## [2.2.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.5...v2.2.6) (2024-11-27)
 
 
