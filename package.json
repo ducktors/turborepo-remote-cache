@@ -94,7 +94,7 @@
   },
   "homepage": "https://github.com/ducktors/turborepo-remote-cache#readme",
   "engines": {
-    "node": ">=20.13.1",
+    "node": ">=20.0.0",
     "pnpm": ">=9.14.2"
   },
   "keywords": [
