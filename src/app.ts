@@ -9,7 +9,7 @@ const uuid = hyperid({ urlSafe: true })
 
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify({
-    logger,
+    loggerInstance: logger,
     genReqId: () => uuid(),
     ...options,
   })
