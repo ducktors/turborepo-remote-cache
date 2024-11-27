@@ -12,7 +12,7 @@ const PinoLevelToSeverityLookup = {
 
 const env = _env.get()
 
-export const loggerConfig = {
+export const logger = pino({
   level: env.LOG_LEVEL,
   messageKey: 'message',
   redact: ['req.headers.authorization'],
@@ -29,8 +29,6 @@ export const loggerConfig = {
     env.LOG_MODE === 'file'
       ? { target: 'pino/file', options: { destination: env.LOG_FILE } }
       : undefined,
-}
-
-export const logger = pino(loggerConfig)
+})
 
 export default logger

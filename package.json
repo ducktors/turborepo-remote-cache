@@ -58,8 +58,8 @@
     "fastify-plugin": "5.0.1",
     "fs-blob-store": "6.0.0",
     "hyperid": "3.1.1",
-    "pino": "9.5.0",
-    "pino-pretty": "13.0.0",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
     "s3-blob-store": "4.1.1"
   },
   "devDependencies": {
