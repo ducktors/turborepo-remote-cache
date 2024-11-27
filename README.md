@@ -12,8 +12,6 @@
 This project is an open-source implementation of the [Turborepo custom remote cache server](https://turbo.build/repo/docs/core-concepts/remote-caching#self-hosting). If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
 It supports several storage providers and deploys environments. Moreover, the project provides **"deploy to "** buttons for one-click deployments whenever possible.
 
-> [Legacy fox1t/turborepo-remote-cache image will be redirected to ducktors/turborepo-remote-cache.](https://github.com/ducktors/turborepo-remote-cache/issues/157)
-
 ## Notable projects that use TRRC
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
