@@ -35,3 +35,10 @@ jobs:
           github_token: ${{ secrets.github_token }}
           body: |
             Your PR is deployed, see it [here](${{ env.FLY_URL }})
+
+      - name: Post link to PR Preview
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Your PR is deployed, see it [here](${{ env.FLY_URL }})
+          mode: recreate
