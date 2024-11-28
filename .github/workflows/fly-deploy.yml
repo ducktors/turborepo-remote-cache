@@ -1,4 +1,4 @@
-name: Fly.io Preview
+name: Fly.io Deploy
 on:
   pull_request:
     types: [opened, synchronize]
@@ -10,7 +10,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Preview
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Github repo
@@ -29,9 +29,9 @@ jobs:
           max-attempts: 3
           retry-delay: 15s
 
-      - name: Post link to PR Preview
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          message: |
-            Your PR is deployed, see it [here](${{ env.FLY_URL }})
-          mode: recreate
+      - name: Create deployment summary
+        if: success()
+        run: |
+          echo "### 🚀 Preview Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "Your PR has been deployed for preview." >> $GITHUB_STEP_SUMMARY
+          echo "✨ **[View Preview](${{ env.FLY_URL }})**" >> $GITHUB_STEP_SUMMARY
