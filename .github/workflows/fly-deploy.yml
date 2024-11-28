@@ -1,4 +1,4 @@
-name: Deploy Preview
+name: Fly.io Preview
 on:
   pull_request:
     types: [opened, synchronize]
@@ -9,6 +9,7 @@ env:
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Github repo
