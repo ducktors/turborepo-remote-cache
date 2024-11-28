@@ -6,6 +6,7 @@ on:
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   FLY_APP: turborepo-remote-cache
+  FLY_URL: https://turborepo-remote-cache.fly.dev/v8/artifacts/status
 
 jobs:
   deploy:
@@ -21,9 +22,16 @@ jobs:
           args:
             'deploy --app ${{ env.FLY_APP }} -c fly.toml'
 
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: ${{ env.FLY_URL }}
+          max-attempts: 3
+          retry-delay: 15s
+
       - name: Post link to PR Preview
         uses: actions-ecosystem/action-create-comment@v1
         with:
           github_token: ${{ secrets.github_token }}
           body: |
-            Your PR is deployed, see it [here](https://${{ env.FLY_APP }}.fly.dev)
+            Your PR is deployed, see it [here](${{ env.FLY_URL }})
