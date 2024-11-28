@@ -1,0 +1,36 @@
+name: Deploy Preview
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  FLY_ORG: ${{ secrets.FLY_ORG }}
+  FLY_APP: turborepo-remote-cache
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Github repo
+        uses: actions/checkout@v4
+
+      - name: Get PR number
+        uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          state: open
+
+      - name: Deploy app
+        uses: superfly/flyctl-actions@1.3
+        with:
+          args:
+            'deploy --app pr-${{ steps.findPr.outputs.pr }}-${{ env.FLY_APP }} -c
+            fly.toml'
+
+      - name: Post link to PR Preview
+        uses: actions-ecosystem/action-create-comment@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          body: |
+            Your PR is deployed, see it [here](https://pr-${{ steps.findPr.outputs.pr }}-${{ env.FLY_APP }}.fly.dev)
