@@ -1,4 +1,4 @@
-FROM node:20.18.1-alpine3.19 AS build
+FROM node:23.3.0-alpine3.19 AS build
 
 # set app basepath
 ENV HOME=/home/app
@@ -26,7 +26,7 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 RUN rm -rf $PROJECT_WORKDIR/.pnpm-store
 
 # start new image for lower size
-FROM node:20.13.1-alpine3.19
+FROM node:23.3.0-alpine3.19
 
 # Update OpenSSL and install dumb-init
 RUN apk update && \
