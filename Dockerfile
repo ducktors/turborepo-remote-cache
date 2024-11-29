@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM} node:20.13.1-alpine3.18@sha256:53108f67824964a573ea435fed258f6cee4d88343e9859a99d356883e71b490c as build
+FROM node:20.18.1-alpine3.19 AS build
 
 # set app basepath
 ENV HOME=/home/app
@@ -7,7 +7,7 @@ ENV HOME=/home/app
 COPY package.json $HOME/node/
 COPY pnpm-lock.yaml $HOME/node/
 
-# change workgin dir and install deps in quiet mode
+# change working dir and install deps
 WORKDIR $HOME/node
 
 # enable pnpm and install deps
@@ -26,18 +26,21 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 RUN rm -rf $PROJECT_WORKDIR/.pnpm-store
 
 # start new image for lower size
-FROM --platform=${TARGETPLATFORM} node:20.13.1-alpine3.18@sha256:53108f67824964a573ea435fed258f6cee4d88343e9859a99d356883e71b490c
+FROM node:20.13.1-alpine3.19
 
-# dumb-init registers signal handlers for every signal that can be caught
-RUN apk update && apk add --no-cache dumb-init
+# Update OpenSSL and install dumb-init
+RUN apk update && \
+    apk upgrade openssl && \
+    apk add --no-cache dumb-init && \
+    rm -rf /var/cache/apk/*
 
-# create use with no permissions
-RUN addgroup -g 101 -S app && adduser -u 100 -S -G app -s /bin/false app
+# create user with no permissions
+RUN addgroup -g 101 app && adduser -u 100 -D -G app -s /bin/false app
 
 # set app basepath
 ENV HOME=/home/app
 
-# copy production complied node app to the new image
+# copy production compiled node app to the new image
 COPY --chown=app:app --from=build $HOME/node/ $HOME/node/
 
 # run app with low permissions level user
