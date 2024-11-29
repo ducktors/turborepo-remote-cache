@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { join as pathJoin } from 'node:path'
 import { test } from 'node:test'
+
+const packageJson = JSON.parse(
+  readFileSync(pathJoin(process.cwd(), 'package.json'), 'utf8'),
+)
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -196,7 +202,7 @@ test('local storage', async (t) => {
   )
 
   await t.test(
-    'should return 200 when GET artifacts/status is calle with auth header',
+    'should return 200 when GET artifacts/status is called with auth header',
     async () => {
       const response = await app.inject({
         method: 'GET',
@@ -206,19 +212,25 @@ test('local storage', async (t) => {
         },
       })
       assert.equal(response.statusCode, 200)
-      assert.deepEqual(response.json(), { status: 'enabled' })
+      assert.deepEqual(response.json(), {
+        status: 'enabled',
+        version: packageJson.version,
+      })
     },
   )
 
   await t.test(
-    'should return 200 when GET artifacts/status is calle without auth header',
+    'should return 200 when GET artifacts/status is called without auth header',
     async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/status',
       })
       assert.equal(response.statusCode, 200)
-      assert.deepEqual(response.json(), { status: 'enabled' })
+      assert.deepEqual(response.json(), {
+        status: 'enabled',
+        version: packageJson.version,
+      })
     },
   )
 })
