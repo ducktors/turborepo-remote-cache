@@ -62,7 +62,7 @@ __Note: The token value must be the same as for your server's `TURBO_TOKEN` env 
 
 
 ## Enable remote caching in Docker
-To enable remote caching in Docker, you must pass `TURBO_TEAM` and `TURBO_TOKEN` inside Dockerfile as [build args](https://docs.docker.com/build/guide/build-args/) if you have *not* included them within `.turbo/config.json` or added them as parameters within `package.json` (see *Config file* above).
+To enable remote caching in Docker, you must pass `TURBO_TEAM` inside Dockerfile as [build arg](https://docs.docker.com/build/guide/build-args/) and `TURBO_TOKEN` as [build secret](https://docs.docker.com/build/building/secrets/) if you have *not* included them within `.turbo/config.json` or added them as parameters within `package.json` (see *Config file* above).
 
 For example:
 
@@ -77,13 +77,20 @@ COPY turbo.json ./
 COPY .turbo/config.json ./.turbo/
 
 RUN --mount=type=bind,source=.git,target=.git \
-    pnpm turbo build
+    --mount=type=secret,id=TURBO_TOKEN \
+    TURBO_TOKEN=$(cat /run/secrets/TURBO_TOKEN) pnpm turbo build
 ```
 
-and build your Remote Cache Server with this command:
+and build your image leveraging Remote Cache Server with this command:
 
 ```sh
-docker buildx build --progress=plain --platform linux/amd64,linux/arm64 -f Dockerfile . --build-arg TURBO_TEAM="ducktors" --build-arg TURBO_TOKEN="myGeneratedToken" --no-cache
+# TURBO_TOKEN is an env variable preferably set from CI secrets
+docker buildx build --progress=plain \
+    --platform linux/amd64,linux/arm64 \
+    -f Dockerfile . \
+    --build-arg TURBO_TEAM="ducktors" \
+    --secret id=TURBO_TOKEN,env=TURBO_TOKEN \
+    --no-cache
 ```
 
 ## Local environment variables
