@@ -1,3 +1,10 @@
+## [2.2.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.7...v2.2.8) (2024-11-29)
+
+
+### Bug Fixes
+
+* update node on dockerfile ([a9dd8cb](https://github.com/ducktors/turborepo-remote-cache/commit/a9dd8cb0269c1e2f5f4dc689e214c3b1e0042fdb))
+
 ## [2.2.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.6...v2.2.7) (2024-11-27)
 
 
