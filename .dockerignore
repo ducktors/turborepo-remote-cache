@@ -46,6 +46,7 @@ build
 .vscode
 .env
 .env.example
+.envrc
 LICENSE
 README.md
 .dockerignore
