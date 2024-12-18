@@ -12,6 +12,7 @@ export const artifactsEvents: RouteOptions<
 > = {
   method: 'POST',
   url: '/artifacts/events',
+  authorization: 'read',
   async handler(_req, reply) {
     reply.code(200).send({})
   },

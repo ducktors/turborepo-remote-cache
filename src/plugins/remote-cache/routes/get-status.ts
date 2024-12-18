@@ -30,6 +30,7 @@ export const getStatus: RouteOptions<
   url: '/artifacts/status',
   schema: statusRouteSchema,
   logLevel: 'error',
+  authorization: 'read',
   async handler(req, reply) {
     reply.send({
       status: 'enabled',
