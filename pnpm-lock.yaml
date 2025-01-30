@@ -118,7 +118,7 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5
       rimraf:
-        specifier: ^4.1.2
+        specifier: ^4.4.1
         version: 4.4.1
       s3rver:
         specifier: ^3.7.1
@@ -1349,8 +1349,8 @@ packages:
   duplexer2@0.1.4:
     resolution: {integrity: sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==}
 
-  duplexify@4.1.2:
-    resolution: {integrity: sha512-fz3OjcNCHmRP12MJoZMPglx8m4rrFP8rovnk4vT8Fs+aonZoCwGg10dSsQsfP/E62eZcPTMSMP6686fu9Qlqtw==}
+  duplexify@4.1.3:
+    resolution: {integrity: sha512-M3BmBhwJRZsSx38lZyhE53Csddgzl5R7xGJNk7CVddZD6CcmwMCH8J+7AprIrQKH7TonKxaCjcv27Qmf+sQ+oA==}
 
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
@@ -3153,8 +3153,8 @@ packages:
   stream-events@1.0.5:
     resolution: {integrity: sha512-E1GUzBSgvct8Jsb3v2X15pjzN1tYebtbLaMg+eBOUOAxgbLoSbT2NS91ckc5lJD1KfLjId+jXJRgo0qnV5Nerg==}
 
-  stream-shift@1.0.1:
-    resolution: {integrity: sha512-AiisoFqQ0vbGcZgQPY1cdP2I76glaVA/RauYR4G4thNFgkTqr90yXTo4LYX60Jl+sIlPNHHdGSwo01AvbKUSVQ==}
+  stream-shift@1.0.3:
+    resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
 
   streamsearch@0.1.2:
     resolution: {integrity: sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==}
@@ -3973,7 +3973,7 @@ snapshots:
       abort-controller: 3.0.0
       async-retry: 1.3.3
       compressible: 2.0.18
-      duplexify: 4.1.2
+      duplexify: 4.1.3
       ent: 2.2.0
       extend: 3.0.2
       gaxios: 5.1.0
@@ -4917,12 +4917,12 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  duplexify@4.1.2:
+  duplexify@4.1.3:
     dependencies:
       end-of-stream: 1.4.4
       inherits: 2.0.4
       readable-stream: 3.6.2
-      stream-shift: 1.0.1
+      stream-shift: 1.0.3
 
   ecdsa-sig-formatter@1.0.11:
     dependencies:
@@ -5265,7 +5265,7 @@ snapshots:
 
   fs-blob-store@6.0.0:
     dependencies:
-      duplexify: 4.1.2
+      duplexify: 4.1.3
       end-of-stream: 1.4.4
       lru-cache: 6.0.0
       mkdirp-classic: 0.5.3
@@ -6747,7 +6747,7 @@ snapshots:
     dependencies:
       stubs: 3.0.0
 
-  stream-shift@1.0.1: {}
+  stream-shift@1.0.3: {}
 
   streamsearch@0.1.2: {}
 
