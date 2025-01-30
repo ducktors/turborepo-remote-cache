@@ -42,23 +42,19 @@ const commonTestEnv = {
   STORAGE_PATH: 'turborepo-remote-cache-test',
 }
 
+Object.assign(process.env, commonTestEnv)
+
 test('Google Cloud Storage', async (t) => {
   /**
    * MOCKS
    */
   const testEnv = {
-    ...commonTestEnv,
     GCS_PROJECT_ID: 'some-storage',
     GCS_CLIENT_EMAIL: 'service-account@some-storage.iam.gserviceaccount.com',
     GCS_PRIVATE_KEY:
       '-----BEGIN PRIVATE KEY-----\nFooBarKey\n-----END PRIVATE KEY-----\n',
   }
-  Object.assign(process.env, testEnv)
-  const { env } = await import('../src/env.js')
-  t.mock.method(env, 'get', () => {
-    return testEnv
-  })
-  const { default: GCS } = await import('@google-cloud/storage')
+  const GCS = await import('@google-cloud/storage')
   const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
     return GCSMock
   })
@@ -70,13 +66,12 @@ test('Google Cloud Storage', async (t) => {
   const team = 'superteam'
 
   const { createApp } = await import('../src/app.js')
-
-  const app = createApp({ logger: false })
+  const app = createApp({ logger: false, configOverrides: testEnv })
   await app.ready()
 
   await t.test('loads correct env vars', async () => {
-    assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
-    assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
+    assert.equal(app.config.STORAGE_PROVIDER, commonTestEnv.STORAGE_PROVIDER)
+    assert.equal(app.config.STORAGE_PATH, commonTestEnv.STORAGE_PATH)
     assert.equal(app.config.GCS_PROJECT_ID, testEnv.GCS_PROJECT_ID)
     assert.equal(app.config.GCS_CLIENT_EMAIL, testEnv.GCS_CLIENT_EMAIL)
     assert.equal(app.config.GCS_PRIVATE_KEY, testEnv.GCS_PRIVATE_KEY)
@@ -237,22 +232,17 @@ test('Google Cloud Storage', async (t) => {
 
 test('Google Cloud Storage ADC', async (t) => {
   const testEnv = {
-    ...commonTestEnv,
     GCS_PROJECT_ID: '',
     GCS_CLIENT_EMAIL: '',
     GCS_PRIVATE_KEY: '',
   }
-  Object.assign(process.env, testEnv)
   /**
    * MOCKS
    */
-  const { default: GCS } = await import('@google-cloud/storage')
+
+  const GCS = await import('@google-cloud/storage')
   const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
     return GCSMock
-  })
-  const { env } = await import('../src/env.js')
-  t.mock.method(env, 'get', () => {
-    return testEnv
   })
   /**
    * END MOCKS
@@ -262,12 +252,12 @@ test('Google Cloud Storage ADC', async (t) => {
   const team = 'superteam2'
 
   const { createApp } = await import('../src/app.js')
-  const app = createApp({ logger: false })
+  const app = createApp({ logger: false, configOverrides: testEnv })
   await app.ready()
 
   await t.test('loads correct env vars', async () => {
-    assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
-    assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
+    assert.equal(app.config.STORAGE_PROVIDER, commonTestEnv.STORAGE_PROVIDER)
+    assert.equal(app.config.STORAGE_PATH, commonTestEnv.STORAGE_PATH)
     assert.equal(app.config.GCS_PROJECT_ID, testEnv.GCS_PROJECT_ID)
     assert.equal(app.config.GCS_CLIENT_EMAIL, testEnv.GCS_CLIENT_EMAIL)
     assert.equal(app.config.GCS_PRIVATE_KEY, testEnv.GCS_PRIVATE_KEY)
