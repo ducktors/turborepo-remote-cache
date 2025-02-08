@@ -12,6 +12,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  PNPM_VERSION: 9.15.5
+
 permissions: read-all
 
 jobs:
@@ -31,7 +34,7 @@ jobs:
       - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         name: Install pnpm
         with:
-          version: 9.14.2
+          version: ${{ env.PNPM_VERSION }}
       - name: Install with pnpm
         run: pnpm install --frozen-lockfile
       - name: Check commit message
@@ -97,7 +100,7 @@ jobs:
       - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         name: Install pnpm
         with:
-          version: 9.14.2
+          version: ${{ env.PNPM_VERSION }}
       - name: Install with pnpm
         run: pnpm install
       - name: Lint code
