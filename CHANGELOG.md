@@ -1,3 +1,10 @@
+## [2.2.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.8...v2.2.9) (2025-02-08)
+
+
+### Bug Fixes
+
+* **deps:** update version of duplexify to 4.1.3 ([cb69b32](https://github.com/ducktors/turborepo-remote-cache/commit/cb69b32fc7786342b139a685fe4dc54d09808c57))
+
 ## [2.2.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.7...v2.2.8) (2024-11-29)
 
 
