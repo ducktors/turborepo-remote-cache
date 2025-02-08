@@ -13,15 +13,18 @@ RUN addgroup -g 101 app && adduser -u 100 -D -G app -s /bin/false app
 WORKDIR $HOME
 RUN chown app:app $HOME
 
-# Switch to non-root user for build
+# Install pnpm globally before switching to non-root user
+USER root
+RUN npm install -g pnpm@${PNPM_VERSION}
+
+# Switch to non-root user for remaining operations
 USER app
 
 # Add package files with specific ownership
 COPY --chown=app:app package.json pnpm-lock.yaml ./
 
-# Install pnpm and dependencies with specific version
-RUN npm install -g pnpm@${PNPM_VERSION} && \
-    pnpm install --frozen-lockfile --ignore-scripts
+# Install dependencies
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy application code
 COPY --chown=app:app . .
