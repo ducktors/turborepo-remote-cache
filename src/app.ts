@@ -8,10 +8,23 @@ import remoteCache from './plugins/remote-cache/index.js'
 const uuid = hyperid({ urlSafe: true })
 
 export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
-  const app = Fastify({
-    loggerInstance: logger,
-    genReqId: () => uuid(),
+  const fastifyOptions: FastifyServerOptions = {
     ...options,
+  }
+
+  const hasConfiguredLogger =
+    'logger' in fastifyOptions || 'loggerInstance' in fastifyOptions
+
+  /**
+   * Fastify does not allow both loggerInstance and logger to be set
+   */
+  if (!hasConfiguredLogger) {
+    fastifyOptions.loggerInstance = logger
+  }
+
+  const app = Fastify({
+    genReqId: () => uuid(),
+    ...fastifyOptions,
   })
 
   app.register(config).after(() => {
