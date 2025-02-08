@@ -12,6 +12,10 @@ concurrency:
 
 permissions: read-all
 
+env:
+  NODE_VERSION: 22
+  PNPM_VERSION: 9.15.5
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,11 +31,11 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         name: Install pnpm
         with:
-          version: 9.14.2
+          version: ${{ env.PNPM_VERSION }}
       - name: Install with pnpm
         run: pnpm install
       - name: Run tests with coverage
