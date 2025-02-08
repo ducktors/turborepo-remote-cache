@@ -1,3 +1,10 @@
+## [2.2.11](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.10...v2.2.11) (2025-02-08)
+
+
+### Bug Fixes
+
+* Do not allow logger and loggerInstance to simultaneously exist in fastifyOptions ([6c69249](https://github.com/ducktors/turborepo-remote-cache/commit/6c6924997f7b81ef7e4745fdd54572c1331971bc))
+
 ## [2.2.10](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.9...v2.2.10) (2025-02-08)
 
 
