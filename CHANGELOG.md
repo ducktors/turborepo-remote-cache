@@ -1,3 +1,10 @@
+## [2.2.10](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.9...v2.2.10) (2025-02-08)
+
+
+### Bug Fixes
+
+* remove corepack ([a4288f8](https://github.com/ducktors/turborepo-remote-cache/commit/a4288f8cd15cfdfdd07535bff167edd1f37856f6))
+
 ## [2.2.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.8...v2.2.9) (2025-02-08)
 
 
