@@ -5,7 +5,8 @@
     "outDir": "dist",
     "inlineSourceMap": true,
     "declaration": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true
   },
   "include": [
     "./src/**/*.ts"
