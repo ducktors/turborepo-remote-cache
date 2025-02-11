@@ -16,7 +16,7 @@ const testEnv = {
   AWS_ACCESS_KEY_ID: 'S3RVER',
   AWS_SECRET_ACCESS_KEY: 'S3RVER',
   AWS_REGION: '',
-  S3_ENDPOINT: 'http://localhost:4568',
+  S3_ENDPOINT: 'http://localhost:4567',
 }
 Object.assign(process.env, testEnv)
 
@@ -28,6 +28,7 @@ const server = new S3erver({
       name: process.env.STORAGE_PATH,
     },
   ],
+  port: 4567,
 })
 
 server.run((err) => {

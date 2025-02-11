@@ -1,3 +1,10 @@
+## [2.2.12](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.11...v2.2.12) (2025-02-10)
+
+
+### Bug Fixes
+
+* update aws-sdk to patch GHSA-776f-qx25-q3cc ([96d3d71](https://github.com/ducktors/turborepo-remote-cache/commit/96d3d71a2322b17b130ef5f660e64b976960cc05))
+
 ## [2.2.11](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.10...v2.2.11) (2025-02-08)
 
 
