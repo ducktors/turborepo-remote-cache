@@ -5,11 +5,13 @@ on:
     types: [published]
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  docker-build:
-    name: Docker Build
+  docker-hub:
+    name: Docker Hub
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
@@ -36,7 +38,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build and push to Docker Hub
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -45,10 +47,46 @@ jobs:
           push: true
           tags: |
             ducktors/turborepo-remote-cache:${{ steps.package-version.outputs.current-version}}
-          cache-from: |
-            type=gha
-          cache-to: |
-            type=gha,mode=max
-            
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  github-registry:
+    name: GitHub Container Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@cb605e52c26070c328afc4562f0b4ada7618a84e # v2.10.4
+        with:
+          egress-policy: audit
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Get package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@3cf273023a0dda27efcd3164bdfb51908dd46a5b # main
+        with:
+          path: .
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@4574d27a4764455b42196d70a065bc6853246a25 # v3.4.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push to GitHub Registry
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          file: Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/turborepo-remote-cache:${{ steps.package-version.outputs.current-version}}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  
 
 
