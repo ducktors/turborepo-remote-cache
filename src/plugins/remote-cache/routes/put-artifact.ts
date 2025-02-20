@@ -25,6 +25,7 @@ export const putArtifact: RouteOptions<
   url: '/artifacts/:id',
   method: 'PUT',
   schema: artifactsRouteSchema,
+  authorization: 'write',
   async handler(req, reply) {
     const artifactId = req.params.id
     const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used

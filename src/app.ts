@@ -1,13 +1,16 @@
 import { isBoom } from '@hapi/boom'
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
 import hyperid from 'hyperid'
+import { Config } from './env.js'
 import { logger } from './logger.js'
 import config from './plugins/config.js'
 import remoteCache from './plugins/remote-cache/index.js'
 
 const uuid = hyperid({ urlSafe: true })
 
-export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
+export function createApp(
+  options: FastifyServerOptions & { configOverrides?: Partial<Config> } = {},
+): FastifyInstance {
   const fastifyOptions: FastifyServerOptions = {
     ...options,
   }
@@ -27,9 +30,8 @@ export function createApp(options: FastifyServerOptions = {}): FastifyInstance {
     ...fastifyOptions,
   })
 
-  app.register(config).after(() => {
+  app.register(config, { overrides: options.configOverrides }).after(() => {
     app.register(remoteCache, {
-      allowedTokens: [...app.config.TURBO_TOKEN],
       provider: app.config.STORAGE_PROVIDER,
     })
   })
