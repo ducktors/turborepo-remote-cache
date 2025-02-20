@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.0...v2.3.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* remove package.json import on status page ([ad63d6e](https://github.com/ducktors/turborepo-remote-cache/commit/ad63d6e057c883b888065139e037a2401186395f))
+
 # [2.3.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.12...v2.3.0) (2025-02-20)
 
 
