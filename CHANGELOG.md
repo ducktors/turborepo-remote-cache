@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.12...v2.3.0) (2025-02-20)
+
+
+### Features
+
+* Add JWT Authentication and Authorization ([4828fed](https://github.com/ducktors/turborepo-remote-cache/commit/4828fed5d4d9a1a8acd1c9be4be1c94b87521219))
+
 ## [2.2.12](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.11...v2.2.12) (2025-02-10)
 
 
