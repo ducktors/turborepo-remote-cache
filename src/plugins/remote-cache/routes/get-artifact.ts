@@ -24,6 +24,7 @@ export const getArtifact: RouteOptions<
   exposeHeadRoute: false,
   url: '/artifacts/:id',
   schema: artifactsRouteSchema,
+  authorization: 'read',
   async handler(req, reply) {
     const artifactId = req.params.id
     const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used

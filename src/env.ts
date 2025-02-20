@@ -25,7 +25,13 @@ const schema = Type.Object(
     NODE_ENV: Type.Optional(
       Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION }),
     ),
-    TURBO_TOKEN: Type.String({ separator: ',' }),
+    AUTH_MODE: Type.Optional(Type.Enum({ static: 'static', jwt: 'jwt' })),
+    JWT_AUDIENCE: Type.Optional(Type.String({ separator: ',' })),
+    JWT_ISSUER: Type.Optional(Type.String()),
+    JWKS_URL: Type.Optional(Type.String()),
+    JWT_READ_SCOPES: Type.Optional(Type.String({ separator: ',' })),
+    JWT_WRITE_SCOPES: Type.Optional(Type.String({ separator: ',' })),
+    TURBO_TOKEN: Type.Optional(Type.String({ separator: ',' })),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
     LOG_MODE: Type.Optional(Type.String({ default: 'stdout' })),
@@ -59,17 +65,25 @@ const schema = Type.Object(
     additionalProperties: false,
   },
 )
-const _env = envSchema<Static<typeof schema>>({
-  // we call the default method because Ajv provides wrong types. ref https://github.com/ajv-validator/ajv/issues/2132
-  ajv: new Ajv.default({
-    removeAdditional: true,
-    useDefaults: true,
-    coerceTypes: true,
-    keywords: ['kind', 'RegExp', 'modifier', envSchema.keywords.separator],
-  }),
-  dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT ? true : false,
-  schema,
-})
+
+export type Config = Static<typeof schema>
+let _env: Config
+export function load(overrides?: Partial<Config>) {
+  _env = envSchema<Static<typeof schema>>({
+    // we call the default method because Ajv provides wrong types. ref https://github.com/ajv-validator/ajv/issues/2132
+    ajv: new Ajv.default({
+      removeAdditional: true,
+      useDefaults: true,
+      coerceTypes: true,
+      keywords: ['kind', 'RegExp', 'modifier', envSchema.keywords.separator],
+    }),
+    data: overrides,
+    dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT ? true : false,
+    schema,
+  })
+  return _env
+}
+_env = load()
 
 // we export an object so we can mock the env value while testing. In fact exported vars in are not mockable in ESM
 export const env = {
