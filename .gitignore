@@ -65,3 +65,6 @@ junit-testresults.xml
 .DS_Store
 build
 .envrc
+
+# Azure Function
+local.settings.json

@@ -1,0 +1,63 @@
+name: Deploy Turborepo Remote Cache to Azure Function
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: convolabai/ps-git-repos/modules/ci/setup-node@main
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install Production Dependencies
+        run: pnpm install --prod --node-linker=hoisted --ignore-scripts
+
+      - name: Zip node_modules
+        shell: bash
+        run: zip -r release.zip node_modules -q
+
+      - name: Zip dist
+        shell: bash
+        run: zip -r release.zip dist
+
+      - name: Zip az host file
+        shell: bash
+        run: zip -r release.zip host.json
+
+      - name: Zip az package.json
+        shell: bash
+        run: zip -r release.zip package.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: release.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy Azure Function
+        uses: convolabai/ps-git-repos/modules/ci/publish-azure-function@main
+        with:
+          app_name: "ps-turborepo-remote-cache-az-function"
+          azure_publish_profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          artifact_name: "release"
