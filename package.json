@@ -90,7 +90,7 @@
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
     "s3rver": "^3.7.1",
-    "semantic-release": "^24.2.1",
+    "semantic-release": "^24.2.3",
     "tsx": "^4.19.2",
     "typescript": "^5.2.2"
   },
@@ -99,9 +99,18 @@
   },
   "homepage": "https://github.com/ducktors/turborepo-remote-cache#readme",
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=9.15.4"
+    "node": ">=20.0.0"
   },
-  "keywords": ["turborepo", "monorepo", "remote", "cache"],
-  "files": ["api", "dist", "vercel.json"]
+  "keywords": [
+    "turborepo",
+    "monorepo",
+    "remote",
+    "cache"
+  ],
+  "files": [
+    "api",
+    "dist",
+    "vercel.json"
+  ],
+  "packageManager": "pnpm@10.5.0"
 }

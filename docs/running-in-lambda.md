@@ -1,11 +1,13 @@
 ---
 layout: default
-title: Running in an AWS Lambda Function
+title: Running in an AWS Lambda Function (Community Contribution)
 parent: Deployment Environments
 nav_order: 1
 ---
 
-# Running in an AWS Lambda Function
+# Running in an AWS Lambda Function (Community Contribution)
+
+> **Note:** This guide is a community contribution, so it's not officially supported by the maintainers of this repository.
 
 The server can be deployed to run in an AWS Lambda. The following steps take you
 through creating:

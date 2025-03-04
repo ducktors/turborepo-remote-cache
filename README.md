@@ -15,7 +15,6 @@ It supports several storage providers and deploys environments. Moreover, the pr
 ## Notable projects that use TRRC
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
-- [Lambda](https://github.com/cvle/turborepo-cache-lambda)
 - [AWS CDK Construct](https://github.com/NimmLor/cdk-turborepo-remote-cache)
 
 ## Documentation
