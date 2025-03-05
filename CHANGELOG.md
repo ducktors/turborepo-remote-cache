@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.1...v2.3.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* pnpm audit fix ([4f64569](https://github.com/ducktors/turborepo-remote-cache/commit/4f645694d9ee292849cdab3e1057d54a2c63efce))
+
 ## [2.3.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.0...v2.3.1) (2025-02-20)
 
 
