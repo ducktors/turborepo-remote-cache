@@ -21,9 +21,7 @@
     "turborepo-remote-cache": "./dist/cli.js"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "prebuild": "pnpm lint && rimraf ./dist",
-    "build": "tsc -p ./tsconfig.json",
+    "build": "pnpm lint && rimraf ./dist && tsc -p ./tsconfig.json",
     "build:docker": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps dist/index.js",
     "lint": "biome check src test",
@@ -111,7 +109,6 @@
     "dist",
     "vercel.json"
   ],
-  "packageManager": "pnpm@10.5.0",
   "pnpm": {
     "overrides": {
       "cross-spawn@>=7.0.0 <7.0.5": ">=7.0.5",
