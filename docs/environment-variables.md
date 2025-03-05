@@ -18,6 +18,7 @@ nav_order: 2
 | `JWT_READ_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of scopes.
 | `JWT_WRITE_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of scopes.
 | `LOG_LEVEL` | string | optional | `'info'` | Possibile values are [one of these](https://github.com/ducktors/turborepo-remote-cache/blob/main/src/logger.ts#L3) |
+| `LOG_LEVEL_PROBE` | boolean | optional | `'true'` | Enable/Disable logging for the status endpoint |
 | `LOG_MODE` | string | optional | `stdout` | Setting it to 'file' enables writing logs to file |
 | `LOG_FILE` | string | optional | `server.log` | Path and file name where save .log file (e.g. /path/to/my/file.log) |
 | `STORAGE_PROVIDER` | string | optional | `local` | Possible values are `local`, `s3`, `google-cloud-storage` or `azure-blob-storage`. Use this var to choose the storage provider. |

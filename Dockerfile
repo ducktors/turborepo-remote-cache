@@ -1,10 +1,12 @@
 ARG PNPM_VERSION=10.5.0
 ARG NODE_VERSION=20.13.1-alpine3.19
+ARG PACKAGE_VERSION
 
 FROM node:${NODE_VERSION} AS build
 
 # Use a more specific working directory
 ENV HOME=/opt/app
+ENV PACKAGE_VERSION=$PACKAGE_VERSION
 
 # Create non-root user early in build stage
 RUN addgroup -g 101 app && adduser -u 100 -D -G app -s /bin/false app

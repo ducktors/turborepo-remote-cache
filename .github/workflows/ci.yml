@@ -56,7 +56,6 @@ jobs:
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
         with:
           egress-policy: audit
-
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         name: Checkout
       - name: Use Node.js
@@ -75,8 +74,19 @@ jobs:
           cd ${{ github.workspace }}
           mkdir yarn-repro
           cd yarn-repro
-          npm init -y
+          yarn init -y
           yarn add turborepo-remote-cache
+      - name: Install pnpm
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Install with pnpm
+        run: |
+          cd ${{ github.workspace }}
+          mkdir pnpm-repro
+          cd pnpm-repro
+          npm init -y
+          pnpm add turborepo-remote-cache
 
   build:
     runs-on: ${{ matrix.os }}
@@ -119,7 +129,11 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
-      
+      - name: Get package version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@3cf273023a0dda27efcd3164bdfb51908dd46a5b # main
+        with:
+          path: .
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
@@ -130,6 +144,8 @@ jobs:
           tags: turborepo-remote-cache:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            PACKAGE_VERSION=${{ steps.package-version.outputs.current-version}}
       - name: Test Docker image
         run: |
           docker image ls
