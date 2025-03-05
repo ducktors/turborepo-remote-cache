@@ -19,7 +19,7 @@ export const getStatus: RouteOptions<
   method: 'GET',
   url: '/artifacts/status',
   schema: statusRouteSchema,
-  logLevel: process.env.LOG_LEVEL_PROBE === 'true' ? 'info' : 'silent',
+  logLevel: process.env.ENABLE_STATUS_LOG === 'true' ? 'info' : 'silent',
   authorization: 'read',
   async handler(req, reply) {
     reply.send({
