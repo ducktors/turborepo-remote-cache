@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.2...v2.3.3) (2025-03-05)
+
+
+### Bug Fixes
+
+* change name of LOG_LEVEL_PROBE ([7e0641c](https://github.com/ducktors/turborepo-remote-cache/commit/7e0641cb48faa5a060ea5571ca02d895c105a2df))
+
 ## [2.3.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.1...v2.3.2) (2025-03-05)
 
 
