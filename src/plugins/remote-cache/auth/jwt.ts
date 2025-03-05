@@ -51,16 +51,4 @@ export default fp(async (fastify) => {
       route.onRequest = [...[route.onRequest ?? []].flat(), authorizeWrite]
     }
   })
-
-  fastify.setErrorHandler(async (error, req, res) => {
-    if (isBoom(error)) {
-      throw error
-    } else if (error.code?.startsWith('FST_JWT_')) {
-      throw new Boom(error.message, {
-        statusCode: error.statusCode || 500,
-      })
-    } else {
-      throw unauthorized()
-    }
-  })
 })
