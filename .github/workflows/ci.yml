@@ -85,7 +85,7 @@ jobs:
           cd ${{ github.workspace }}
           mkdir pnpm-repro
           cd pnpm-repro
-          pnpm init -y
+          npm init -y
           pnpm add turborepo-remote-cache
 
   build:
