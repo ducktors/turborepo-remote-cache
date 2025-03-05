@@ -1,3 +1,10 @@
+## [2.3.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.3...v2.3.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* simplify dockerfile and fix ghr docker image name ([4495504](https://github.com/ducktors/turborepo-remote-cache/commit/44955044efb5ad4bc1c3895e28b554c0d18df693))
+
 ## [2.3.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.2...v2.3.3) (2025-03-05)
 
 
