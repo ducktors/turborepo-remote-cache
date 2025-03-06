@@ -28,12 +28,12 @@ type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
   Provider extends typeof STORAGE_PROVIDERS.LOCAL
     ? LocalOptions
     : Provider extends typeof STORAGE_PROVIDERS.S3
-    ? S3Options
-    : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
-    ? AzureBlobStorageOptions
-    : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
-    ? GoogleCloudStorageOptions
-    : never
+      ? S3Options
+      : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
+        ? AzureBlobStorageOptions
+        : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
+          ? GoogleCloudStorageOptions
+          : never
 
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {

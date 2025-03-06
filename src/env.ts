@@ -7,7 +7,7 @@ const NODE_ENVS = {
   DEVELOPMENT: 'development',
   TEST: 'test',
 } as const
-type NODE_ENVS = typeof NODE_ENVS[keyof typeof NODE_ENVS]
+type NODE_ENVS = (typeof NODE_ENVS)[keyof typeof NODE_ENVS]
 
 export const STORAGE_PROVIDERS = {
   LOCAL: 'local',
@@ -18,7 +18,7 @@ export const STORAGE_PROVIDERS = {
   MINIO: 'minio',
 } as const
 export type STORAGE_PROVIDERS =
-  typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
+  (typeof STORAGE_PROVIDERS)[keyof typeof STORAGE_PROVIDERS]
 
 const schema = Type.Object(
   {
