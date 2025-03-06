@@ -81,7 +81,7 @@ jobs:
           mkdir npm-repro
           cd npm-repro
           npm init -y
-          npm install ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tar.gz
+          npm install ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tgz
       - name: Install with yarn
         run: |
           cd ..
@@ -89,14 +89,14 @@ jobs:
           cd yarn-repro
           corepack enable
           yarn init -y
-          yarn add ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tar.gz
+          yarn add ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tgz
       - name: Install with pnpm
         run: |
           cd ..
           mkdir pnpm-repro
           cd pnpm-repro
           npm init -y
-          pnpm add ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tar.gz
+          pnpm add ${{ github.workspace }}/turborepo-remote-cache-${{ steps.package-version.outputs.current-version }}.tgz
 
   build:
     runs-on: ${{ matrix.os }}
