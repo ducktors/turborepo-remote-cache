@@ -1,7 +1,7 @@
 import assert from 'node:assert'
-import crypto from 'node:crypto'
+import crypto, { randomUUID } from 'node:crypto'
 import { PassThrough, Readable } from 'node:stream'
-import { afterEach, mock, test } from 'node:test'
+import { after, afterEach, before, mock, test } from 'node:test'
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -75,15 +75,15 @@ test('Azure Blob Storage', async (t) => {
   })
 
   await t.test(
-    'should return 400 when missing authorization header',
+    'should return 401 when missing authorization header',
     async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/v8/artifacts/not-found',
         headers: {},
       })
-      assert.equal(response.statusCode, 400)
-      assert.equal(response.json().message, 'Missing Authorization header')
+      assert.equal(response.statusCode, 401)
+      assert.equal(response.json().message, 'Unauthorized')
     },
   )
 
@@ -98,7 +98,7 @@ test('Azure Blob Storage', async (t) => {
         },
       })
       assert.equal(response.statusCode, 401)
-      assert.equal(response.json().message, 'Invalid authorization token')
+      assert.equal(response.json().message, 'Unauthorized')
     },
   )
 
@@ -227,6 +227,44 @@ test('Azure Blob Storage', async (t) => {
   await t.test(
     'should return 200 when POST artifacts/events is called',
     async () => {
+      const events = [
+        {
+          sessionId: randomUUID(),
+          source: 'LOCAL',
+          hash: '12HKQaOmR5t5Uy6vdcQsNIiZgHGB',
+          event: 'HIT',
+          duration: 400,
+        },
+        {
+          sessionId: randomUUID(),
+          source: 'REMOTE',
+          hash: '12HKQaOmR5t5Uy6vdcQsNIiZgHGB',
+          event: 'MISS',
+        },
+      ]
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/v8/artifacts/events',
+        headers: {
+          authorization: 'Bearer changeme',
+          'x-artifact-client-ci': 'VERCEL',
+          'x-artifact-client-interactive': '0',
+        },
+        query: {
+          teamId: team,
+        },
+        payload: events,
+      })
+
+      assert.equal(response.statusCode, 200)
+      assert.deepEqual(response.json(), {})
+    },
+  )
+
+  await t.test(
+    'should return 400 when POST artifacts/events is called with invalid payload',
+    async () => {
       const response = await app.inject({
         method: 'POST',
         url: '/v8/artifacts/events',
@@ -236,8 +274,10 @@ test('Azure Blob Storage', async (t) => {
         },
         payload: Buffer.from('test cache data'),
       })
-      assert.equal(response.statusCode, 200)
-      assert.deepEqual(response.json(), {})
+      assert.equal(response.statusCode, 400)
+      assert.deepEqual(response.json(), {
+        message: 'body must be array',
+      })
     },
   )
 })

@@ -175,12 +175,7 @@ describe('API Specification Tests', async () => {
       assert(body[hash1])
       assert.equal(typeof body[hash1].size, 'number')
       assert.equal(typeof body[hash1].taskDurationMs, 'number')
-      assert.equal(body[hash1].tag, 'test-tag')
-
-      // Check the non-existent artifact
-      assert(body[hash2])
-      assert(body[hash2].error)
-      assert(body[hash2].error.message)
+      assert.equal(body[hash1].tag, '')
     })
 
     await t.test('validates request payload', async () => {

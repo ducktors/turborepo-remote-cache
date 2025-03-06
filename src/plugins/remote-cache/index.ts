@@ -8,6 +8,7 @@ import {
   getStatus,
   headArtifact,
   putArtifact,
+  queryArtifacts,
 } from './routes/index.js'
 import { createLocation } from './storage/index.js'
 
@@ -64,6 +65,7 @@ async function turboRemoteCache(
       i.route(putArtifact)
       i.route(artifactsEvents)
       i.route(getStatus)
+      i.route(queryArtifacts)
     },
     { prefix: `/${apiVersion}` },
   )

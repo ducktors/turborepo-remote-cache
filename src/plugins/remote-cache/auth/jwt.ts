@@ -1,4 +1,4 @@
-import { Boom, forbidden, isBoom, unauthorized } from '@hapi/boom'
+import { forbidden } from '@hapi/boom'
 import { FastifyRequest } from 'fastify'
 import { fastifyJwtJwks } from 'fastify-jwt-jwks'
 import fp from 'fastify-plugin'
