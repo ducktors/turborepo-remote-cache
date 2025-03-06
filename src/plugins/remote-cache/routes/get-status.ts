@@ -24,10 +24,6 @@ export const getStatus: RouteOptions<
   async handler(req, reply) {
     reply.send({
       status: 'enabled',
-      version:
-        process.env.PACKAGE_VERSION ??
-        process.env.npm_package_version ??
-        'unknown',
     })
   },
 }

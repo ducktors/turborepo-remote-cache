@@ -1,4 +1,4 @@
-import { badRequest, unauthorized } from '@hapi/boom'
+import { unauthorized } from '@hapi/boom'
 import type { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
 
@@ -16,11 +16,11 @@ export default fp(async (fastify: FastifyInstance) => {
     authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 
     if (!authHeader) {
-      throw badRequest('Missing Authorization header')
+      throw unauthorized()
     }
     const [, token] = authHeader.split('Bearer ')
     if (!tokens.has(token)) {
-      throw unauthorized('Invalid authorization token')
+      throw unauthorized()
     }
   })
 })
