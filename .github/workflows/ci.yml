@@ -74,6 +74,7 @@ jobs:
           cd ${{ github.workspace }}
           mkdir yarn-repro
           cd yarn-repro
+          corepack enable
           yarn init -y
           yarn add turborepo-remote-cache
       - name: Install pnpm
