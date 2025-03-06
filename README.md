@@ -38,7 +38,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 3. Install dependencies
 
-   `pnpm install`
+   `pnpm install or bun install`
 
 4. Copy example variables
 
