@@ -1,5 +1,5 @@
 import { Boom, isBoom, unauthorized } from '@hapi/boom'
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import { STORAGE_PROVIDERS } from '../../env.js'
 import auth from './auth/index.js'
 import {
@@ -47,18 +47,19 @@ async function turboRemoteCache(
   )
 
   instance.register(
-    async function (i) {
+    async (i) => {
       i.setErrorHandler(async (error, req, res) => {
         if (isBoom(error)) {
           throw error
-        } else if (error.code?.startsWith('FST_')) {
+        }
+        if (error.code?.startsWith('FST_')) {
           throw new Boom(error.message, {
             statusCode: error.statusCode || 500,
           })
-        } else {
-          throw unauthorized()
         }
+        throw unauthorized()
       })
+
       await i.register(auth)
       i.route(getArtifact)
       i.route(headArtifact)

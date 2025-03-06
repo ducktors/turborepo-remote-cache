@@ -1,4 +1,4 @@
-import type { Server } from 'http'
+import type { Server } from 'node:http'
 import { Type } from '@sinclair/typebox'
 import type {
   RawReplyDefaultExpression,

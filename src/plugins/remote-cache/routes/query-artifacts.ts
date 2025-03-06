@@ -1,4 +1,4 @@
-import type { Server } from 'http'
+import type { Server } from 'node:http'
 import { badRequest } from '@hapi/boom'
 import { Type } from '@sinclair/typebox'
 import type {
@@ -6,7 +6,7 @@ import type {
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
-import { type Querystring } from './schema.js'
+import type { Querystring } from './schema.js'
 
 const artifactInfoSchema = Type.Object(
   {

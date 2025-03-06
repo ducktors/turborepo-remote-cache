@@ -1,5 +1,5 @@
 import { unauthorized } from '@hapi/boom'
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
 
 export default fp(async (fastify: FastifyInstance) => {
@@ -11,7 +11,7 @@ export default fp(async (fastify: FastifyInstance) => {
   }
   const tokens = new Set(allowedTokens)
 
-  fastify.addHook('onRequest', async function (request) {
+  fastify.addHook('onRequest', async (request) => {
     let authHeader = request.headers.authorization
     authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 

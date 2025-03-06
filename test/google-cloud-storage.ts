@@ -55,9 +55,7 @@ test('Google Cloud Storage', async (t) => {
       '-----BEGIN PRIVATE KEY-----\nFooBarKey\n-----END PRIVATE KEY-----\n',
   }
   const GCS = await import('@google-cloud/storage')
-  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
-    return GCSMock
-  })
+  const mockedGCS = t.mock.getter(GCS, 'Storage', () => GCSMock)
   /**
    * END MOCKS
    */
@@ -262,9 +260,7 @@ test('Google Cloud Storage ADC', async (t) => {
    */
 
   const GCS = await import('@google-cloud/storage')
-  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
-    return GCSMock
-  })
+  const mockedGCS = t.mock.getter(GCS, 'Storage', () => GCSMock)
   /**
    * END MOCKS
    */
