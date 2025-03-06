@@ -1,10 +1,10 @@
-import type { Server } from 'http'
+import type { Server } from 'node:http'
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
-import { type Params, type Querystring } from './schema.js'
+import type { Params, Querystring } from './schema.js'
 import { statusRouteSchema } from './status-schema.js'
 
 export const getStatus: RouteOptions<

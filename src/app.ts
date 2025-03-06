@@ -1,7 +1,10 @@
 import { isBoom } from '@hapi/boom'
-import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
+import Fastify, {
+  type FastifyInstance,
+  type FastifyServerOptions,
+} from 'fastify'
 import hyperid from 'hyperid'
-import { Config } from './env.js'
+import type { Config } from './env.js'
 import { logger } from './logger.js'
 import config from './plugins/config.js'
 import remoteCache from './plugins/remote-cache/index.js'

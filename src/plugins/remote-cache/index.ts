@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import { STORAGE_PROVIDERS } from '../../env.js'
 import auth from './auth/index.js'
 import {
@@ -45,7 +45,7 @@ async function turboRemoteCache(
   )
 
   instance.register(
-    async function (i) {
+    async (i) => {
       await i.register(auth)
       i.route(getArtifact)
       i.route(headArtifact)
