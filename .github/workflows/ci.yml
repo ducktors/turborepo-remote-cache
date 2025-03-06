@@ -46,10 +46,10 @@ jobs:
 
   install:
     runs-on: ${{ matrix.os }}
-    name: Install
+    name: Test Install
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x, 22.x, 23.x]
         os: [ubuntu-latest, macos-latest]
     steps:
       - name: Harden Runner
@@ -93,7 +93,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x, 22.x, 23.x]
         os: [ubuntu-latest]
     steps:
       - name: Harden Runner
@@ -119,6 +119,7 @@ jobs:
 
   docker:
     name: Test Docker Build
+    needs: [install, build]
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
