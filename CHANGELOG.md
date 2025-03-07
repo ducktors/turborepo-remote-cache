@@ -1,3 +1,24 @@
+## [2.3.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.3...v2.3.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* simplify dockerfile and fix ghr docker image name ([4495504](https://github.com/ducktors/turborepo-remote-cache/commit/44955044efb5ad4bc1c3895e28b554c0d18df693))
+
+## [2.3.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.2...v2.3.3) (2025-03-05)
+
+
+### Bug Fixes
+
+* change name of LOG_LEVEL_PROBE ([7e0641c](https://github.com/ducktors/turborepo-remote-cache/commit/7e0641cb48faa5a060ea5571ca02d895c105a2df))
+
+## [2.3.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.1...v2.3.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* pnpm audit fix ([4f64569](https://github.com/ducktors/turborepo-remote-cache/commit/4f645694d9ee292849cdab3e1057d54a2c63efce))
+
 ## [2.3.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.0...v2.3.1) (2025-02-20)
 
 

@@ -36,6 +36,13 @@ export function createApp(
     })
   })
 
+  app.get('/favicon.ico', {
+    logLevel: 'silent',
+    handler: (request, reply) => {
+      reply.code(204).send()
+    },
+  })
+
   app.setErrorHandler((err, request, reply) => {
     if (err.validation) {
       reply.log.warn(err)

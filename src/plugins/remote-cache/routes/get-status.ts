@@ -19,12 +19,15 @@ export const getStatus: RouteOptions<
   method: 'GET',
   url: '/artifacts/status',
   schema: statusRouteSchema,
-  logLevel: 'error',
+  logLevel: process.env.ENABLE_STATUS_LOG === 'true' ? 'info' : 'silent',
   authorization: 'read',
   async handler(req, reply) {
     reply.send({
       status: 'enabled',
-      version: process.env.npm_package_version ?? 'unknown',
+      version:
+        process.env.PACKAGE_VERSION ??
+        process.env.npm_package_version ??
+        'unknown',
     })
   },
 }
