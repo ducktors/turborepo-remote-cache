@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
 import jwtAuth from './jwt.js'
 import staticAuth from './static.js'

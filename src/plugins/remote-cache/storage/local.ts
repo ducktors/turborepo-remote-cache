@@ -1,5 +1,5 @@
-import { tmpdir } from 'os'
-import { join, normalize } from 'path'
+import { tmpdir } from 'node:os'
+import { join, normalize } from 'node:path'
 import fs from 'fs-blob-store'
 
 export type LocalOptions = {
