@@ -16,6 +16,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
 - [AWS CDK Construct](https://github.com/NimmLor/cdk-turborepo-remote-cache)
+- [Turbo Daemon](https://github.com/NullVoxPopuli/turbo-daemon)
 
 ## Documentation
 
