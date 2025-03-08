@@ -24,6 +24,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
 - [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
+- [Daemonized local server](https://github.com/NullVoxPopuli/turbo-daemon/)
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
