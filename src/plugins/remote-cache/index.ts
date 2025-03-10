@@ -1,4 +1,5 @@
-import { FastifyInstance } from 'fastify'
+import { Boom, isBoom, unauthorized } from '@hapi/boom'
+import type { FastifyInstance } from 'fastify'
 import { STORAGE_PROVIDERS } from '../../env.js'
 import auth from './auth/index.js'
 import {
@@ -7,6 +8,7 @@ import {
   getStatus,
   headArtifact,
   putArtifact,
+  queryArtifacts,
 } from './routes/index.js'
 import { createLocation } from './storage/index.js'
 
@@ -17,7 +19,7 @@ async function turboRemoteCache(
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const bodyLimit = <number>instance.config.BODY_LIMIT
+  const bodyLimit = instance.config.BODY_LIMIT as number
   const { apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
 
   instance.addContentTypeParser<Buffer>(
@@ -45,19 +47,26 @@ async function turboRemoteCache(
   )
 
   instance.register(
-    async function (i) {
+    async (i) => {
+      i.setErrorHandler(async (error, req, res) => {
+        if (isBoom(error)) {
+          throw error
+        }
+        if (error.code?.startsWith('FST_')) {
+          throw new Boom(error.message, {
+            statusCode: error.statusCode || 500,
+          })
+        }
+        throw unauthorized()
+      })
+
       await i.register(auth)
       i.route(getArtifact)
       i.route(headArtifact)
       i.route(putArtifact)
       i.route(artifactsEvents)
-    },
-    { prefix: `/${apiVersion}` },
-  )
-
-  await instance.register(
-    async (i) => {
       i.route(getStatus)
+      i.route(queryArtifacts)
     },
     { prefix: `/${apiVersion}` },
   )
