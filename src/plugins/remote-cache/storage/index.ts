@@ -62,7 +62,16 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
     case STORAGE_PROVIDERS.s3: {
       const { accessKey, secretKey, region, endpoint } =
         providerOptions as S3Options
-      return createS3({ accessKey, secretKey, bucket: path, region, endpoint })
+      return createS3({
+        accessKey,
+        secretKey,
+        bucket: path,
+        region,
+        endpoint,
+        s3OptionsPassthrough: {
+          forcePathStyle: true,
+        },
+      })
     }
     case STORAGE_PROVIDERS.MINIO: {
       const { accessKey, secretKey, region, endpoint } =
@@ -74,7 +83,7 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         region,
         endpoint,
         s3OptionsPassthrough: {
-          s3ForcePathStyle: true,
+          forcePathStyle: true,
         },
       })
     }
