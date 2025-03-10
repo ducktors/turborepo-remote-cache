@@ -36,7 +36,8 @@
     "semantic-release": "semantic-release",
     "commit": "npx git-cz",
     "prepare": "husky install",
-    "check-updates": "pnpm outdated --recursive --long"
+    "check-updates": "pnpm outdated --recursive --long",
+    "deps:inspector": "pnpx node-modules-inspector"
   },
   "repository": {
     "type": "git",
