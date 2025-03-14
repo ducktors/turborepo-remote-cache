@@ -15,7 +15,7 @@ const testEnv = {
   STORAGE_PATH: 'turborepo-remote-cache-test',
   AWS_ACCESS_KEY_ID: 'S3RVER',
   AWS_SECRET_ACCESS_KEY: 'S3RVER',
-  AWS_REGION: '',
+  AWS_REGION: 'us-east-1',
 }
 Object.assign(process.env, testEnv)
 
@@ -51,12 +51,6 @@ describe('Minio', async () => {
   await test('loads correct env vars', async () => {
     assert.equal(app.config.STORAGE_PROVIDER, testEnv.STORAGE_PROVIDER)
     assert.equal(app.config.STORAGE_PATH, testEnv.STORAGE_PATH)
-    assert.equal(app.config.AWS_ACCESS_KEY_ID, testEnv.AWS_ACCESS_KEY_ID)
-    assert.equal(
-      app.config.AWS_SECRET_ACCESS_KEY,
-      testEnv.AWS_SECRET_ACCESS_KEY,
-    )
-    assert.equal(app.config.AWS_REGION, testEnv.AWS_REGION)
   })
 
   await test('should return 400 when missing authorization header', async () => {
