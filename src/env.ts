@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox'
+import { type Static, Type } from '@sinclair/typebox'
 import Ajv from 'ajv'
 import { envSchema } from 'env-schema'
 
@@ -7,7 +7,7 @@ const NODE_ENVS = {
   DEVELOPMENT: 'development',
   TEST: 'test',
 } as const
-type NODE_ENVS = typeof NODE_ENVS[keyof typeof NODE_ENVS]
+type NODE_ENVS = (typeof NODE_ENVS)[keyof typeof NODE_ENVS]
 
 export const STORAGE_PROVIDERS = {
   LOCAL: 'local',
@@ -18,7 +18,7 @@ export const STORAGE_PROVIDERS = {
   MINIO: 'minio',
 } as const
 export type STORAGE_PROVIDERS =
-  typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
+  (typeof STORAGE_PROVIDERS)[keyof typeof STORAGE_PROVIDERS]
 
 const schema = Type.Object(
   {
@@ -79,7 +79,7 @@ export function load(overrides?: Partial<Config>) {
       keywords: ['kind', 'RegExp', 'modifier', envSchema.keywords.separator],
     }),
     data: overrides,
-    dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT ? true : false,
+    dotenv: process.env.NODE_ENV === NODE_ENVS.DEVELOPMENT,
     schema,
   })
   return _env

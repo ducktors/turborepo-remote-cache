@@ -1,7 +1,7 @@
-import { Writable } from 'node:stream'
-import { join } from 'path'
-import { Readable, pipeline as pipelineCallback } from 'stream'
-import { promisify } from 'util'
+import { join } from 'node:path'
+import type { Writable } from 'node:stream'
+import { type Readable, pipeline as pipelineCallback } from 'node:stream'
+import { promisify } from 'node:util'
 import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
@@ -28,12 +28,12 @@ type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
   Provider extends typeof STORAGE_PROVIDERS.LOCAL
     ? LocalOptions
     : Provider extends typeof STORAGE_PROVIDERS.S3
-    ? S3Options
-    : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
-    ? AzureBlobStorageOptions
-    : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
-    ? GoogleCloudStorageOptions
-    : never
+      ? S3Options
+      : Provider extends typeof STORAGE_PROVIDERS.AZURE_BLOB_STORAGE
+        ? AzureBlobStorageOptions
+        : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
+          ? GoogleCloudStorageOptions
+          : never
 
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {

@@ -1,5 +1,5 @@
-import { badRequest, unauthorized } from '@hapi/boom'
-import { FastifyInstance } from 'fastify'
+import { unauthorized } from '@hapi/boom'
+import type { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
 
 export default fp(async (fastify: FastifyInstance) => {
@@ -11,16 +11,16 @@ export default fp(async (fastify: FastifyInstance) => {
   }
   const tokens = new Set(allowedTokens)
 
-  fastify.addHook('onRequest', async function (request) {
+  fastify.addHook('onRequest', async (request) => {
     let authHeader = request.headers.authorization
     authHeader = Array.isArray(authHeader) ? authHeader.join() : authHeader
 
     if (!authHeader) {
-      throw badRequest('Missing Authorization header')
+      throw unauthorized()
     }
     const [, token] = authHeader.split('Bearer ')
     if (!tokens.has(token)) {
-      throw unauthorized('Invalid authorization token')
+      throw unauthorized()
     }
   })
 })
