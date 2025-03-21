@@ -32,7 +32,8 @@ You can configure your project by following [this guide](https://ducktors.github
 
 Variables can be set according to the following parameters of each server. It is up to you to choose which server is closest to your current location.
 
-| Server |  Status | TURBO_API | TURBO_TOKEN |
+| Server |  Status | TURBO_API | TURBO_TOKEN | |
 | -- | -- | -- | -- |
-| Render.com | [![Better Stack Badge](https://uptime.betterstack.com/status-badges/v3/monitor/1gvd8.svg)](https://uptime.betterstack.com/?utm_source=status_badge) | https://turbo.ducktors.dev | turbotokenoss |
+| Ducktorserver | [![Better Stack Badge](https://uptime.betterstack.com/status-badges/v3/monitor/1uilw.svg)](https://uptime.betterstack.com/?utm_source=status_badge) | https://trrc.ducktors.dev | turbotokenoss | Udine (IT) |
+| Render.com | [![Better Stack Badge](https://uptime.betterstack.com/status-badges/v3/monitor/1gvd8.svg)](https://uptime.betterstack.com/?utm_source=status_badge) | https://turbo.ducktors.dev | turbotokenoss | Frankfurt (DE) |
 
