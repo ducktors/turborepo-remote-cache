@@ -1,6 +1,13 @@
-import aws from 'aws-sdk'
-import type { S3 } from 'aws-sdk'
-import s3 from 's3-blob-store'
+import { PassThrough, Writable } from 'node:stream'
+import {
+  GetObjectCommand,
+  HeadObjectCommand,
+  S3Client,
+  S3ClientConfig,
+} from '@aws-sdk/client-s3'
+import { Upload } from '@aws-sdk/lib-storage'
+import { NodeJsClient } from '@smithy/types'
+import { StorageProvider } from './index.js'
 
 export interface S3Options {
   accessKey?: string
@@ -8,40 +15,81 @@ export interface S3Options {
   region?: string
   endpoint?: string
   bucket: string
-  s3OptionsPassthrough?: S3.ClientConfiguration
+  s3OptionsPassthrough?: S3ClientConfig
 }
 
 // AWS_ envs are default for aws-sdk
 export function createS3({
-  accessKey = process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY,
-  secretKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_KEY,
+  accessKey = process.env.S3_ACCESS_KEY,
+  secretKey = process.env.S3_SECRET_KEY,
   bucket,
-  region = process.env.AWS_REGION || process.env.S3_REGION,
+  region = process.env.S3_REGION,
   endpoint,
   s3OptionsPassthrough = {},
-}: S3Options) {
-  const client = new aws.S3({
-    ...(accessKey && secretKey
-      ? {
-          credentials: {
+}: S3Options): StorageProvider {
+  if (!bucket) {
+    throw new Error(
+      'S3 bucket is required; please set the STORAGE_PATH environment variable to the bucket name',
+    )
+  }
+
+  const client: NodeJsClient<S3Client> = new S3Client({
+    credentials:
+      accessKey && secretKey
+        ? {
             accessKeyId: accessKey,
             secretAccessKey: secretKey,
-            sessionToken: process.env.AWS_SESSION_TOKEN,
-          },
-        }
-      : {}),
-    ...(region ? { region } : {}),
-    ...(endpoint ? { endpoint: new aws.Endpoint(endpoint) } : {}),
+          }
+        : undefined,
+    region,
+    endpoint,
     ...(process.env.NODE_ENV === 'test'
       ? { sslEnabled: false, s3ForcePathStyle: true }
       : {}),
     ...s3OptionsPassthrough,
   })
 
-  const location = s3({
-    client,
-    bucket,
-  })
+  return {
+    exists: async (key, cb) => {
+      try {
+        await client.send(new HeadObjectCommand({ Bucket: bucket, Key: key }))
+        return cb(null, true)
+      } catch (error) {
+        return cb(null, false)
+      }
+    },
+    createReadStream: (key: string) => {
+      const passThrough = new PassThrough()
+      client
+        .send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+        .then((data) => {
+          if (data.Body) {
+            data.Body.pipe(passThrough)
+          }
+        })
+        .catch((err) => passThrough.destroy(err))
+      return passThrough
+    },
+    createWriteStream: (key: string) => {
+      const passThrough = new PassThrough()
+      const writeStream = new Writable({
+        write(chunk, encoding, callback) {
+          passThrough.write(chunk, encoding, callback)
+        },
+        final(callback) {
+          passThrough.end()
+          upload
+            .done()
+            .then(() => callback())
+            .catch(callback)
+        },
+      })
+      const upload = new Upload({
+        client,
+        params: { Bucket: bucket, Key: key, Body: passThrough },
+      })
 
-  return location
+      return writeStream
+    },
+  }
 }
