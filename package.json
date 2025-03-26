@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
@@ -111,6 +111,9 @@
       "koa@>=2.0.0 <2.15.4": ">=2.15.4",
       "esbuild@<=0.24.2": ">=0.25.0"
     },
-    "onlyBuiltDependencies": ["@biomejs/biome"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "msw"
+    ]
   }
 }

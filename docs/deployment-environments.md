@@ -8,18 +8,18 @@ has_toc: false
 
 # Deployment Environments
 
-- [Deploy on Vercel](#deploy-on-vercel)
-- [Deploy on Docker](#deploy-on-docker)
 - [Deploy on DigitalOcean](#deploy-on-digitalocean)
+- [Deploy on Docker](#deploy-on-docker)
+- [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on AWS Lambda](#deploy-on-aws-lambda)
 - [Remoteless with npx](#deploy-remoteless-with-npx)
 
-## Deploy on Vercel
-The server can be easily deployed as a Vercel Serverless Function using the deploy button.
+## Deploy on DigitalOcean
+The server can be easily deployed on DigitalOcean App Services.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache&env=NODE_ENV,TURBO_TOKEN,STORAGE_PROVIDER,STORAGE_PATH,S3_ACCESS_KEY,S3_SECRET_KEY,S3_REGION,S3_ENDPOINT&envDescription=The%20server%20needs%20several%20credentials.%20The%20required%20environmental%20variables%20can%20be%20found%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache%23readme)
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
 
 ## Deploy on Docker
 You can find the image on the [dockerhub](https://hub.docker.com/r/ducktors/turborepo-remote-cache).
@@ -42,12 +42,12 @@ S3_ENDPOINT=
 docker run --env-file=.env -p 3000:3000 ducktors/turborepo-remote-cache
 ```
 
-## Deploy on DigitalOcean
-The server can be easily deployed on DigitalOcean App Services.
+## Deploy on Vercel
+The server can be easily deployed as a Vercel Serverless Function using the deploy button.
 
 __Note: Local storage isn't supported for this deployment method.__
 
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/ducktors/turborepo-remote-cache/tree/main)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache&env=NODE_ENV,TURBO_TOKEN,STORAGE_PROVIDER,STORAGE_PATH,S3_ACCESS_KEY,S3_SECRET_KEY,S3_REGION,S3_ENDPOINT&envDescription=The%20server%20needs%20several%20credentials.%20The%20required%20environmental%20variables%20can%20be%20found%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fducktors%2Fturborepo-remote-cache%23readme)
 
 ## Deploy on AWS Lambda
 This server can be deployed as an AWS Lambda Function. See this

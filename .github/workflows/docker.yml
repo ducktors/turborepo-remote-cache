@@ -47,6 +47,7 @@ jobs:
           push: true
           tags: |
             ducktors/turborepo-remote-cache:${{ steps.package-version.outputs.current-version}}
+            ducktors/turborepo-remote-cache:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -86,6 +87,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:${{ steps.package-version.outputs.current-version}}
+            ghcr.io/${{ github.repository }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
