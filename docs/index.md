@@ -10,6 +10,13 @@ This project is an open-source implementation of the [Turborepo custom remote ca
 If Vercel's official cache server isn't a viable option, this server is an alternative for self-hosted deployments.
 It supports several storage providers and deploys environments. Moreover, the project provides **"deploy to "** buttons for one-click deployments whenever possible.
 
+<p>This project is supported by:</p>
+<p>
+  <a href="https://www.digitalocean.com/">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="201px">
+  </a>
+</p>
+
 ## Index
 
 - [Supported Storage Providers](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)

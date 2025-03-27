@@ -31,10 +31,6 @@ COPY --chown=app:app --from=build /opt/app/package.json ./
 ARG PACKAGE_VERSION
 ENV PACKAGE_VERSION=$PACKAGE_VERSION
 USER app
-ENV NODE_ENV=production \
-    NODE_OPTIONS="--max-old-space-size=2048 --max-http-header-size=8192"
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
-EXPOSE 3000
+ENV NODE_ENV=production
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "--enable-source-maps", "dist/index.js"]

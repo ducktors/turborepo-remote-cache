@@ -1,3 +1,10 @@
+## [2.3.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.4...v2.3.5) (2025-03-19)
+
+
+### Bug Fixes
+
+* remove expose port from dockerfile ([34e7272](https://github.com/ducktors/turborepo-remote-cache/commit/34e72726284308d3223b1f1d694762144c29799f))
+
 ## [2.3.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.3...v2.3.4) (2025-03-05)
 
 
