@@ -59,14 +59,14 @@ describe('Minio', async () => {
     assert.equal(app.config.AWS_REGION, testEnv.AWS_REGION)
   })
 
-  await test('should return 400 when missing authorization header', async () => {
+  await test('should return 401 when missing authorization header', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v8/artifacts/not-found',
       headers: {},
     })
-    assert.equal(response.statusCode, 400)
-    assert.equal(response.json().message, 'Missing Authorization header')
+    assert.equal(response.statusCode, 401)
+    assert.equal(response.json().message, 'Unauthorized')
   })
 
   await test('should return 401 when wrong authorization token is provided', async () => {
@@ -78,7 +78,7 @@ describe('Minio', async () => {
       },
     })
     assert.equal(response.statusCode, 401)
-    assert.equal(response.json().message, 'Invalid authorization token')
+    assert.equal(response.json().message, 'Unauthorized')
   })
 
   await test('should return 400 when missing team query parameter', async () => {
