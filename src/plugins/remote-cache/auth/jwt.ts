@@ -1,5 +1,5 @@
-import { Boom, forbidden, isBoom, unauthorized } from '@hapi/boom'
-import { FastifyRequest } from 'fastify'
+import { forbidden } from '@hapi/boom'
+import type { FastifyRequest } from 'fastify'
 import { fastifyJwtJwks } from 'fastify-jwt-jwks'
 import fp from 'fastify-plugin'
 
@@ -49,18 +49,6 @@ export default fp(async (fastify) => {
           throw forbidden()
       }
       route.onRequest = [...[route.onRequest ?? []].flat(), authorizeWrite]
-    }
-  })
-
-  fastify.setErrorHandler(async (error, req, res) => {
-    if (isBoom(error)) {
-      throw error
-    } else if (error.code?.startsWith('FST_JWT_')) {
-      throw new Boom(error.message, {
-        statusCode: error.statusCode || 500,
-      })
-    } else {
-      throw unauthorized()
     }
   })
 })

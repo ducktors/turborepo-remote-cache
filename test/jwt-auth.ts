@@ -23,7 +23,7 @@ const testEnv = {
 
 Object.assign(process.env, testEnv)
 
-let stopJwks
+let stopJwks: undefined | (() => void)
 before(() => {
   const stopValid = jwksMock.start()
   const stopInvalid = invalidJwksMock.start()

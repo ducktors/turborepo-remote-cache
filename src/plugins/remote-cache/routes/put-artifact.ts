@@ -1,5 +1,5 @@
-import type { Server } from 'http'
-import { Readable } from 'stream'
+import type { Server } from 'node:http'
+import { Readable } from 'node:stream'
 import { badRequest, preconditionFailed } from '@hapi/boom'
 import type {
   RawReplyDefaultExpression,

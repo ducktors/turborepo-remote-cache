@@ -12,7 +12,7 @@ const app = createApp({
 
 closeWithGrace(
   { delay: 10000 },
-  async function ({ err, signal }: { err?: Error; signal?: string }) {
+  async ({ err, signal }: { err?: Error; signal?: string }) => {
     if (err) {
       app.log.error(err)
     }

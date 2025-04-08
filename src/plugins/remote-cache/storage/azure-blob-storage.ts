@@ -1,6 +1,6 @@
 import { PassThrough } from 'node:stream'
 import { BlobServiceClient } from '@azure/storage-blob'
-import { StorageProvider } from './index.js'
+import type { StorageProvider } from './index.js'
 
 export interface AzureBlobStorageOptions {
   containerName: string
