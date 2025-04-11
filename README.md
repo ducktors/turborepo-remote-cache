@@ -19,7 +19,6 @@ It supports several storage providers and deploys environments. Moreover, the pr
   </a>
 </p>
 
-
 ## Notable projects that use TRRC
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)
@@ -32,6 +31,7 @@ It supports several storage providers and deploys environments. Moreover, the pr
 - [Environment variables](https://ducktors.github.io/turborepo-remote-cache/environment-variables)
 - [Deployment Instructions](https://ducktors.github.io/turborepo-remote-cache/deployment-environments)
 - [Enable custom remote caching in a Turborepo monorepo](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching)
+- [HTTP/2 support](https://ducktors.github.io/turborepo-remote-cache/http2-support)
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
