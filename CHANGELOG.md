@@ -1,3 +1,10 @@
+## [2.3.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.5...v2.3.6) (2025-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Migrate aws sdk to v3 ([7f33b6a](https://github.com/ducktors/turborepo-remote-cache/commit/7f33b6afd0e623bf0b8d04eeae8eecaef763954b))
+
 ## [2.3.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.4...v2.3.5) (2025-03-19)
 
 
