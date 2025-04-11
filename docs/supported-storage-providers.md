@@ -14,22 +14,16 @@ nav_order: 3
 
 ## AWS S3
 
-### Credentials and Region
+When using `STORAGE_PROVIDER=s3` (for AWS S3, DigitalOcean Spaces, Minio, etc.), the underlying AWS SDK for JavaScript v3 handles authentication and configuration automatically based on its standard credential provider chain and region discovery:
+
+*   **Credentials**: Provide credentials via environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and optionally `AWS_SESSION_TOKEN`), a shared credentials file (`~/.aws/credentials`), or an IAM role (on EC2/ECS/Lambda).
+*   **Region**: Specify the AWS region using the `AWS_REGION` environment variable or a shared config file (`~/.aws/config`).
+*   **S3-Compatible Endpoint**: For services like Minio or DigitalOcean Spaces, you may also need to set the `S3_ENDPOINT` environment variable to the service's specific endpoint URL (e.g., `http://localhost:9000` for local Minio, or `https://nyc3.digitaloceanspaces.com` for DigitalOcean).
 
 AWS credentials and configuration are loaded as described in the AWS SDK documentation:
 
 - [Setting Credentials](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html)
 - [Setting Configuration](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html)
-
-For example, you can set environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, or create a file
-`~/.aws/credentials` with AWS credentials.
-
-If running in an AWS Lambda Function, temporary credentials (including an
-`AWS_SESSION_TOKEN`) are automatically created. You do not need to manually
-configure these.
-
-Specify the region using the `AWS_REGION` environment variable or in `~/.aws/config`.
-
 
 ### DigitalOcean Spaces
 
