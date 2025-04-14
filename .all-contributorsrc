@@ -294,6 +294,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Aralf",
+      "name": "Rodrigo Gonzalez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7780231?v=4",
+      "profile": "https://github.com/Aralf",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

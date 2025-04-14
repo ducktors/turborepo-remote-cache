@@ -72,21 +72,21 @@ export function createS3({
     },
     createWriteStream: (key: string) => {
       const passThrough = new PassThrough()
+      const upload = new Upload({
+        client,
+        params: { Bucket: bucket, Key: key, Body: passThrough },
+      })
+
+      const uploadPromise = upload.done()
+
       const writeStream = new Writable({
         write(chunk, encoding, callback) {
           passThrough.write(chunk, encoding, callback)
         },
         final(callback) {
           passThrough.end()
-          upload
-            .done()
-            .then(() => callback())
-            .catch(callback)
+          uploadPromise.then(() => callback()).catch(callback)
         },
-      })
-      const upload = new Upload({
-        client,
-        params: { Bucket: bucket, Key: key, Body: passThrough },
       })
 
       return writeStream
