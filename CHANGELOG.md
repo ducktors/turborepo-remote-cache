@@ -1,3 +1,10 @@
+## [2.3.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.6...v2.3.7) (2025-04-14)
+
+
+### Bug Fixes
+
+* S3 - store upload promise early in order to complete createWriteStream ([a81cc85](https://github.com/ducktors/turborepo-remote-cache/commit/a81cc85fd235805ebe00b6da0d132ce4f73ca4f4))
+
 ## [2.3.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.5...v2.3.6) (2025-04-11)
 
 
