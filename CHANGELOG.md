@@ -1,3 +1,10 @@
+## [2.3.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.8...v2.3.9) (2025-04-18)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.3.1 to 5.3.2 ([ca2db8a](https://github.com/ducktors/turborepo-remote-cache/commit/ca2db8aaba98f7af2f6dfaeb1e56979080da280a))
+
 ## [2.3.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.7...v2.3.8) (2025-04-18)
 
 
