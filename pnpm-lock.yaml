@@ -51,8 +51,8 @@ importers:
         specifier: 5.2.0
         version: 5.2.0
       fastify:
-        specifier: 5.3.1
-        version: 5.3.1
+        specifier: 5.3.2
+        version: 5.3.2
       fastify-jwt-jwks:
         specifier: ^2.0.0
         version: 2.0.0
@@ -1953,8 +1953,8 @@ packages:
     resolution: {integrity: sha512-pvYwdtbZUJr/aTD7ZE0rGlvtYpx7IThHKVLBoqCKmT3FJpwm23XA2+PDmq8ZzfqqG4ajpyrHd5bkIixcIFjPhQ==}
     engines: {node: '>=18.0.0'}
 
-  fastify@5.3.1:
-    resolution: {integrity: sha512-PhpFhuUZVnq1IvTHCrIMCqqukNuJGWnV/nxTrSDtirbsAZnVYO8I9LaxSk5OPXSiioA6DoEG1r5U1g41/cix0g==}
+  fastify@5.3.2:
+    resolution: {integrity: sha512-AIPqBgtqBAwkOkrnwesEE+dOyU30dQ4kh7udxeGVR05CRGwubZx+p2H8P0C4cRnQT0+EPK4VGea2DTL2RtWttg==}
 
   fastparallel@2.4.1:
     resolution: {integrity: sha512-qUmhxPgNHmvRjZKBFUNI0oZuuH9OlSIOXmJ98lhKPxMZZ7zS/Fi0wRHOihDSz0R1YiIOjxzOY4bq65YTcdBi2Q==}
@@ -6402,7 +6402,7 @@ snapshots:
 
   fastify-tsconfig@2.0.0: {}
 
-  fastify@5.3.1:
+  fastify@5.3.2:
     dependencies:
       '@fastify/ajv-compiler': 4.0.2
       '@fastify/error': 4.1.0
