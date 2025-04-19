@@ -12,6 +12,7 @@ has_toc: false
 - [Deploy on Docker](#deploy-on-docker)
 - [Deploy on Vercel](#deploy-on-vercel)
 - [Deploy on AWS Lambda](#deploy-on-aws-lambda)
+- [Deploy on GCP Cloud Run](#deploy-on-gcp-cloud-run)
 - [Remoteless with npx](#deploy-remoteless-with-npx)
 
 ## Deploy on DigitalOcean
@@ -52,6 +53,9 @@ __Note: Local storage isn't supported for this deployment method.__
 ## Deploy on AWS Lambda
 This server can be deployed as an AWS Lambda Function. See this
 [guide](https://ducktors.github.io/turborepo-remote-cache/running-in-lambda) on deployment steps.
+
+## Deploy on GCP Cloud Run
+To deploy on Google Cloud as a Cloud Run service, refer to this [guide](https://ducktors.github.io/turborepo-remote-cache/running-in-cloud-run).
 
 ## Deploy "remoteless" with npx
 If you have Node.js installed, you can run the server simply by typing

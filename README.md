@@ -19,7 +19,6 @@ It supports several storage providers and deploys environments. Moreover, the pr
   </a>
 </p>
 
-
 ## Notable projects that use TRRC
 
 - [GitHub Actions](https://github.com/trappar/turborepo-remote-cache-gh-action)

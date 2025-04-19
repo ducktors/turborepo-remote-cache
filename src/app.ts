@@ -13,6 +13,7 @@ export function createApp(
 ): FastifyInstance {
   const fastifyOptions: FastifyServerOptions = {
     ...options,
+    ...(process.env.HTTP2 === 'true' ? { http2: true } : {}),
   }
 
   const hasConfiguredLogger =
