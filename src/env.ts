@@ -31,7 +31,7 @@ const schema = Type.Object(
     JWKS_URL: Type.Optional(Type.String()),
     JWT_READ_SCOPES: Type.Optional(Type.String({ separator: ',' })),
     JWT_WRITE_SCOPES: Type.Optional(Type.String({ separator: ',' })),
-    TURBO_TOKEN: Type.Optional(Type.String({ separator: ',' })),
+    TURBO_TOKEN: Type.Optional(Type.String({ separator: ',' })),    
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
     ENABLE_STATUS_LOG: Type.Optional(Type.Boolean({ default: true })),
@@ -58,6 +58,10 @@ const schema = Type.Object(
 
     // Azure Blob Storage credentials
     ABS_CONNECTION_STRING: Type.Optional(Type.String()),
+
+    // SSL support
+    SSL_KEY_PATH: Type.Optional(Type.String()),
+    SSL_CERT_PATH: Type.Optional(Type.String()),    
   },
   {
     additionalProperties: false,

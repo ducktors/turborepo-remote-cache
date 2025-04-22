@@ -1,5 +1,6 @@
 import { isBoom } from '@hapi/boom'
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
+import * as fs from 'node:fs'
 import hyperid from 'hyperid'
 import { Config, env } from './env.js'
 import { logger } from './logger.js'
@@ -11,9 +12,19 @@ const uuid = hyperid({ urlSafe: true })
 export function createApp(
   options: FastifyServerOptions & { configOverrides?: Partial<Config> } = {},
 ): FastifyInstance {
+  const SSL_CERT_PATH = env.get().SSL_CERT_PATH;
+  const SSL_KEY_PATH = env.get().SSL_KEY_PATH;
+  const isHttps = SSL_CERT_PATH && SSL_KEY_PATH && fs.existsSync(SSL_CERT_PATH) && fs.existsSync(SSL_KEY_PATH);
+
   const fastifyOptions: FastifyServerOptions = {
     ...options,
     ...(env.get().HTTP2 ? { http2: true } : {}),
+    ...(isHttps ? {
+      https: {
+        key: fs.readFileSync(SSL_KEY_PATH),
+        cert: fs.readFileSync(SSL_CERT_PATH),
+      },
+    } : null)
   }
 
   const hasConfiguredLogger =
