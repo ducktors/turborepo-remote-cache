@@ -58,6 +58,10 @@ const schema = Type.Object(
 
     // Azure Blob Storage credentials
     ABS_CONNECTION_STRING: Type.Optional(Type.String()),
+
+    // SSL support
+    SSL_KEY_PATH: Type.Optional(Type.String()),
+    SSL_CERT_PATH: Type.Optional(Type.String()),
   },
   {
     additionalProperties: false,
