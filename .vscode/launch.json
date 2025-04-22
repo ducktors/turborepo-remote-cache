@@ -2,32 +2,29 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach",
       "type": "node",
-      "protocol": "inspector",
-      "request": "attach",
-      "restart": true,
-      "address": "localhost",
-      "sourceMaps": true,
-      "skipFiles": [
-        "node_modules"
+      "request": "launch",
+      "name": "Debug dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "dev",
       ],
-      "port": 9229
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "autoAttachChildProcesses": true
     },
     {
-      "name": "Attach to Docker",
       "type": "node",
-      "protocol": "inspector",
-      "request": "attach",
-      "restart": true,
-      "address": "localhost",
-      "sourceMaps": true,
-      "skipFiles": [
-        "node_modules"
+      "request": "launch",
+      "name": "Debug tests",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "run",
+        "test"
       ],
-      "port": 9229,
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": "/home/app/node"
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "autoAttachChildProcesses": true
     }
   ]
 }
