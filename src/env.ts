@@ -43,6 +43,7 @@ const schema = Type.Object(
     BODY_LIMIT: Type.Optional(Type.Number({ default: 104857600 })),
     STORAGE_PATH: Type.Optional(Type.String()),
     STORAGE_PATH_USE_TMP_FOLDER: Type.Optional(Type.Boolean({ default: true })),
+    HTTP2: Type.Optional(Type.Boolean({ default: false })),
     // S3_ env vars are used by Vercel. ref: https://vercel.com/support/articles/how-can-i-use-aws-sdk-environment-variables-on-vercel
     S3_ACCESS_KEY: Type.Optional(Type.String()),
     S3_SECRET_KEY: Type.Optional(Type.String()),

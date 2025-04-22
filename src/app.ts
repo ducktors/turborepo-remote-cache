@@ -1,7 +1,7 @@
 import { isBoom } from '@hapi/boom'
 import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
 import hyperid from 'hyperid'
-import { Config } from './env.js'
+import { Config, env } from './env.js'
 import { logger } from './logger.js'
 import config from './plugins/config.js'
 import remoteCache from './plugins/remote-cache/index.js'
@@ -13,6 +13,7 @@ export function createApp(
 ): FastifyInstance {
   const fastifyOptions: FastifyServerOptions = {
     ...options,
+    ...(env.get().HTTP2 ? { http2: true } : {}),
   }
 
   const hasConfiguredLogger =
