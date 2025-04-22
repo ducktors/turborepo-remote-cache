@@ -1,3 +1,12 @@
+# [2.5.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.4.0...v2.5.0) (2025-04-22)
+
+
+### Features
+
+* add SSL support ([cc73331](https://github.com/ducktors/turborepo-remote-cache/commit/cc733310309d6acddc8245102a9c770a269c3fbe))
+* add SSL support ([b78af84](https://github.com/ducktors/turborepo-remote-cache/commit/b78af84d1d47634eaca2bd41dee334a0b3f79815))
+* add SSL support ([ad5409c](https://github.com/ducktors/turborepo-remote-cache/commit/ad5409cc53e7ded8edfd67ea18e98c4ea4c4d2a1))
+
 # [2.4.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.9...v2.4.0) (2025-04-22)
 
 
