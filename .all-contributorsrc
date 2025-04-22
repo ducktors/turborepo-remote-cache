@@ -312,6 +312,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "neilenns",
+      "name": "Neil Enns",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9524118?v=4",
+      "profile": "https://www.linkedin.com/in/neilenns/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
