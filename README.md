@@ -51,7 +51,6 @@ This repo is configured to clone directly into a devcontainer for easy developme
    - Open the Command Palette: `Ctrl+Shift+P`
    - Select: `Dev Containers: Clone Repository in Container Volume`
    - Enter: `https://github.com/ducktors/turborepo-remote-cache`
-   - Choose a folder name
    - VS Code will automatically clone, build the container, and open the repo inside it
 
 From the **Run and Debug** sidebar (`Ctrl+Shift+D`), you’ll find these [launch configurations](.vscode/launch.json):
