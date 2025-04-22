@@ -1,3 +1,11 @@
+# [2.4.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.9...v2.4.0) (2025-04-22)
+
+
+### Features
+
+* add HTTP/2 support via environment variable ([33e5efb](https://github.com/ducktors/turborepo-remote-cache/commit/33e5efb65b7d5e2fb3b1d93ed683c2af3ebac6fd))
+* add HTTP2 flag to environment configuration and update app initialization ([04a43bc](https://github.com/ducktors/turborepo-remote-cache/commit/04a43bc398b0b17c48ee7271a714db08be4b2ac4))
+
 ## [2.3.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.3.8...v2.3.9) (2025-04-18)
 
 
