@@ -15,7 +15,15 @@
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pnpm install"
+  "containerEnv": {
+    "PORT": "3500",
+    "LOG_LEVEL": "debug",
+    "ENABLE_STATUS_LOG": "false",
+    "STORAGE_PROVIDER": "local",
+    "BODY_LIMIT": "52428800",
+    "TURBO_TOKEN": "changeme"
+  },
+	// Install the packages and make an empty .env file so the service can run using the env
+	// variables specified by the devcontainer.
+	"postCreateCommand": "pnpm install && touch .env"
 }

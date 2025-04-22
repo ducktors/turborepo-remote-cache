@@ -36,6 +36,34 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 ## Contribute to this project
 
+### VS Code devcontainer
+
+This repo is configured to clone directly into a devcontainer for easy development.
+
+1. Install requirements
+
+   - [Docker](https://www.docker.com/)
+   - [VS Code](https://code.visualstudio.com/)
+   - [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+2. Clone the repo using a container volume
+
+   - Open the Command Palette: `Ctrl+Shift+P`
+   - Select: `Dev Containers: Clone Repository in Container Volume`
+   - Enter: `https://github.com/ducktors/turborepo-remote-cache`
+   - Choose a folder name
+   - VS Code will automatically clone, build the container, and open the repo inside it
+
+From the **Run and Debug** sidebar (`Ctrl+Shift+D`), you’ll find these [launch configurations](.vscode/launch.json):
+
+- **`Debug dev`**  
+  Launches the server for debugging. The server runs on `http://localhost:3500` with a `TURBO_TOKEN` set to `changeme`.
+
+- **`Debug tests`**  
+  Runs the tests under the debugger.
+
+### Local development
+
 1. Clone this repository
 
    `git clone git@github.com:ducktors/turborepo-remote-cache.git`
