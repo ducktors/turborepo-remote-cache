@@ -100,7 +100,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.9.0",
   "keywords": [
     "turborepo",
     "monorepo",
@@ -126,5 +125,6 @@
       "@biomejs/biome",
       "msw"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.9.0"
 }
