@@ -12,7 +12,8 @@
 			"disableAutoUpdate": false,
 			"disableUpdatePrompt": false
 			},
-		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
