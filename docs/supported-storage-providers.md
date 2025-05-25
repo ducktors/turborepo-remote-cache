@@ -11,6 +11,7 @@ nav_order: 3
 - [x] DigitalOcean Spaces
 - [x] Google Cloud Storage
 - [x] Azure Blob Storage
+- [x] Minio
 
 ## AWS S3
 
