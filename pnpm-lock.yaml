@@ -41,9 +41,6 @@ importers:
       '@sinclair/typebox':
         specifier: 0.25.21
         version: 0.25.21
-      '@smithy/node-http-handler':
-        specifier: ^4.0.5
-        version: 4.0.5
       ajv:
         specifier: 8.12.0
         version: 8.12.0
