@@ -50,6 +50,8 @@ const schema = Type.Object(
     S3_REGION: Type.Optional(Type.String()),
     // S3_ENDPOINT is shared between are deployments type
     S3_ENDPOINT: Type.Optional(Type.String()),
+    // S3_MAX_SOCKETS is used to increase the number of sockets for the S3 client
+    S3_MAX_SOCKETS: Type.Optional(Type.Number({ default: 50 })),
 
     // Google Cloud Storage credentials
     GCS_PROJECT_ID: Type.Optional(Type.String()),
