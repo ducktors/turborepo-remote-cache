@@ -1,4 +1,3 @@
-import http from 'http'
 import { PassThrough, Writable } from 'node:stream'
 import {
   GetObjectCommand,
@@ -7,7 +6,6 @@ import {
   S3ClientConfig,
 } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
-import { NodeHttpHandler } from '@smithy/node-http-handler'
 import { NodeJsClient } from '@smithy/types'
 import { StorageProvider } from './index.js'
 
@@ -49,9 +47,9 @@ export function createS3({
     endpoint,
     ...(maxSockets
       ? {
-          requestHandler: new NodeHttpHandler({
-            httpAgent: new http.Agent({ maxSockets }),
-          }),
+          requestHandler: {
+            httpsAgent: { maxSockets },
+          },
         }
       : {}),
     ...(process.env.NODE_ENV === 'test'
