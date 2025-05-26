@@ -1,8 +1,10 @@
+import http from 'http'
 import { Writable } from 'node:stream'
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { STORAGE_PROVIDERS } from '../../../env.js'
+import { NodeHttpHandler } from '@smithy/node-http-handler'
+import { STORAGE_PROVIDERS, env } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
   createAzureBlobStorage,
@@ -70,6 +72,9 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         endpoint,
         s3OptionsPassthrough: {
           forcePathStyle: true,
+          requestHandler: new NodeHttpHandler({
+            httpAgent: new http.Agent({ maxSockets: env.get().S3_MAX_SOCKETS }),
+          }),
         },
       })
     }
@@ -84,6 +89,9 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         endpoint,
         s3OptionsPassthrough: {
           forcePathStyle: true,
+          requestHandler: new NodeHttpHandler({
+            httpAgent: new http.Agent({ maxSockets: env.get().S3_MAX_SOCKETS }),
+          }),
         },
       })
     }
