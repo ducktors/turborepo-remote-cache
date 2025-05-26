@@ -1,10 +1,8 @@
-import http from 'http'
 import { Writable } from 'node:stream'
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { NodeHttpHandler } from '@smithy/node-http-handler'
-import { STORAGE_PROVIDERS, env } from '../../../env.js'
+import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
   createAzureBlobStorage,
@@ -62,7 +60,7 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
     }
     case STORAGE_PROVIDERS.S3:
     case STORAGE_PROVIDERS.s3: {
-      const { accessKey, secretKey, region, endpoint } =
+      const { accessKey, secretKey, region, endpoint, maxSockets } =
         providerOptions as S3Options
       return createS3({
         accessKey,
@@ -70,16 +68,14 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         bucket: path,
         region,
         endpoint,
+        maxSockets,
         s3OptionsPassthrough: {
           forcePathStyle: true,
-          requestHandler: new NodeHttpHandler({
-            httpAgent: new http.Agent({ maxSockets: env.get().S3_MAX_SOCKETS }),
-          }),
         },
       })
     }
     case STORAGE_PROVIDERS.MINIO: {
-      const { accessKey, secretKey, region, endpoint } =
+      const { accessKey, secretKey, region, endpoint, maxSockets } =
         providerOptions as S3Options
       return createS3({
         accessKey,
@@ -87,11 +83,9 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
         bucket: path,
         region,
         endpoint,
+        maxSockets,
         s3OptionsPassthrough: {
           forcePathStyle: true,
-          requestHandler: new NodeHttpHandler({
-            httpAgent: new http.Agent({ maxSockets: env.get().S3_MAX_SOCKETS }),
-          }),
         },
       })
     }

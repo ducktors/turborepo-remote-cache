@@ -41,6 +41,7 @@ async function turboRemoteCache(
       projectId: instance.config.GCS_PROJECT_ID,
       useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
       connectionString: instance.config.ABS_CONNECTION_STRING,
+      maxSockets: instance.config.S3_MAX_SOCKETS,
     }),
   )
 
