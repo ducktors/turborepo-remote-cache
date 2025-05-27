@@ -1,3 +1,16 @@
+# [2.6.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.5.0...v2.6.0) (2025-05-27)
+
+
+### Bug Fixes
+
+* clean-up request handler instantiation following latest version of aws sdk 3 recommendations ([5d17d46](https://github.com/ducktors/turborepo-remote-cache/commit/5d17d461b3e203c1240080bd0e662db11315e4af))
+* make maxSockets as provider option ([9a1d0c5](https://github.com/ducktors/turborepo-remote-cache/commit/9a1d0c555dba5f7313ac9c78dd9e5411016fd1b7))
+
+
+### Features
+
+* **s3:** customize maxSockets parameter for the aws sdk ([250216e](https://github.com/ducktors/turborepo-remote-cache/commit/250216e0601d9a0949b2f39886364f5e2a4bfe01))
+
 # [2.5.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.4.0...v2.5.0) (2025-04-22)
 
 
