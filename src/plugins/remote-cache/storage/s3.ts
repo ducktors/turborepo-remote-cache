@@ -15,6 +15,7 @@ export interface S3Options {
   region?: string
   endpoint?: string
   bucket: string
+  maxSockets?: number
   s3OptionsPassthrough?: S3ClientConfig
 }
 
@@ -25,6 +26,7 @@ export function createS3({
   bucket,
   region = process.env.S3_REGION,
   endpoint,
+  maxSockets,
   s3OptionsPassthrough = {},
 }: S3Options): StorageProvider {
   if (!bucket) {
@@ -43,6 +45,13 @@ export function createS3({
         : undefined,
     region,
     endpoint,
+    ...(maxSockets
+      ? {
+          requestHandler: {
+            httpsAgent: { maxSockets },
+          },
+        }
+      : {}),
     ...(process.env.NODE_ENV === 'test'
       ? { sslEnabled: false, s3ForcePathStyle: true }
       : {}),
