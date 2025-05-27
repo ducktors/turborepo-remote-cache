@@ -321,6 +321,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "EPMatt",
+      "name": "Matteo Agnoletto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30753195?v=4",
+      "profile": "https://epmatt.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
