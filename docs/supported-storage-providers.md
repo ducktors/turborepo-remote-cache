@@ -11,6 +11,7 @@ nav_order: 3
 - [x] DigitalOcean Spaces
 - [x] Google Cloud Storage
 - [x] Azure Blob Storage
+- [x] Minio
 
 ## AWS S3
 
@@ -77,6 +78,7 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 3. Set `ABS_CONNECTION_STRING` to the connection string.
 
 ## Minio
+
 1. Create Access key
 2. Fill in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables based on the access key you created.
 3. Create bucket
