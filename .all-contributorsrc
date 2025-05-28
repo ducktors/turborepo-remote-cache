@@ -330,6 +330,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "melroy89",
+      "name": "Melroy van den Berg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/628926?v=4",
+      "profile": "https://melroy.org",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
