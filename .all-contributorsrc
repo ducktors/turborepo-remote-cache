@@ -312,6 +312,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "neilenns",
+      "name": "Neil Enns",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9524118?v=4",
+      "profile": "https://www.linkedin.com/in/neilenns/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "EPMatt",
+      "name": "Matteo Agnoletto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30753195?v=4",
+      "profile": "https://epmatt.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "melroy89",
+      "name": "Melroy van den Berg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/628926?v=4",
+      "profile": "https://melroy.org",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

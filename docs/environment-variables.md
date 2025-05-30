@@ -26,3 +26,7 @@ nav_order: 2
 | `STORAGE_PATH_USE_TMP_FOLDER` | boolean | optional | `true` | Uses the system tmp folder as a prefix to `STORAGE_PATH` |
 | `BODY_LIMIT` | number | optional | `104857600` | The limit for artifact upload size  |
 | `HTTP2` | boolean | optional | `'false'` | If set to `true`, the server will use the HTTP/2 protocol, which helps bypass the 32MB payload size limit in Cloud Run |
+| `SSL_KEY_PATH` | string | optional | `` | If set, enables HTTPS using the key file at the specified path. |
+| `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
+
+Both `SSL_KEY_PATH` and `SSL_CERT_PATH` must be set to enable HTTPS.

@@ -11,6 +11,7 @@ nav_order: 3
 - [x] DigitalOcean Spaces
 - [x] Google Cloud Storage
 - [x] Azure Blob Storage
+- [x] Minio
 
 ## AWS S3
 
@@ -19,6 +20,7 @@ When using `STORAGE_PROVIDER=s3` (for AWS S3, DigitalOcean Spaces, Minio, etc.),
 *   **Credentials**: Provide credentials via environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and optionally `AWS_SESSION_TOKEN`), a shared credentials file (`~/.aws/credentials`), or an IAM role (on EC2/ECS/Lambda).
 *   **Region**: Specify the AWS region using the `AWS_REGION` environment variable or a shared config file (`~/.aws/config`).
 *   **S3-Compatible Endpoint**: For services like Minio or DigitalOcean Spaces, you may also need to set the `S3_ENDPOINT` environment variable to the service's specific endpoint URL (e.g., `http://localhost:9000` for local Minio, or `https://nyc3.digitaloceanspaces.com` for DigitalOcean).
+*   **Max sockets**: Optionally, set the `S3_MAX_SOCKETS` environment variable to control the maximum number of concurrent connections to the storage service. This can be used to fine-tune performance based on your environment's capabilities.
 
 AWS credentials and configuration are loaded as described in the AWS SDK documentation:
 
@@ -36,6 +38,7 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 5. Set `STORAGE_PATH` to the name of the Space you created.
 6. Set `S3_ENDPOINT` to the endpoint of the Space you created. For example, `https://nyc3.digitaloceanspaces.com`.
 7. Set `STORAGE_PROVIDER` to `s3`.
+8. Optionally, set `S3_MAX_SOCKETS` to control the maximum number of concurrent connections to the Space.
 
 
 ## Google Cloud Storage
@@ -75,6 +78,7 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 3. Set `ABS_CONNECTION_STRING` to the connection string.
 
 ## Minio
+
 1. Create Access key
 2. Fill in the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables based on the access key you created.
 3. Create bucket
@@ -82,3 +86,4 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 5. Set `AWS_REGION` (can leave blank `S3_REGION=` for none).
 6. Set `STORAGE_PROVIDER` to `minio`.
 7. Set `S3_ENDPOINT` to Minio url (ie `http://127.0.0.1:9000`)
+8. Optionally, set `S3_MAX_SOCKETS` to control the maximum number of concurrent connections to the Minio instance.
