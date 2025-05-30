@@ -1,4 +1,5 @@
 import { PassThrough, Writable } from 'node:stream'
+import { Readable } from 'node:stream'
 import {
   GetObjectCommand,
   HeadObjectCommand,
@@ -6,7 +7,6 @@ import {
   S3ClientConfig,
 } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
-import { NodeJsClient } from '@smithy/types'
 import { StorageProvider } from './index.js'
 
 export interface S3Options {
@@ -35,7 +35,7 @@ export function createS3({
     )
   }
 
-  const client: NodeJsClient<S3Client> = new S3Client({
+  const client = new S3Client({
     credentials:
       accessKey && secretKey
         ? {
@@ -73,7 +73,14 @@ export function createS3({
         .send(new GetObjectCommand({ Bucket: bucket, Key: key }))
         .then((data) => {
           if (data.Body) {
-            data.Body.pipe(passThrough)
+            if (data.Body instanceof Readable) {
+              data.Body.pipe(passThrough)
+            } else {
+              const stream = Readable.from(
+                data.Body as AsyncIterable<Uint8Array>,
+              )
+              stream.pipe(passThrough)
+            }
           }
         })
         .catch((err) => passThrough.destroy(err))
