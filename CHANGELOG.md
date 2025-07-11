@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.0...v2.6.1) (2025-07-11)
+
+
+### Bug Fixes
+
+* update devDeps and fix lint error on s3.ts ([b6374e2](https://github.com/ducktors/turborepo-remote-cache/commit/b6374e2abcf0af121fa85823914db5b2d757c8a3))
+
 # [2.6.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.5.0...v2.6.0) (2025-05-27)
 
 
