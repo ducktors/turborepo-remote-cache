@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PNPM_VERSION: 10.11.0 
+  PNPM_VERSION: 10.17.0  
 
 permissions: read-all
 
