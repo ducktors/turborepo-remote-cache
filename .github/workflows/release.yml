@@ -9,7 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   NPM_CONFIG_PROVENANCE: true
-  PNPM_VERSION: 10.11.0 
+  PNPM_VERSION: 10.17.0  
   NODE_VERSION: 22
 
 permissions:
