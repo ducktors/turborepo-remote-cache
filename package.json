@@ -48,7 +48,7 @@
     "@aws-sdk/lib-storage": "^3.750.0",
     "@azure/storage-blob": "^12.23.0",
     "@fastify/aws-lambda": "^5.0.0",
-    "@fastify/jwt": "9.0.1",
+    "@fastify/jwt": "9.1.0",
     "@google-cloud/storage": "6.9.2",
     "@hapi/boom": "10.0.0",
     "@sinclair/typebox": "0.25.21",
