@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PNPM_VERSION: 10.17.0  
+  PNPM_VERSION: 10.17.0
 
 permissions: read-all
 
@@ -49,7 +49,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
         os: [ubuntu-latest]
     steps:
       - name: Harden Runner
