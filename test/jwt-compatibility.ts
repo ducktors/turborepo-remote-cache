@@ -433,7 +433,7 @@ describe('JWT Plugin Compatibility', async () => {
     await t.test('should allow artifact download with valid JWT', async () => {
       const artifactId = randomUUID()
       const team = randomUUID()
-      const token = jwksMock.token({ scope: 'artifacts:read' })
+      const token = jwksMock.token({ scope: 'artifacts:read artifacts:write' })
 
       // First upload an artifact
       await app.inject({
