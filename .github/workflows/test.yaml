@@ -13,7 +13,6 @@ concurrency:
 permissions: read-all
 
 env:
-  NODE_VERSION: 22
   PNPM_VERSION: 10.17.0
 
 jobs:
