@@ -123,7 +123,8 @@ To enable this feature, first update your turbo.json file to include the signatu
 
 Next, you need to provide a secret key as an environment variable to both your Turborepo client (in your CI/development environment) and the turborepo-remote-cache server.
 
-| Variable | Type | Description |
+| Variable      | Type   | Description |
+| ------------- | ------ | ----------- |
 | TURBO_REMOTE_CACHE_SIGNATURE_KEY | string | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server.|
 
 ```
