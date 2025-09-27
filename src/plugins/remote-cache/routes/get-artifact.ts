@@ -42,8 +42,9 @@ export const getArtifact: RouteOptions<
           reply.header('x-artifact-tag', artifactTag)
         } catch (err) {
           // A missing tag is treated as a cache miss.
-          // The client will validate and decide if it's acceptable.
+          // Return notFound to indicate cache miss.
           req.log.warn(err, `Could not retrieve artifact tag for ${artifactId}`)
+          throw notFound('Artifact tag not found', err)
         }
       }
 

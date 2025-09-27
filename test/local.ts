@@ -11,6 +11,9 @@ const packageJson = JSON.parse(
   readFileSync(pathJoin(process.cwd(), 'package.json'), 'utf8'),
 )
 
+// Number of bytes for artifact IDs
+const ARTIFACT_ID_BYTE_LENGTH = 20
+
 const storagePath = join(tmpdir(), 'turborepo-remote-cache-test')
 
 // Define the base config with a specific type to satisfy TypeScript
@@ -25,7 +28,7 @@ const baseTestConfig: Partial<Config> = {
   STORAGE_PATH: storagePath,
 }
 
-test('local storage artifact caching', async (t) => {
+test('local storage provider', async (t) => {
   t.after(() => {
     // Cleanup storage directory after all tests in this block run
     rmSync(storagePath, { recursive: true, force: true })
@@ -33,7 +36,7 @@ test('local storage artifact caching', async (t) => {
 
   await t.test('without signature verification', async (t) => {
     const { createApp } = await import('../src/app.js')
-    const artifactId = crypto.randomBytes(20).toString('hex')
+    const artifactId = crypto.randomBytes(ARTIFACT_ID_BYTE_LENGTH).toString('hex')
     const team = 'superteam'
     const app = createApp({ logger: false, configOverrides: baseTestConfig })
     await app.ready()
@@ -301,7 +304,7 @@ test('local storage artifact caching', async (t) => {
         })
         await unsignedApp.ready()
 
-        const unsignedArtifactId = crypto.randomBytes(20).toString('hex')
+        const unsignedArtifactId = crypto.randomBytes(ARTIFACT_ID_BYTE_LENGTH).toString('hex')
         await unsignedApp.inject({
           method: 'PUT',
           url: `/v8/artifacts/${unsignedArtifactId}`,
