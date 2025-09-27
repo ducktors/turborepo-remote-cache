@@ -36,7 +36,9 @@ test('local storage provider', async (t) => {
 
   await t.test('without signature verification', async (t) => {
     const { createApp } = await import('../src/app.js')
-    const artifactId = crypto.randomBytes(ARTIFACT_ID_BYTE_LENGTH).toString('hex')
+    const artifactId = crypto
+      .randomBytes(ARTIFACT_ID_BYTE_LENGTH)
+      .toString('hex')
     const team = 'superteam'
     const app = createApp({ logger: false, configOverrides: baseTestConfig })
     await app.ready()
@@ -304,7 +306,9 @@ test('local storage provider', async (t) => {
         })
         await unsignedApp.ready()
 
-        const unsignedArtifactId = crypto.randomBytes(ARTIFACT_ID_BYTE_LENGTH).toString('hex')
+        const unsignedArtifactId = crypto
+          .randomBytes(ARTIFACT_ID_BYTE_LENGTH)
+          .toString('hex')
         await unsignedApp.inject({
           method: 'PUT',
           url: `/v8/artifacts/${unsignedArtifactId}`,
