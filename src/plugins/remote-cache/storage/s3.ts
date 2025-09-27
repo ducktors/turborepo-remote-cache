@@ -53,7 +53,7 @@ export function createS3({
         }
       : {}),
     ...(process.env.NODE_ENV === 'test'
-      ? { sslEnabled: false, s3ForcePathStyle: true }
+      ? { sslEnabled: false, forcePathStyle: true }
       : {}),
     ...s3OptionsPassthrough,
   })
