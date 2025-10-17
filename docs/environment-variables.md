@@ -7,10 +7,11 @@ nav_order: 2
 # Environment variables
 
 | Variable | Type | Required | Default | Description |
-| -- | -- | -- | -- | -- |
+| --- | --- | --- | --- | --- |
 | `NODE_ENV` | string | optional | `production` | Possible values are `development` or `production`|
 | `PORT` | number | optional | `3000` |   |
 | `TURBO_TOKEN` | string | optional |  | Secret token used for the authentication. Required if `AUTH_MODE` is undefined or `static`. You can specify multiple tokens separated by comma (e.g. `TURBO_TOKEN=token1,token2,token3`). The value must be the same one provided for the `token` parameter of the `build` script. See enable [custom remote caching](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching) in a Turborepo monorepo |
+| `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | optional | | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. |
 | `AUTH_MODE` | string | optional | `static` | Which authentication mode to use, possible values are `static` or `jwt`|
 | `JWKS_URL` | string | optional | | JWKS metadata url for retrieving public keys for verifying JWTs|
 | `JWT_ISSUER` | string | optional | | JWT Issuer, optional even if using JWT authentication, to match `iss` field in JWT.
