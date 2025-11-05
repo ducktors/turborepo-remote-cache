@@ -1,3 +1,10 @@
+## [2.6.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.1...v2.6.2) (2025-11-05)
+
+
+### Bug Fixes
+
+* **deps:** bump koa from 2.16.2 to 2.16.3 ([a17cb3e](https://github.com/ducktors/turborepo-remote-cache/commit/a17cb3e54b39da88a3b341c44ae994722442f3db))
+
 ## [2.6.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.0...v2.6.1) (2025-07-11)
 
 
