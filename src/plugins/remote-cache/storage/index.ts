@@ -118,6 +118,10 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 ) {
   const location = createStorageLocation(provider, providerOptions)
 
+  function getArtifactTagPath(artifactId: string, team: string) {
+    return join(team, `${artifactId}.tag`)
+  }
+
   async function getCachedArtifact(artifactId: string, team: string) {
     return new Promise((resolve, reject) => {
       const artifactPath = join(team, artifactId)
@@ -133,19 +137,23 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     })
   }
 
-  async function existsCachedArtifact(artifactId: string, team: string) {
+  function checkExists(path: string, notFoundMessage: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const artifactPath = join(team, artifactId)
-      location.exists(artifactPath, (err, exists) => {
+      location.exists(path, (err, exists) => {
         if (err) {
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+          return reject(new Error(notFoundMessage))
         }
         resolve()
       })
     })
+  }
+
+  async function existsCachedArtifact(artifactId: string, team: string) {
+    const artifactPath = join(team, artifactId)
+    return checkExists(artifactPath, `Artifact ${artifactPath} doesn't exist.`)
   }
 
   async function createCachedArtifact(
@@ -159,10 +167,68 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     )
   }
 
+  function readStreamToString(stream: Readable): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const chunks: Buffer[] = []
+      stream.on('data', (chunk) => chunks.push(chunk))
+      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+      stream.on('error', reject)
+    })
+  }
+
+  async function getCachedArtifactTag(
+    artifactId: string,
+    team: string,
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const artifactTagPath = getArtifactTagPath(artifactId, team)
+      location.exists(artifactTagPath, async (err, exists) => {
+        if (err) {
+          return reject(err)
+        }
+        if (!exists) {
+          return reject(
+            new Error(`Artifact tag ${artifactTagPath} doesn't exist.`),
+          )
+        }
+
+        try {
+          const stream = location.createReadStream(artifactTagPath)
+          const result = await readStreamToString(stream)
+          resolve(result)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    })
+  }
+
+  async function existsCachedArtifactTag(artifactId: string, team: string) {
+    const artifactTagPath = getArtifactTagPath(artifactId, team)
+    return checkExists(
+      artifactTagPath,
+      `Artifact tag ${artifactTagPath} doesn't exist.`,
+    )
+  }
+
+  async function createCachedArtifactTag(
+    artifactId: string,
+    team: string,
+    tag: string,
+  ) {
+    return pipeline(
+      Readable.from(tag),
+      location.createWriteStream(getArtifactTagPath(artifactId, team)),
+    )
+  }
+
   return {
     getCachedArtifact,
     createCachedArtifact,
     existsCachedArtifact,
+    getCachedArtifactTag,
+    existsCachedArtifactTag,
+    createCachedArtifactTag,
   }
 }
 
@@ -176,6 +242,15 @@ declare module 'fastify' {
       createCachedArtifact: ReturnType<
         typeof createLocation
       >['createCachedArtifact']
+      existsCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['existsCachedArtifactTag']
+      getCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['getCachedArtifactTag']
+      createCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['createCachedArtifactTag']
     }
   }
 }
