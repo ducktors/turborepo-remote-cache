@@ -19,7 +19,9 @@ export default fp(async (fastify: FastifyInstance) => {
   ) {
     fastify.register(staticAuth)
     fastify.log.info('Registered static auth')
-  } else {
-    throw new Error('Invalid AUTH_MODE, select either "jwt" or "static"')
+  } else if (fastify.config.AUTH_MODE === 'none') {
+    fastify.log.info('Registered AUTH_MODE None - No auth required - Assumes you are using external authentication.')}
+    else {
+    throw new Error('Invalid AUTH_MODE, select either "jwt", "static", or "none"')
   }
 })
