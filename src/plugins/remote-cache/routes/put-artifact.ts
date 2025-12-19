@@ -7,9 +7,10 @@ import type {
   RouteOptions,
 } from 'fastify'
 import {
+  type Headers,
   type Params,
   type Querystring,
-  artifactsRouteSchema,
+  artifactsRouteSchemaWithHeaders,
 } from './schema.js'
 
 export const putArtifact: RouteOptions<
@@ -19,12 +20,13 @@ export const putArtifact: RouteOptions<
   {
     Querystring: Querystring
     Params: Params
+    Headers: Headers
     Body: Buffer
   }
 > = {
   url: '/artifacts/:id',
   method: 'PUT',
-  schema: artifactsRouteSchema,
+  schema: artifactsRouteSchemaWithHeaders,
   authorization: 'write',
   async handler(req, reply) {
     const artifactId = req.params.id
@@ -34,11 +36,23 @@ export const putArtifact: RouteOptions<
     }
 
     try {
-      await this.location.createCachedArtifact(
-        artifactId,
-        team,
-        Readable.from(req.body),
-      )
+      const artifactTag = req.headers['x-artifact-tag']
+
+      const storagePromises: Promise<void>[] = [
+        this.location.createCachedArtifact(
+          artifactId,
+          team,
+          Readable.from(req.body),
+        ),
+      ]
+
+      if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY && artifactTag) {
+        storagePromises.push(
+          this.location.createCachedArtifactTag(artifactId, team, artifactTag),
+        )
+      }
+
+      await Promise.all(storagePromises)
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
