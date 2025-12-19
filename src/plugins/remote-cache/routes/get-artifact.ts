@@ -33,6 +33,21 @@ export const getArtifact: RouteOptions<
     }
 
     try {
+      // If signature verification is enabled, check for artifact tag first
+      if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY) {
+        try {
+          const artifactTag = await this.location.getCachedArtifactTag(
+            artifactId,
+            team,
+          )
+          reply.header('x-artifact-tag', artifactTag)
+        } catch (err) {
+          // A missing tag is treated as a cache miss
+          req.log.warn(err, `Could not retrieve artifact tag for ${artifactId}`)
+          throw notFound('Artifact tag not found', err)
+        }
+      }
+
       const artifact = await this.location.getCachedArtifact(artifactId, team)
       reply.header('Content-Type', 'application/octet-stream')
       return reply.send(artifact)

@@ -104,3 +104,26 @@ You can also configure your development machine by setting the following environ
 | `TURBO_TOKEN` | string | Your secret key. This must be the same as the `TURBO_TOKEN` variable set on your turborepo-remote-cache server instance |
 
 **Note: these environment variables are used by the Turborepo CLI** on the development machine or CI pipelines. They are not used by the `turborepo-remote-cache` server.
+
+## Artifact Integrity and Authenticity Verification
+
+Turborepo can sign artifacts with a secret key before uploading them to the Remote Cache. This increases the security of your remote cache by having Turborepo verify the integrity and authenticity of artifacts when they are downloaded. Any artifacts that fail verification will be treated as a cache miss.
+
+To enable this feature, first update your `turbo.json` file to include the `signature` property:
+
+`turbo.json`
+```json
+{
+  "remoteCache": {
+    "signature": true
+  }
+}
+```
+
+Next, you need to provide a secret key as an environment variable to both your Turborepo client (in your CI/development environment) and the turborepo-remote-cache server.
+
+| Variable | Type | Description |
+| -------- | ---- | ----------- |
+| `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. |
+
+**Note:** When signature verification is enabled on the server, artifacts without a valid signature tag will be treated as cache misses. This ensures that only properly signed artifacts can be retrieved from the cache.

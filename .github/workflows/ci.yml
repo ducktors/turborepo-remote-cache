@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PNPM_VERSION: 10.17.0
+  PNPM_VERSION: 10.18.1
 
 permissions: read-all
 
@@ -107,7 +107,3 @@ jobs:
         run: |
           docker image ls
           docker inspect turborepo-remote-cache:test
-
-  
-
-

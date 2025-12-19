@@ -13,7 +13,7 @@ concurrency:
 permissions: read-all
 
 env:
-  PNPM_VERSION: 10.17.0
+  PNPM_VERSION: 10.18.1
 
 jobs:
   test:
