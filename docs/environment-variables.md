@@ -28,5 +28,6 @@ nav_order: 2
 | `HTTP2` | boolean | optional | `'false'` | If set to `true`, the server will use the HTTP/2 protocol, which helps bypass the 32MB payload size limit in Cloud Run |
 | `SSL_KEY_PATH` | string | optional | `` | If set, enables HTTPS using the key file at the specified path. |
 | `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
+| `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | optional | | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. See [Artifact Integrity and Authenticity Verification](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching#artifact-integrity-and-authenticity-verification) for more info. |
 
 Both `SSL_KEY_PATH` and `SSL_CERT_PATH` must be set to enable HTTPS.

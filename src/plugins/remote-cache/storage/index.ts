@@ -118,6 +118,10 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 ) {
   const location = createStorageLocation(provider, providerOptions)
 
+  function getArtifactTagPath(artifactId: string, team: string): string {
+    return join(team, `${artifactId}.tag`)
+  }
+
   async function getCachedArtifact(artifactId: string, team: string) {
     return new Promise((resolve, reject) => {
       const artifactPath = join(team, artifactId)
@@ -159,10 +163,64 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     )
   }
 
+  async function getCachedArtifactTag(
+    artifactId: string,
+    team: string,
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const tagPath = getArtifactTagPath(artifactId, team)
+      location.exists(tagPath, (err, exists) => {
+        if (err) {
+          return reject(err)
+        }
+        if (!exists) {
+          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+        }
+        const stream = location.createReadStream(tagPath)
+        const chunks: Buffer[] = []
+        stream.on('data', (chunk: Buffer) => chunks.push(chunk))
+        stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+        stream.on('error', reject)
+      })
+    })
+  }
+
+  async function existsCachedArtifactTag(
+    artifactId: string,
+    team: string,
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const tagPath = getArtifactTagPath(artifactId, team)
+      location.exists(tagPath, (err, exists) => {
+        if (err) {
+          return reject(err)
+        }
+        if (!exists) {
+          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+        }
+        resolve()
+      })
+    })
+  }
+
+  async function createCachedArtifactTag(
+    artifactId: string,
+    team: string,
+    tag: string,
+  ): Promise<void> {
+    return pipeline(
+      Readable.from(tag),
+      location.createWriteStream(getArtifactTagPath(artifactId, team)),
+    )
+  }
+
   return {
     getCachedArtifact,
     createCachedArtifact,
     existsCachedArtifact,
+    getCachedArtifactTag,
+    existsCachedArtifactTag,
+    createCachedArtifactTag,
   }
 }
 
@@ -176,6 +234,15 @@ declare module 'fastify' {
       createCachedArtifact: ReturnType<
         typeof createLocation
       >['createCachedArtifact']
+      getCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['getCachedArtifactTag']
+      existsCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['existsCachedArtifactTag']
+      createCachedArtifactTag: ReturnType<
+        typeof createLocation
+      >['createCachedArtifactTag']
     }
   }
 }
