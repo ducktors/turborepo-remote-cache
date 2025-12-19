@@ -25,7 +25,9 @@ const schema = Type.Object(
     NODE_ENV: Type.Optional(
       Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION }),
     ),
-    AUTH_MODE: Type.Optional(Type.Enum({ static: 'static', jwt: 'jwt' })),
+    AUTH_MODE: Type.Optional(
+      Type.Enum({ static: 'static', jwt: 'jwt', none: 'none' }),
+    ),
     JWT_AUDIENCE: Type.Optional(Type.String({ separator: ',' })),
     JWT_ISSUER: Type.Optional(Type.String()),
     JWKS_URL: Type.Optional(Type.String()),
