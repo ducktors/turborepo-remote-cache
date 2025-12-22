@@ -50,7 +50,7 @@ jobs:
         run: npm audit signatures
 
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018 # v2.1.0
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v2.1.0
         with:
           subject-path: "dist/**"
       - name: Release
