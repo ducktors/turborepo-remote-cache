@@ -1,3 +1,17 @@
+# [2.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.2...v2.7.0) (2025-12-22)
+
+
+### Bug Fixes
+
+* **deps:** bump js-yaml from 4.1.0 to 4.1.1 ([21246ec](https://github.com/ducktors/turborepo-remote-cache/commit/21246ec918de8dde1ff1f9cc8f0893cdfb2080d2))
+* linting ([8ada468](https://github.com/ducktors/turborepo-remote-cache/commit/8ada4686716bfdb982808eb9298d1c7fd1036435))
+
+
+### Features
+
+* add artifact signature verification ([69ffc31](https://github.com/ducktors/turborepo-remote-cache/commit/69ffc31f57cbc962b317092c698fc6ec77610601))
+* add AUTH_MODE none ([f048db8](https://github.com/ducktors/turborepo-remote-cache/commit/f048db8962646d2b670948bfda53ab5183cea2c6))
+
 ## [2.6.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.1...v2.6.2) (2025-11-05)
 
 
