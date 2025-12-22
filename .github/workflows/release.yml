@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Release
     permissions:
+      attestations: write
       contents: write
       issues: write
       pull-requests: write
