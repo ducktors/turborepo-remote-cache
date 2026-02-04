@@ -1,6 +1,10 @@
 import * as fs from 'node:fs'
 import { isBoom } from '@hapi/boom'
-import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
+import Fastify, {
+  FastifyError,
+  FastifyInstance,
+  FastifyServerOptions,
+} from 'fastify'
 import hyperid from 'hyperid'
 import { Config, env } from './env.js'
 import { logger } from './logger.js'
@@ -61,7 +65,7 @@ export function createApp(
     },
   })
 
-  app.setErrorHandler((err, request, reply) => {
+  app.setErrorHandler((err: FastifyError, request, reply) => {
     if (err.validation) {
       reply.log.warn(err)
       reply.code(400).send({ message: err.message })
