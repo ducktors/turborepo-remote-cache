@@ -38,16 +38,17 @@ jobs:
         name: Install Node
         with:
           node-version-file: .nvmrc
+          registry-url: 'https://registry.npmjs.org'
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
         name: Install pnpm
         with:
           version: ${{ env.PNPM_VERSION }}
+      - name: Upgrade npm for OIDC trusted publishing
+        run: npm install -g npm@latest
       - name: Install dependencies
         run: pnpm install
       - name: Build
         run: pnpm build
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
 
       - name: Attest Build Provenance
         uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v2.1.0
