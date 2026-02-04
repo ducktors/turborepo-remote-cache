@@ -357,6 +357,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "clemens",
+      "name": "Clemens Kofler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3749?v=4",
+      "profile": "https://clemenskofler.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
