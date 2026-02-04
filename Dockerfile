@@ -11,7 +11,7 @@ RUN chown app:app $HOME
 USER root
 RUN npm install -g pnpm@${PNPM_VERSION}
 USER app
-COPY --chown=app:app package.json pnpm-lock.yaml ./
+COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY --chown=app:app . .
 RUN pnpm build:docker
