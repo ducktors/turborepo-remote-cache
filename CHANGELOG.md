@@ -1,3 +1,10 @@
+## [2.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.1...v2.7.2) (2026-02-04)
+
+
+### Bug Fixes
+
+* bump nodejs to 20.20.0-alpine ([4cbb8fb](https://github.com/ducktors/turborepo-remote-cache/commit/4cbb8fb769535ee876db12693137bcfb5b4dd075))
+
 ## [2.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.0...v2.7.1) (2026-02-04)
 
 
