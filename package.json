@@ -25,6 +25,7 @@
     "build:docker": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps dist/index.js",
     "lint": "biome check src test",
+    "lint:fix": "biome check --apply src test",
     "fmt": "biome format src test",
     "dev": "run-p dev:start check:types",
     "dev:start": "tsx watch --inspect --env-file=.env src/index.ts",
@@ -112,5 +113,5 @@
     "dist",
     "vercel.json"
   ],
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.28.2"
 }

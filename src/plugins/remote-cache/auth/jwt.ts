@@ -52,15 +52,17 @@ export default fp(async (fastify) => {
     }
   })
 
-  fastify.setErrorHandler(async (error, req, res) => {
-    if (isBoom(error)) {
-      throw error
-    } else if (error.code?.startsWith('FST_JWT_')) {
-      throw new Boom(error.message, {
-        statusCode: error.statusCode || 500,
-      })
-    } else {
-      throw unauthorized()
-    }
-  })
+  fastify.setErrorHandler(
+    async (error: Error & { code?: string; statusCode?: number }, req, res) => {
+      if (isBoom(error)) {
+        throw error
+      } else if (error.code?.startsWith('FST_JWT_')) {
+        throw new Boom(error.message, {
+          statusCode: error.statusCode || 500,
+        })
+      } else {
+        throw unauthorized()
+      }
+    },
+  )
 })
