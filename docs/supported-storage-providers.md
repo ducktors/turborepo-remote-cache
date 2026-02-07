@@ -27,6 +27,10 @@ AWS credentials and configuration are loaded as described in the AWS SDK documen
 - [Setting Credentials](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html)
 - [Setting Configuration](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html)
 
+You should consider adding a lifecycle rule to your bucket in order to remove stale cache data and prevent your bucket from growing infinitely. Here's a simple configuration that removes old objects after 7 days:
+
+![Example AWS S3 bucket lifecycle rule for cache objects](./aws-s3-lifecycle-rule.png)
+
 ### DigitalOcean Spaces
 
 DigitalOcean Spaces is an S3-compatible object storage that this project also supports.

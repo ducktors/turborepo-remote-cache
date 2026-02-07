@@ -1,5 +1,5 @@
-ARG PNPM_VERSION=10.18.1  
-ARG NODE_VERSION=20.13.1-alpine3.19
+ARG PNPM_VERSION=10.28.2
+ARG NODE_VERSION=20.20.0-alpine
 
 FROM node:${NODE_VERSION} AS build
 ENV HOME=/opt/app
@@ -11,7 +11,7 @@ RUN chown app:app $HOME
 USER root
 RUN npm install -g pnpm@${PNPM_VERSION}
 USER app
-COPY --chown=app:app package.json pnpm-lock.yaml ./
+COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY --chown=app:app . .
 RUN pnpm build:docker

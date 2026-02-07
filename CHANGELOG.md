@@ -1,3 +1,25 @@
+## [2.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.1...v2.7.2) (2026-02-04)
+
+
+### Bug Fixes
+
+* bump nodejs to 20.20.0-alpine ([4cbb8fb](https://github.com/ducktors/turborepo-remote-cache/commit/4cbb8fb769535ee876db12693137bcfb5b4dd075))
+
+## [2.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.0...v2.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.3.2 to 5.7.3 ([2713c74](https://github.com/ducktors/turborepo-remote-cache/commit/2713c74ab007877518b8761d0e154f2748b8c3f6))
+* update deps and release step ([4d0c6eb](https://github.com/ducktors/turborepo-remote-cache/commit/4d0c6ebf34e2b699333925b047efa17e48f9f5bd))
+
+## [2.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.0...v2.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.3.2 to 5.7.3 ([2713c74](https://github.com/ducktors/turborepo-remote-cache/commit/2713c74ab007877518b8761d0e154f2748b8c3f6))
+
 # [2.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.2...v2.7.0) (2025-12-22)
 
 

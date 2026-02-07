@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.7.0",
+  "version": "2.7.2",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
@@ -25,6 +25,7 @@
     "build:docker": "tsc -p ./tsconfig.json",
     "start": "node --enable-source-maps dist/index.js",
     "lint": "biome check src test",
+    "lint:fix": "biome check --apply src test",
     "fmt": "biome format src test",
     "dev": "run-p dev:start check:types",
     "dev:start": "tsx watch --inspect --env-file=.env src/index.ts",
@@ -56,7 +57,7 @@
     "ajv": "8.12.0",
     "close-with-grace": "1.1.0",
     "env-schema": "5.2.0",
-    "fastify": "5.3.2",
+    "fastify": "5.7.3",
     "fastify-jwt-jwks": "^2.0.0",
     "fastify-plugin": "5.0.1",
     "fs-blob-store": "6.0.0",
@@ -112,5 +113,5 @@
     "dist",
     "vercel.json"
   ],
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.28.2"
 }
