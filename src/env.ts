@@ -28,7 +28,7 @@ const schema = Type.Object(
     AUTH_MODE: Type.Optional(
       Type.Enum({ static: 'static', jwt: 'jwt', none: 'none' }),
     ),
-    HOST: Type.String({ default: '::' }),
+    HOST: Type.String({ default: '0.0.0.0' }),
     JWT_AUDIENCE: Type.Optional(Type.String({ separator: ',' })),
     JWT_ISSUER: Type.Optional(Type.String()),
     JWKS_URL: Type.Optional(Type.String()),
