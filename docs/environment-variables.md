@@ -10,6 +10,7 @@ nav_order: 2
 | -- | -- | -- | -- | -- |
 | `NODE_ENV` | string | optional | `production` | Possible values are `development` or `production`|
 | `PORT` | number | optional | `3000` |   |
+| `HOST` | string | optional | `0.0.0.0` | The host address to bind the server to. Use `0.0.0.0` to listen on all IPv4 interfaces or `::` to listen on all interfaces (IPv4 and IPv6). |
 | `TURBO_TOKEN` | string | optional |  | Secret token used for the authentication. Required if `AUTH_MODE` is undefined or `static`. You can specify multiple tokens separated by comma (e.g. `TURBO_TOKEN=token1,token2,token3`). The value must be the same one provided for the `token` parameter of the `build` script. See enable [custom remote caching](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching) in a Turborepo monorepo |
 | `AUTH_MODE` | string | optional | `static` | Which authentication mode to use, possible values are `static`, `jwt` or `none` |
 | `JWKS_URL` | string | optional | | JWKS metadata url for retrieving public keys for verifying JWTs|
