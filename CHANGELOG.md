@@ -1,3 +1,10 @@
+## [2.7.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.2...v2.7.3) (2026-02-12)
+
+
+### Bug Fixes
+
+* **deps:** bump jws from 4.0.0 to 4.0.1 ([f08e2ab](https://github.com/ducktors/turborepo-remote-cache/commit/f08e2abcce83c0ddafa34aade08f9adf4346c1c5))
+
 ## [2.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.1...v2.7.2) (2026-02-04)
 
 
