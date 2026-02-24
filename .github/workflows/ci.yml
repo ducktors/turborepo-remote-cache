@@ -101,6 +101,8 @@ jobs:
           load: true
           platforms: linux/amd64
           tags: turborepo-remote-cache:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             PACKAGE_VERSION=${{ steps.package-version.outputs.current-version}}
       - name: Test Docker image

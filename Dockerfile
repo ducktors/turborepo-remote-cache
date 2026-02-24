@@ -3,6 +3,7 @@ ARG NODE_VERSION=22.15.1-alpine
 
 FROM node:${NODE_VERSION} AS build
 ENV HOME=/opt/app
+ENV CI=true
 ARG PACKAGE_VERSION
 ENV PACKAGE_VERSION=$PACKAGE_VERSION
 RUN addgroup -g 1001 app && adduser -u 1001 -D -G app -s /bin/false app
