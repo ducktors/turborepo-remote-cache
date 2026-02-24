@@ -5,7 +5,7 @@ FROM node:${NODE_VERSION} AS build
 ENV HOME=/opt/app
 ARG PACKAGE_VERSION
 ENV PACKAGE_VERSION=$PACKAGE_VERSION
-RUN addgroup -g 101 app && adduser -u 100 -D -G app -s /bin/false app
+RUN addgroup -g 1001 app && adduser -u 1001 -D -G app -s /bin/false app
 WORKDIR $HOME
 RUN chown app:app $HOME
 USER root
@@ -23,7 +23,7 @@ RUN apk update && \
     apk upgrade --no-cache && \
     apk add --no-cache tini && \
     rm -rf /var/cache/apk/*
-RUN addgroup -g 101 app && adduser -u 100 -D -G app -s /bin/false app
+RUN addgroup -g 1001 app && adduser -u 1001 -D -G app -s /bin/false app
 WORKDIR /opt/app
 COPY --chown=app:app --from=build /opt/app/dist ./dist
 COPY --chown=app:app --from=build /opt/app/node_modules ./node_modules
