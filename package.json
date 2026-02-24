@@ -113,5 +113,5 @@
     "dist",
     "vercel.json"
   ],
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.30.1"
 }
