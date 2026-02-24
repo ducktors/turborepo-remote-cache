@@ -1,0 +1,5 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"pipeline"}
+{"t":0,"agent":"a89c354","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"aa12c37","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a454ed3","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"aa0d2ed","agent_type":"unknown","event":"agent_stop","success":true}

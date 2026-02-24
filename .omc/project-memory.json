@@ -1,0 +1,213 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1771968161803,
+  "projectRoot": "/Users/matteo/Dev/ducktors/turborepo-remote-cache",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": ">=20.0.0",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "fastify",
+        "version": "5.7.3",
+        "category": "backend"
+      }
+    ],
+    "packageManager": "pnpm",
+    "runtime": "Node.js 20.0.0"
+  },
+  "build": {
+    "buildCommand": "pnpm build",
+    "testCommand": "pnpm test",
+    "lintCommand": "pnpm lint",
+    "devCommand": "pnpm dev",
+    "scripts": {
+      "build": "pnpm lint && rimraf ./dist && tsc -p ./tsconfig.json",
+      "build:docker": "tsc -p ./tsconfig.json",
+      "start": "node --enable-source-maps dist/index.js",
+      "lint": "biome check src test",
+      "lint:fix": "biome check --apply src test",
+      "fmt": "biome format src test",
+      "dev": "run-p dev:start check:types",
+      "dev:start": "tsx watch --inspect --env-file=.env src/index.ts",
+      "check:types": "tsc -p ./tsconfig.json --noEmit",
+      "test": "tsx --test ./test/*.ts",
+      "test:watch": "tsx --watch --test ./test/*.ts",
+      "test:coverage": "c8 --all --src src --reporter lcov --reporter text tsx --test ./test/*.ts",
+      "commitlint": "commitlint",
+      "semantic-release": "semantic-release",
+      "commit": "npx git-cz",
+      "deps:update": "pnpm dlx taze -r -I -i -u",
+      "deps:inspector": "pnpx node-modules-inspector",
+      "socket:test": "socket fix --test",
+      "prepare": "husky"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase",
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": true,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "src",
+      "test"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "api": {
+      "path": "api",
+      "purpose": "API routes",
+      "fileCount": 1,
+      "lastAccessed": 1771968161785,
+      "keyFiles": [
+        "vercel.js"
+      ]
+    },
+    "build": {
+      "path": "build",
+      "purpose": "Build output",
+      "fileCount": 21,
+      "lastAccessed": 1771968161792,
+      "keyFiles": [
+        "app.d.ts",
+        "app.js",
+        "app.js.map",
+        "aws-lambda.d.ts",
+        "aws-lambda.js"
+      ]
+    },
+    "coverage": {
+      "path": "coverage",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1771968161792,
+      "keyFiles": [
+        "lcov.info"
+      ]
+    },
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 6,
+      "lastAccessed": 1771968161792,
+      "keyFiles": [
+        "app.js",
+        "aws-lambda.js",
+        "cli.js",
+        "env.js",
+        "index.js"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 10,
+      "lastAccessed": 1771968161793,
+      "keyFiles": [
+        "_config.yml",
+        "aws-s3-lifecycle-rule.png",
+        "custom-remote-caching.md",
+        "deployment-environments.md",
+        "environment-variables.md"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 6,
+      "lastAccessed": 1771968161793,
+      "keyFiles": [
+        "app.ts",
+        "aws-lambda.ts",
+        "cli.ts",
+        "env.ts",
+        "index.ts"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 13,
+      "lastAccessed": 1771968161793,
+      "keyFiles": [
+        "azure-blob-storage.ts",
+        "google-cloud-storage.ts",
+        "http2.ts",
+        "jwt-auth.ts",
+        "local.ts"
+      ]
+    },
+    "view": {
+      "path": "view",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1771968161794,
+      "keyFiles": []
+    },
+    "src/types": {
+      "path": "src/types",
+      "purpose": "Type definitions",
+      "fileCount": 0,
+      "lastAccessed": 1771968161794,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "Dockerfile",
+      "accessCount": 7,
+      "lastAccessed": 1771969842384,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1771968231708,
+      "type": "file"
+    },
+    {
+      "path": ".dockerignore",
+      "accessCount": 1,
+      "lastAccessed": 1771968319788,
+      "type": "file"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "accessCount": 1,
+      "lastAccessed": 1771968319791,
+      "type": "file"
+    },
+    {
+      "path": ".npmrc",
+      "accessCount": 1,
+      "lastAccessed": 1771968365446,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
