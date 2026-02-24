@@ -1,5 +1,5 @@
 import type { Server } from 'http'
-import { badRequest, notFound } from '@hapi/boom'
+import { badRequest } from '@hapi/boom'
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -43,8 +43,12 @@ export const getArtifact: RouteOptions<
           reply.header('x-artifact-tag', artifactTag)
         } catch (err) {
           // A missing tag is treated as a cache miss
-          req.log.warn(err, `Could not retrieve artifact tag for ${artifactId}`)
-          throw notFound('Artifact tag not found', err)
+          req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
+          return reply.code(404).send({
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'Artifact tag not found',
+          })
         }
       }
 
@@ -52,7 +56,12 @@ export const getArtifact: RouteOptions<
       reply.header('Content-Type', 'application/octet-stream')
       return reply.send(artifact)
     } catch (err) {
-      throw notFound('Artifact not found', err)
+      req.log.info(err, 'Artifact not found')
+      return reply.code(404).send({
+        statusCode: 404,
+        error: 'Not Found',
+        message: 'Artifact not found',
+      })
     }
   },
 }
