@@ -1,7 +1,8 @@
 ARG PNPM_VERSION=10.30.1
-ARG NODE_VERSION=22.15.1-alpine
+ARG NODE_VERSION=22.21.1-alpine
 
 FROM node:${NODE_VERSION} AS build
+ARG PNPM_VERSION
 ENV HOME=/opt/app
 ENV CI=true
 ARG PACKAGE_VERSION
@@ -10,7 +11,7 @@ RUN addgroup -g 1001 app && adduser -u 1001 -D -G app -s /bin/false app
 WORKDIR $HOME
 RUN chown app:app $HOME
 USER root
-RUN npm install -g pnpm@${PNPM_VERSION}
+RUN npm install -g corepack@latest && corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 USER app
 COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
