@@ -1907,8 +1907,8 @@ packages:
     resolution: {integrity: sha512-FTFVjYoBOZTJekiUsawGsSYV9QL0A+zDYCRj7y34IO6Jg+2IMYEtQa+bbictpdpV8dHxXywqU7C0gRDEOFtBFg==}
     hasBin: true
 
-  fast-xml-parser@5.3.4:
-    resolution: {integrity: sha512-EFd6afGmXlCx8H8WTZHhAoDaWaGyuIBoZJ2mknrNxug+aZKjkp0a0dlars9Izl+jF+7Gu1/5f/2h68cQpe0IiA==}
+  fast-xml-parser@5.3.7:
+    resolution: {integrity: sha512-JzVLro9NQv92pOM/jTCR6mHlJh2FGwtomH8ZQjhFj/R29P2Fnj38OgPJVtcvYw6SuKClhgYuwUZf5b3rd8u2mA==}
     hasBin: true
 
   fastfall@1.5.1:
@@ -3665,8 +3665,8 @@ packages:
   strnum@1.1.2:
     resolution: {integrity: sha512-vrN+B7DBIoTTZjnPNewwhx6cBA/H+IS7rfW68n7XxC1y7uoiGQBxaKzqucGUgavX15dJgiGztLJ8vxuEzwqBdA==}
 
-  strnum@2.1.1:
-    resolution: {integrity: sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw==}
+  strnum@2.1.2:
+    resolution: {integrity: sha512-l63NF9y/cLROq/yqKXSLtcMeeyOfnSQlfMSlzFt/K73oIaD8DGaQWd7Z34X9GPiKqP5rbSh84Hl4bOlLcjiSrQ==}
 
   stubs@3.0.0:
     resolution: {integrity: sha512-PdHt7hHUJKxvTCgbKX9C1V/ftOcjJQgz8BZwNfV5c4B6dcGqlpelTbJ999jBGZ2jYiPAwcX5dP6oBwVlBlUbxw==}
@@ -4170,7 +4170,7 @@ snapshots:
       '@smithy/smithy-client': 4.3.0
       '@smithy/types': 4.3.0
       '@smithy/util-middleware': 4.0.3
-      fast-xml-parser: 5.3.4
+      fast-xml-parser: 5.3.7
       tslib: 2.8.1
 
   '@aws-sdk/credential-provider-env@3.816.0':
@@ -4549,7 +4549,7 @@ snapshots:
 
   '@azure/core-xml@1.4.5':
     dependencies:
-      fast-xml-parser: 5.3.4
+      fast-xml-parser: 5.3.7
       tslib: 2.8.1
 
   '@azure/logger@1.2.0':
@@ -6391,9 +6391,9 @@ snapshots:
     dependencies:
       strnum: 1.1.2
 
-  fast-xml-parser@5.3.4:
+  fast-xml-parser@5.3.7:
     dependencies:
-      strnum: 2.1.1
+      strnum: 2.1.2
 
   fastfall@1.5.1:
     dependencies:
@@ -8224,7 +8224,7 @@ snapshots:
 
   strnum@1.1.2: {}
 
-  strnum@2.1.1: {}
+  strnum@2.1.2: {}
 
   stubs@3.0.0: {}
 
