@@ -23,7 +23,7 @@ closeWithGrace(
   },
 )
 
-app.listen({ host: '0.0.0.0', port: env.get().PORT }, (err) => {
+app.listen({ host: env.get().HOST, port: env.get().PORT }, (err) => {
   if (err) {
     app.log.error(err)
     process.exit(1)
