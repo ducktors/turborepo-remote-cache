@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.7.2",
+  "version": "2.7.4",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
@@ -54,7 +54,7 @@
     "@google-cloud/storage": "6.9.2",
     "@hapi/boom": "10.0.0",
     "@sinclair/typebox": "0.25.21",
-    "ajv": "8.12.0",
+    "ajv": "8.18.0",
     "close-with-grace": "1.1.0",
     "env-schema": "5.2.0",
     "fastify": "5.7.3",
@@ -113,5 +113,5 @@
     "dist",
     "vercel.json"
   ],
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.30.1"
 }
