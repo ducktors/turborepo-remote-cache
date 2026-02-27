@@ -51,7 +51,7 @@ jobs:
         run: pnpm build
 
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@e4d4f7c39adfa4c260fb5c147f0622000aa14b99 # v2.1.0
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v2.1.0
         with:
           subject-path: "dist/**"
       - name: Release
