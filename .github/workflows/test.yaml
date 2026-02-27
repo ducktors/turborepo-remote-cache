@@ -44,6 +44,7 @@ jobs:
         uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          fail-on-error: false # https://status.coveralls.io/incidents/pdbt7vdzlvpj
       - name: CodeClimate
         continue-on-error: true
         uses: paambaati/codeclimate-action@f429536ee076d758a24705203199548125a28ca7 # v9.0.0

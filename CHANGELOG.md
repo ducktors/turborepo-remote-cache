@@ -1,3 +1,15 @@
+# [2.8.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.4...v2.8.0) (2026-02-27)
+
+
+### Bug Fixes
+
+* use 0.0.0.0 as default HOST and document HOST env var ([37be088](https://github.com/ducktors/turborepo-remote-cache/commit/37be0884e52cbda1c0b28c51453c136cbfb98645))
+
+
+### Features
+
+* add option to specify host via environment variable ([4880a4e](https://github.com/ducktors/turborepo-remote-cache/commit/4880a4e13849ca076ac7340c1bcc6e6cd44f7bac))
+
 ## [2.7.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.3...v2.7.4) (2026-02-24)
 
 
