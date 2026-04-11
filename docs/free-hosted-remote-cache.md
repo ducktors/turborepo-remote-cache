@@ -26,7 +26,7 @@ All information in Turborepo Remote Cache Free Servers is provided "as is", with
 
 Maintainers and contributors of the GitHub Ducktors organization will not be liable to You or anyone else for any decision made or action taken in reliance on the information given by Turborepo Remote Cache Free Servers or for any consequential, special or similar damages, even if advised of the possibility of such damages.
 
-# Configure your projecy
+# Configure your project
 
 You can configure your project by following [this guide](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching.html).
 
