@@ -124,8 +124,4 @@ test('read-only mode', async (t) => {
       assert.equal(response.statusCode, 200)
     },
   )
-
-  t.after(() => {
-    delete process.env.READ_ONLY
-  })
 })
