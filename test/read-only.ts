@@ -58,7 +58,7 @@ test('read-only mode', async (t) => {
   )
 
   await t.test(
-    'should return 403 when posting artifacts/events in read-only mode',
+    'should still allow posting artifacts/events in read-only mode',
     async () => {
       const response = await app.inject({
         method: 'POST',
@@ -69,11 +69,7 @@ test('read-only mode', async (t) => {
         },
         payload: Buffer.from('test cache data'),
       })
-      assert.equal(response.statusCode, 403)
-      assert.equal(
-        response.json().message,
-        'Remote cache is running in read-only mode',
-      )
+      assert.equal(response.statusCode, 200)
     },
   )
 
