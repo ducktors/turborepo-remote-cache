@@ -3,7 +3,7 @@ import crypto from 'node:crypto'
 import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { after, before, describe, test } from 'node:test'
+import { after, describe, test } from 'node:test'
 import S3rver from 's3rver'
 
 const s3rverDirectory = mkdtempSync(join(tmpdir(), 's3rver-minio-'))
@@ -23,28 +23,27 @@ const testEnv = {
 }
 Object.assign(process.env, testEnv)
 
-const server = new S3rver({
-  directory: s3rverDirectory,
-  silent: true,
-  port: 0,
-  configureBuckets: [
-    {
-      name: process.env.STORAGE_PATH || '',
-      configs: [],
-    },
-  ],
-})
-before(async (ctx) => {
+describe('Minio', async () => {
+  const server = new S3rver({
+    directory: s3rverDirectory,
+    silent: true,
+    port: 0,
+    configureBuckets: [
+      {
+        name: process.env.STORAGE_PATH || '',
+        configs: [],
+      },
+    ],
+  })
   const address = await server.run()
   Object.assign(process.env, {
     S3_ENDPOINT: `http://localhost:${address.port}`,
   })
-})
 
-after((ctx, done) => {
-  server.close(done)
-})
-describe('Minio', async () => {
+  after((ctx, done) => {
+    server.close(done)
+  })
+
   const artifactId = crypto.randomBytes(20).toString('hex')
   const team = 'superteam'
 
