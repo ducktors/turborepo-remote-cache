@@ -1,3 +1,10 @@
+## [2.8.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.2...v2.8.3) (2026-04-13)
+
+
+### Bug Fixes
+
+* move to node24 as default version ([b1ec9b9](https://github.com/ducktors/turborepo-remote-cache/commit/b1ec9b9b694a0658f880af0938256101bf7f615d))
+
 ## [2.8.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.1...v2.8.2) (2026-03-25)
 
 
