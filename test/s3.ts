@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
 import { tmpdir } from 'node:os'
-import { after, before, describe, test } from 'node:test'
+import { after, describe, test } from 'node:test'
 import S3erver from 's3rver'
 
 const testEnv = {
@@ -19,28 +19,27 @@ const testEnv = {
 }
 Object.assign(process.env, testEnv)
 
-const server = new S3erver({
-  directory: tmpdir(),
-  silent: true,
-  port: 0,
-  configureBuckets: [
-    {
-      name: process.env.STORAGE_PATH || '',
-      configs: [],
-    },
-  ],
-})
-before(async (ctx) => {
+describe('Amazon S3', async (t) => {
+  const server = new S3erver({
+    directory: tmpdir(),
+    silent: true,
+    port: 0,
+    configureBuckets: [
+      {
+        name: process.env.STORAGE_PATH || '',
+        configs: [],
+      },
+    ],
+  })
   const address = await server.run()
   Object.assign(process.env, {
     S3_ENDPOINT: `http://localhost:${address.port}`,
   })
-})
 
-after((ctx, done) => {
-  server.close(done)
-})
-describe('Amazon S3', async (t) => {
+  after((ctx, done) => {
+    server.close(done)
+  })
+
   const artifactId = crypto.randomBytes(20).toString('hex')
   const team = 'superteam'
 
