@@ -1,6 +1,6 @@
 {
   "name": "turborepo-remote-cache",
-  "version": "2.8.3",
+  "version": "2.8.4",
   "description": "Turborepo remote cache server",
   "main": "./dist/app.js",
   "type": "module",
@@ -57,7 +57,7 @@
     "ajv": "8.18.0",
     "close-with-grace": "1.1.0",
     "env-schema": "5.2.0",
-    "fastify": "5.8.3",
+    "fastify": "5.8.5",
     "fastify-jwt-jwks": "^2.0.0",
     "fastify-plugin": "5.0.1",
     "fs-blob-store": "6.0.0",
