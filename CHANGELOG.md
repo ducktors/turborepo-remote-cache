@@ -1,3 +1,10 @@
+## [2.8.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.4...v2.8.5) (2026-05-01)
+
+
+### Bug Fixes
+
+* **deps:** bump picomatch from 2.3.1 to 2.3.2 ([89d53f7](https://github.com/ducktors/turborepo-remote-cache/commit/89d53f7775a9e08fbe1f0edaa0340d39b44c0ade))
+
 ## [2.8.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.3...v2.8.4) (2026-04-15)
 
 
