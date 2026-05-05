@@ -30,5 +30,6 @@ nav_order: 2
 | `SSL_KEY_PATH` | string | optional | `` | If set, enables HTTPS using the key file at the specified path. |
 | `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
 | `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | optional | | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. See [Artifact Integrity and Authenticity Verification](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching#artifact-integrity-and-authenticity-verification) for more info. |
+| `READ_ONLY` | boolean | optional | `false` | If set to `true`, the server runs in read-only mode: cache reads (`GET`/`HEAD /artifacts/:id`) continue to work, while cache writes (`PUT /artifacts/:id` and `POST /artifacts/events`) are rejected with a `403 Forbidden`. Useful for sharing a CI-populated cache with local developers without allowing them to contribute new entries. |
 
 Both `SSL_KEY_PATH` and `SSL_CERT_PATH` must be set to enable HTTPS.

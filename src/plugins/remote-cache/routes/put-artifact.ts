@@ -1,6 +1,6 @@
 import type { Server } from 'http'
 import { Readable } from 'stream'
-import { badRequest, preconditionFailed } from '@hapi/boom'
+import { badRequest, forbidden, preconditionFailed } from '@hapi/boom'
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -29,6 +29,9 @@ export const putArtifact: RouteOptions<
   schema: artifactsRouteSchemaWithHeaders,
   authorization: 'write',
   async handler(req, reply) {
+    if (this.config.READ_ONLY) {
+      throw forbidden('Remote cache is running in read-only mode')
+    }
     const artifactId = req.params.id
     const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used
     if (!team) {
