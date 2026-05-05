@@ -1,3 +1,10 @@
+## [2.8.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.5...v2.8.6) (2026-05-05)
+
+
+### Bug Fixes
+
+* bump @fastify/jwt to 10.0.0 and fastify-jwt-jwks to 3.0.0 ([c3dde35](https://github.com/ducktors/turborepo-remote-cache/commit/c3dde35d09e08e8c75c7005a8461768c01d6ad75))
+
 ## [2.8.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.4...v2.8.5) (2026-05-01)
 
 
