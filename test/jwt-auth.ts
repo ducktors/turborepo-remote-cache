@@ -159,5 +159,147 @@ describe('JWT auth', async () => {
       })
       assert.equal(resp.statusCode, 403)
     })
+
+    await t.test('supports alternative scope claim name', async () => {
+      const { createApp } = await import('../src/app.js')
+      const app = createApp({
+        logger: false,
+        configOverrides: {
+          JWT_SCOPE_CLAIM: 'scp',
+          JWT_READ_SCOPES: 'artifacts:read,artifacts:write',
+          JWT_WRITE_SCOPES: 'artifacts:write',
+        },
+      })
+      await app.ready()
+      const artifactId = randomUUID()
+      const team = randomUUID()
+      const token = jwksMock.token({ scp: 'artifacts:write' })
+
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
+  })
+
+  await test('with authorization roles defined', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_READ_ROLES: 'Artifacts.Reader',
+        JWT_WRITE_ROLES: 'Artifacts.Writer',
+      },
+    })
+    await app.ready()
+    const artifactId = randomUUID()
+    const team = randomUUID()
+    const token = jwksMock.token({
+      roles: ['Artifacts.Reader', 'Artifacts.Writer'],
+    })
+
+    await t.test('creates cache entry', async () => {
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
+
+    await t.test('fetches artifact', async () => {
+      const resp = await app.inject({
+        method: 'GET',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        query: {
+          team,
+        },
+      })
+      assert.equal(resp.statusCode, 200)
+    })
+
+    await t.test('forbidden with token without required roles', async () => {
+      const token = jwksMock.token({ roles: ['InvalidRole'] })
+      const resp = await app.inject({
+        method: 'GET',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        query: {
+          team,
+        },
+      })
+      assert.equal(resp.statusCode, 403)
+    })
+
+    await t.test(
+      'forbidden with token without required roles claim',
+      async () => {
+        const token = jwksMock.token({})
+        const resp = await app.inject({
+          method: 'GET',
+          url: `/v8/artifacts/${artifactId}`,
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          query: {
+            team,
+          },
+        })
+        assert.equal(resp.statusCode, 403)
+      },
+    )
+
+    await t.test('supports alternative roles claim name', async () => {
+      const { createApp } = await import('../src/app.js')
+      const app = createApp({
+        logger: false,
+        configOverrides: {
+          JWT_ROLES_CLAIM: 'groups',
+          JWT_READ_ROLES: 'Artifacts.Reader',
+          JWT_WRITE_ROLES: 'Artifacts.Writer',
+        },
+      })
+      await app.ready()
+      const artifactId = randomUUID()
+      const team = randomUUID()
+      const token = jwksMock.token({
+        groups: ['Artifacts.Reader', 'Artifacts.Writer'],
+      })
+
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
   })
 })
