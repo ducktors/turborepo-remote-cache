@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
+import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { after, describe, test } from 'node:test'
 import S3erver from 's3rver'
+
+const s3rverDirectory = mkdtempSync(join(tmpdir(), 's3rver-s3-'))
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -12,16 +16,16 @@ const testEnv = {
   LOG_FILE: 'server.log',
   TURBO_TOKEN: ['changeme'],
   STORAGE_PROVIDER: 's3',
-  STORAGE_PATH: 'turborepo-remote-cache-test',
+  STORAGE_PATH: 'turborepo-remote-cache-test-s3',
   AWS_ACCESS_KEY_ID: 'S3RVER',
   AWS_SECRET_ACCESS_KEY: 'S3RVER',
   AWS_REGION: 'us-east-2',
 }
 Object.assign(process.env, testEnv)
 
-describe('Amazon S3', async (t) => {
+describe('Amazon S3', async () => {
   const server = new S3erver({
-    directory: tmpdir(),
+    directory: s3rverDirectory,
     silent: true,
     port: 0,
     configureBuckets: [
