@@ -1217,8 +1217,8 @@ packages:
     resolution: {integrity: sha512-73aeIvHjtSB6fd9I08iFaQIGTICKpLrI3EtlWAkStVENGo1ARMq9qdoD4QwkY0RUp6A409xlgbD9NCCfCF5ieg==}
     engines: {node: '>=18.0.0'}
 
-  '@tootallnate/once@2.0.0':
-    resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
+  '@tootallnate/once@2.0.1':
+    resolution: {integrity: sha512-HqmEUIGRJ5fSXchkVgR5F7qn48bDBzv0kWj/Kfu5e6uci4UlEeng4331LnBkWffb++Ei3FOVLxo8JJWMFBDMeQ==}
     engines: {node: '>= 10'}
 
   '@types/conventional-commits-parser@5.0.1':
@@ -5677,7 +5677,7 @@ snapshots:
       '@smithy/types': 4.3.0
       tslib: 2.8.1
 
-  '@tootallnate/once@2.0.0': {}
+  '@tootallnate/once@2.0.1': {}
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
@@ -6961,7 +6961,7 @@ snapshots:
 
   http-proxy-agent@5.0.0:
     dependencies:
-      '@tootallnate/once': 2.0.0
+      '@tootallnate/once': 2.0.1
       agent-base: 6.0.2
       debug: 4.4.1
     transitivePeerDependencies:
