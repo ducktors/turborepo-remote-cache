@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 0
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+      semver-minor-days: 3
+      semver-patch-days: 3
     commit-message:
       prefix: "fix(deps)"
       prefix-development: "chore(deps):"
@@ -17,6 +22,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+      semver-minor-days: 3
+      semver-patch-days: 3
     commit-message:
       prefix: "chore(actions)"
     assignees:
@@ -28,6 +38,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+      semver-minor-days: 3
+      semver-patch-days: 3
     commit-message:
       prefix: "fix(docker)"
     assignees:

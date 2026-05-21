@@ -1,3 +1,31 @@
+## [2.8.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.7...v2.8.8) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump bn.js from 4.12.2 to 4.12.3 ([cb20c1e](https://github.com/ducktors/turborepo-remote-cache/commit/cb20c1eeec376f61635b3c53292e04223d6f359f))
+
+## [2.8.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.6...v2.8.7) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump koa from 3.1.1 to 3.2.0 ([7f5ad66](https://github.com/ducktors/turborepo-remote-cache/commit/7f5ad66e09e29c11d475e7258d0b3279c5ce91e5))
+
+## [2.8.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.5...v2.8.6) (2026-05-05)
+
+
+### Bug Fixes
+
+* bump @fastify/jwt to 10.0.0 and fastify-jwt-jwks to 3.0.0 ([c3dde35](https://github.com/ducktors/turborepo-remote-cache/commit/c3dde35d09e08e8c75c7005a8461768c01d6ad75))
+
+## [2.8.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.4...v2.8.5) (2026-05-01)
+
+
+### Bug Fixes
+
+* **deps:** bump picomatch from 2.3.1 to 2.3.2 ([89d53f7](https://github.com/ducktors/turborepo-remote-cache/commit/89d53f7775a9e08fbe1f0edaa0340d39b44c0ade))
+
 ## [2.8.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.3...v2.8.4) (2026-04-15)
 
 
