@@ -1,3 +1,17 @@
+## [2.8.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.7...v2.8.8) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump bn.js from 4.12.2 to 4.12.3 ([cb20c1e](https://github.com/ducktors/turborepo-remote-cache/commit/cb20c1eeec376f61635b3c53292e04223d6f359f))
+
+## [2.8.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.6...v2.8.7) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump koa from 3.1.1 to 3.2.0 ([7f5ad66](https://github.com/ducktors/turborepo-remote-cache/commit/7f5ad66e09e29c11d475e7258d0b3279c5ce91e5))
+
 ## [2.8.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.5...v2.8.6) (2026-05-05)
 
 
