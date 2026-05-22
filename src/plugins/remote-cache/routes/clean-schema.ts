@@ -1,6 +1,6 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Static, Type } from '@sinclair/typebox'
 
-const DEFAULT_OLDER_THAN_DAYS = 10;
+const DEFAULT_OLDER_THAN_DAYS = 10
 
 const querystring = Type.Object(
   {
@@ -8,11 +8,11 @@ const querystring = Type.Object(
     olderThan: Type.Optional(Type.Integer({ minimum: 1, maximum: 3650 })),
   },
   { additionalProperties: false },
-);
-export type Querystring = Static<typeof querystring>;
+)
+export type Querystring = Static<typeof querystring>
 
 export const cleanRouteSchema = {
   querystring,
-};
+}
 
-export { DEFAULT_OLDER_THAN_DAYS };
+export { DEFAULT_OLDER_THAN_DAYS }
