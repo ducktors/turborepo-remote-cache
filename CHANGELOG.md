@@ -1,3 +1,24 @@
+# [2.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.9...v2.9.0) (2026-05-22)
+
+
+### Bug Fixes
+
+* add local cache cleanup endpoint: fix lint ([7eb9fdf](https://github.com/ducktors/turborepo-remote-cache/commit/7eb9fdf6f2c0c8731b90f39b135d80ba30dd5743))
+* add local cache cleanup endpoint: fix PR comments ([c1f3332](https://github.com/ducktors/turborepo-remote-cache/commit/c1f3332d4cbdf6d03554a6b11b0b936fbf844085))
+* add local cache cleanup endpoint: fix PR comments: remove unused file ([1ea2e29](https://github.com/ducktors/turborepo-remote-cache/commit/1ea2e29b0366e1dcd559cdd88cabdaad832ee864))
+
+
+### Features
+
+* add local cache cleanup endpoint ([f96b497](https://github.com/ducktors/turborepo-remote-cache/commit/f96b4974a26ed7e4ff9150e46245de550a3503db))
+
+## [2.8.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.8...v2.8.9) (2026-05-21)
+
+
+### Bug Fixes
+
+* **deps:** bump @tootallnate/once from 2.0.0 to 2.0.1 ([9da875f](https://github.com/ducktors/turborepo-remote-cache/commit/9da875f69ed7394f5ddb244251b0d79dbafc1e79))
+
 ## [2.8.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.7...v2.8.8) (2026-05-14)
 
 
