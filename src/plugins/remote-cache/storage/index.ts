@@ -2,16 +2,22 @@ import { Writable } from 'node:stream'
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
+import { notImplemented } from '@hapi/boom'
 import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
   createAzureBlobStorage,
 } from './azure-blob-storage.js'
+import { cleanStaleLocalArtifacts } from './clean-local.js'
 import {
   type GoogleCloudStorageOptions as GCSOpts,
   createGoogleCloudStorage,
 } from './google-cloud-storage.js'
-import { type LocalOptions as LocalOpts, createLocal } from './local.js'
+import {
+  type LocalOptions as LocalOpts,
+  createLocal,
+  getLocalRootPath,
+} from './local.js'
 import { type S3Options as S3Opts, createS3 } from './s3.js'
 
 const pipeline = promisify(pipelineCallback)
@@ -214,6 +220,25 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     )
   }
 
+  async function cleanStaleArtifacts(team: string, olderThanDays: number) {
+    if (provider !== STORAGE_PROVIDERS.LOCAL) {
+      throw notImplemented(
+        'Clean is only supported for the local storage provider',
+      )
+    }
+
+    const {
+      path = TURBO_CACHE_FOLDER_NAME,
+      useTmp = TURBO_CACHE_USE_TMP_FOLDER,
+    } = providerOptions
+
+    return cleanStaleLocalArtifacts(
+      getLocalRootPath({ path, useTmp }),
+      team,
+      olderThanDays,
+    )
+  }
+
   return {
     getCachedArtifact,
     createCachedArtifact,
@@ -221,6 +246,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     getCachedArtifactTag,
     existsCachedArtifactTag,
     createCachedArtifactTag,
+    cleanStaleArtifacts,
   }
 }
 
@@ -243,6 +269,9 @@ declare module 'fastify' {
       createCachedArtifactTag: ReturnType<
         typeof createLocation
       >['createCachedArtifactTag']
+      cleanStaleArtifacts: ReturnType<
+        typeof createLocation
+      >['cleanStaleArtifacts']
     }
   }
 }
