@@ -30,15 +30,30 @@ export async function cleanStaleLocalArtifacts(
 
   for (const entry of entries) {
     const filePath = join(teamPath, entry)
-    const fileStats = await stat(filePath)
+    let fileStats
+    try {
+      fileStats = await stat(filePath)
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        continue
+      }
+      throw err
+    }
     if (!fileStats.isFile()) {
       continue
     }
 
     scanned++
     if (fileStats.atimeMs <= cutoff) {
-      await unlink(filePath)
-      deleted++
+      try {
+        await unlink(filePath)
+        deleted++
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+          continue
+        }
+        throw err
+      }
     }
   }
 
