@@ -3,6 +3,7 @@ import { STORAGE_PROVIDERS } from '../../env.js'
 import auth from './auth/index.js'
 import {
   artifactsEvents,
+  cleanCache,
   getArtifact,
   getStatus,
   headArtifact,
@@ -52,6 +53,7 @@ async function turboRemoteCache(
       i.route(headArtifact)
       i.route(putArtifact)
       i.route(artifactsEvents)
+      i.route(cleanCache)
     },
     { prefix: `/${apiVersion}` },
   )

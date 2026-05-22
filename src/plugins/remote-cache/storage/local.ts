@@ -7,7 +7,10 @@ export type LocalOptions = {
   useTmp: boolean
 }
 
-export function createLocal({ path, useTmp }: LocalOptions) {
-  const fullPath = useTmp ? join(tmpdir(), path) : normalize(path)
-  return fs(fullPath)
+export function getLocalRootPath({ path, useTmp }: LocalOptions): string {
+  return useTmp ? join(tmpdir(), path) : normalize(path)
+}
+
+export function createLocal(options: LocalOptions) {
+  return fs(getLocalRootPath(options))
 }
