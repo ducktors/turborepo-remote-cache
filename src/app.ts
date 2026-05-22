@@ -26,6 +26,7 @@ export function createApp(
 
   const fastifyOptions: FastifyServerOptions = {
     ...options,
+    bodyLimit: env.get().BODY_LIMIT,
     ...(env.get().HTTP2 ? { http2: true } : {}),
     ...(isHttps
       ? {
@@ -80,7 +81,7 @@ export function createApp(
         )
     } else {
       request.log.error(err)
-      reply.code(500).send({ message: err.message })
+      reply.code(err.statusCode ?? 500).send({ message: err.message })
     }
   })
 
