@@ -14,6 +14,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
   let appWithCdnSlash: FastifyInstance
   let appWithoutCdn: FastifyInstance
   let appWithCdnAndSignature: FastifyInstance
+  let appWithCdnQuery: FastifyInstance
 
   const artifactId = crypto.randomBytes(20).toString('hex')
   const artifactTag = 'test-cdn-tag-12345'
@@ -81,6 +82,21 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
       },
     })
     await appWithCdnAndSignature.ready()
+
+    // 5. 启用了带有 query 参数的 CDN URL
+    appWithCdnQuery = createApp({
+      logger: false,
+      configOverrides: {
+        NODE_ENV: 'test',
+        PORT: 3000,
+        TURBO_TOKEN: 'changeme',
+        STORAGE_PROVIDER: 'local',
+        STORAGE_PATH: storagePath,
+        STORAGE_PATH_USE_TMP_FOLDER: false,
+        TURBO_CACHE_READ_URL: 'https://cdn.example.com/cache?token=secret',
+      },
+    })
+    await appWithCdnQuery.ready()
 
     // 使用启用了数字签名与 CDN 的 app 上传（因为 PUT 是上传动作，不会受 CDN 只读重定向影响）
     // 这样该 artifact 既有本体数据，又有数字签名的 .tag 文件，可以全方位覆盖测试
@@ -188,6 +204,24 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
+  await test('GET: 配置了包含 query 参数的 TURBO_CACHE_READ_URL 时，重定向应正确拼接路径并完美保留原有 query 参数', async () => {
+    const response = await appWithCdnQuery.inject({
+      method: 'GET',
+      url: `/v8/artifacts/${artifactId}`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        team,
+      },
+    })
+    assert.equal(response.statusCode, 302)
+    assert.equal(
+      response.headers.location,
+      `https://cdn.example.com/cache/${team}/${artifactId}?token=secret`,
+    )
+  })
+
   await test('GET & HEAD: 当启用签名验证且配置了 CDN 时，重定向响应中应包含正确的 x-artifact-tag', async () => {
     // 1. 验证 GET 请求
     const getResponse = await appWithCdnAndSignature.inject({
@@ -227,7 +261,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
 
   await test('GET: 如果签名校验失败（tag 缺失），即使配置了 CDN 也应返回 404', async () => {
     const missingTagArtifactId = crypto.randomBytes(20).toString('hex')
-    
+
     // 使用未校验签名的 app 上传一个不带 tag 的 artifact
     await appWithoutCdn.inject({
       method: 'PUT',
