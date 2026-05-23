@@ -57,13 +57,17 @@ export default fp(async (fastify) => {
       if (isBoom(error)) {
         throw error
       }
-      req.log.warn(
-        { err: error, code: error.code },
-        'JWT authentication failed',
-      )
       if (typeof error.statusCode === 'number' && error.statusCode < 500) {
+        req.log.warn(
+          { err: error, code: error.code },
+          'JWT authentication failed',
+        )
         throw new Boom(error.message, { statusCode: error.statusCode })
       }
+      req.log.error(
+        { err: error, code: error.code },
+        'Unexpected error in JWT handler',
+      )
       throw unauthorized()
     },
   )
