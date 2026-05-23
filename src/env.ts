@@ -20,6 +20,10 @@ export const STORAGE_PROVIDERS = {
 export type STORAGE_PROVIDERS =
   typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
 
+// Schema default for BODY_LIMIT (100 MB). Exported so the runtime fallback uses
+// the same value as the schema's `default`.
+export const BODY_LIMIT_DEFAULT = 104857600
+
 const schema = Type.Object(
   {
     NODE_ENV: Type.Optional(
@@ -43,7 +47,7 @@ const schema = Type.Object(
     STORAGE_PROVIDER: Type.Optional(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
-    BODY_LIMIT: Type.Optional(Type.Number({ default: 104857600 })),
+    BODY_LIMIT: Type.Optional(Type.Number({ default: BODY_LIMIT_DEFAULT })),
     STORAGE_PATH: Type.Optional(Type.String()),
     STORAGE_PATH_USE_TMP_FOLDER: Type.Optional(Type.Boolean({ default: true })),
     HTTP2: Type.Optional(Type.Boolean({ default: false })),
@@ -102,4 +106,25 @@ export const env = {
   get() {
     return _env
   },
+}
+
+/**
+ * Resolves a candidate BODY_LIMIT value to one that is safe to hand to
+ * fastify. If the input is not a finite positive integer (e.g. NaN, 0,
+ * negative, non-numeric) we fall back to the schema default and return a
+ * warning string so the caller can surface it through its logger.
+ */
+export function resolveBodyLimit(input: unknown): {
+  value: number
+  warning?: string
+} {
+  if (typeof input === 'number' && Number.isFinite(input) && input > 0) {
+    return { value: Math.floor(input) }
+  }
+  return {
+    value: BODY_LIMIT_DEFAULT,
+    warning: `BODY_LIMIT value ${String(
+      input,
+    )} is not a positive finite number; falling back to default ${BODY_LIMIT_DEFAULT}`,
+  }
 }
