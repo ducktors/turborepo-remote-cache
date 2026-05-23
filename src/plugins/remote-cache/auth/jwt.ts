@@ -56,13 +56,15 @@ export default fp(async (fastify) => {
     async (error: Error & { code?: string; statusCode?: number }, req, res) => {
       if (isBoom(error)) {
         throw error
-      } else if (error.code?.startsWith('FST_JWT_')) {
-        throw new Boom(error.message, {
-          statusCode: error.statusCode || 500,
-        })
-      } else {
-        throw unauthorized()
       }
+      req.log.warn(
+        { err: error, code: error.code },
+        'JWT authentication failed',
+      )
+      if (typeof error.statusCode === 'number' && error.statusCode < 500) {
+        throw new Boom(error.message, { statusCode: error.statusCode })
+      }
+      throw unauthorized()
     },
   )
 })
