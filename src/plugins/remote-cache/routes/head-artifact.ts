@@ -47,6 +47,12 @@ export const headArtifact: RouteOptions<
         }
       }
 
+      if (this.config.TURBO_CACHE_READ_URL) {
+        const base = this.config.TURBO_CACHE_READ_URL
+        const readUrl = base.endsWith('/') ? base : `${base}/`
+        return reply.redirect(`${readUrl}${team}/${artifactId}`)
+      }
+
       const artifact = await this.location.existsCachedArtifact(
         artifactId,
         team,

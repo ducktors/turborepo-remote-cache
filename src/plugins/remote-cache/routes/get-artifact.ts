@@ -52,6 +52,12 @@ export const getArtifact: RouteOptions<
         }
       }
 
+      if (this.config.TURBO_CACHE_READ_URL) {
+        const base = this.config.TURBO_CACHE_READ_URL
+        const readUrl = base.endsWith('/') ? base : `${base}/`
+        return reply.redirect(`${readUrl}${team}/${artifactId}`)
+      }
+
       const artifact = await this.location.getCachedArtifact(artifactId, team)
       reply.header('Content-Type', 'application/octet-stream')
       return reply.send(artifact)

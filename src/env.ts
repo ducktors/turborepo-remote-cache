@@ -76,6 +76,7 @@ const schema = Type.Object(
     TURBO_REMOTE_CACHE_SIGNATURE_KEY: Type.Optional(Type.String()),
 
     READ_ONLY: Type.Optional(Type.Boolean({ default: false })),
+    TURBO_CACHE_READ_URL: Type.Optional(Type.String()),
   },
   {
     additionalProperties: false,
