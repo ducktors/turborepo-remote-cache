@@ -1,3 +1,17 @@
+# [2.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.10.0...v2.11.0) (2026-05-23)
+
+
+### Bug Fixes
+
+* **app:** forward non-500 status codes from fastify errors ([e58ebe4](https://github.com/ducktors/turborepo-remote-cache/commit/e58ebe433007e3e736ba728c9fab3eae6103f6df))
+* **remote-cache:** use resolveBodyLimit for octet-stream parser bodyLimit ([768e02e](https://github.com/ducktors/turborepo-remote-cache/commit/768e02ed81952339ac24e170ab574308b5a0fac9))
+* **server:** wire BODY_LIMIT through resolveBodyLimit and log resolved value ([406f680](https://github.com/ducktors/turborepo-remote-cache/commit/406f68023c57b7d48f4d8676aaa743b70430665a))
+
+
+### Features
+
+* **env:** add resolveBodyLimit helper and BODY_LIMIT_DEFAULT constant ([28bf392](https://github.com/ducktors/turborepo-remote-cache/commit/28bf3920d9ebb6418a7d5f4338708cd2043f16ba))
+
 # [2.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.9.0...v2.10.0) (2026-05-23)
 
 
