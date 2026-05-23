@@ -257,6 +257,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
       response.headers.location,
       `https://cdn.example.com/${team}/${artifactId}`,
     )
+    assert.equal(response.headers['x-artifact-tag'], artifactTag)
   })
 
   await test('GET: should return 404 if signature verification fails (tag missing) even when CDN is configured', async () => {

@@ -35,7 +35,11 @@ export const headArtifact: RouteOptions<
       // If signature verification is enabled, check for artifact tag existence first
       if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY) {
         try {
-          await this.location.existsCachedArtifactTag(artifactId, team)
+          const artifactTag = await this.location.getCachedArtifactTag(
+            artifactId,
+            team,
+          )
+          reply.header('x-artifact-tag', artifactTag)
         } catch (err) {
           // A missing tag is treated as a cache miss
           req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
