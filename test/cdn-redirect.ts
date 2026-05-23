@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { after, before, describe, test } from 'node:test'
 import type { FastifyInstance } from 'fastify'
 
-// 避免 Windows 上盘符重复拼接的 bug，不使用绝对路径，直接使用本地临时目录名称
+// Avoid duplicate drive letter concatenation bug on Windows. Use absolute path without pre-joining.
 const storagePath = join(tmpdir(), 'turborepo-remote-cache-cdn-test')
 
 describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
@@ -23,7 +23,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
   before(async () => {
     const { createApp } = await import('../src/app.js')
 
-    // 1. 启用了 CDN (无尾斜杠)
+    // 1. CDN enabled (without trailing slash)
     appWithCdn = createApp({
       logger: false,
       configOverrides: {
@@ -32,13 +32,13 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
         TURBO_TOKEN: 'changeme',
         STORAGE_PROVIDER: 'local',
         STORAGE_PATH: storagePath,
-        STORAGE_PATH_USE_TMP_FOLDER: false, // 禁用内部 tmp 拼接，直接使用绝对路径
+        STORAGE_PATH_USE_TMP_FOLDER: false, // Disable internal tmp folder join, use absolute path directly
         TURBO_CACHE_READ_URL: 'https://cdn.example.com',
       },
     })
     await appWithCdn.ready()
 
-    // 2. 启用了 CDN (有尾斜杠)
+    // 2. CDN enabled (with trailing slash)
     appWithCdnSlash = createApp({
       logger: false,
       configOverrides: {
@@ -53,7 +53,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     })
     await appWithCdnSlash.ready()
 
-    // 3. 未启用 CDN
+    // 3. CDN disabled
     appWithoutCdn = createApp({
       logger: false,
       configOverrides: {
@@ -67,7 +67,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     })
     await appWithoutCdn.ready()
 
-    // 4. 启用了 CDN 且启用了签名验证
+    // 4. CDN enabled with signature verification active
     appWithCdnAndSignature = createApp({
       logger: false,
       configOverrides: {
@@ -83,7 +83,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     })
     await appWithCdnAndSignature.ready()
 
-    // 5. 启用了带有 query 参数的 CDN URL
+    // 5. CDN URL containing query parameters
     appWithCdnQuery = createApp({
       logger: false,
       configOverrides: {
@@ -98,8 +98,8 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     })
     await appWithCdnQuery.ready()
 
-    // 使用启用了数字签名与 CDN 的 app 上传（因为 PUT 是上传动作，不会受 CDN 只读重定向影响）
-    // 这样该 artifact 既有本体数据，又有数字签名的 .tag 文件，可以全方位覆盖测试
+    // Upload an artifact using the app with signature and CDN enabled (since PUT is a write operation, it is unaffected by the CDN read-only redirect).
+    // This ensures the artifact has both the raw payload and the signature .tag file for comprehensive test coverage.
     const uploadRes = await appWithCdnAndSignature.inject({
       method: 'PUT',
       url: `/v8/artifacts/${artifactId}`,
@@ -120,7 +120,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     rmSync(storagePath, { recursive: true, force: true })
   })
 
-  await test('GET: 当未配置 TURBO_CACHE_READ_URL 时，应该正常返回 artifact 内容', async () => {
+  await test('GET: should return artifact content normally when TURBO_CACHE_READ_URL is not configured', async () => {
     const response = await appWithoutCdn.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -135,7 +135,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     assert.equal(response.body, 'test cdn cache data')
   })
 
-  await test('HEAD: 当未配置 TURBO_CACHE_READ_URL 时，应该正常返回 200 并且没有 body', async () => {
+  await test('HEAD: should return 200 normally with an empty body when TURBO_CACHE_READ_URL is not configured', async () => {
     const response = await appWithoutCdn.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
@@ -150,7 +150,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     assert.equal(response.body, '')
   })
 
-  await test('GET: 配置了 TURBO_CACHE_READ_URL 时，应该返回 302 重定向到 CDN (无尾斜杠格式)', async () => {
+  await test('GET: should return 302 redirecting to CDN when TURBO_CACHE_READ_URL is configured (without trailing slash)', async () => {
     const response = await appWithCdn.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -168,7 +168,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('GET: 配置了 TURBO_CACHE_READ_URL 时，应该返回 302 重定向到 CDN (有尾斜杠格式)', async () => {
+  await test('GET: should return 302 redirecting to CDN when TURBO_CACHE_READ_URL is configured (with trailing slash)', async () => {
     const response = await appWithCdnSlash.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -186,7 +186,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('HEAD: 配置了 TURBO_CACHE_READ_URL 时，应该返回 302 重定向到 CDN', async () => {
+  await test('HEAD: should return 302 redirecting to CDN when TURBO_CACHE_READ_URL is configured', async () => {
     const response = await appWithCdn.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
@@ -204,7 +204,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('GET: 配置了包含 query 参数的 TURBO_CACHE_READ_URL 时，重定向应正确拼接路径并完美保留原有 query 参数', async () => {
+  await test('GET: should correctly concatenate path and preserve query parameters when TURBO_CACHE_READ_URL contains query parameters', async () => {
     const response = await appWithCdnQuery.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -222,8 +222,8 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('GET & HEAD: 当启用签名验证且配置了 CDN 时，重定向响应中应包含正确的 x-artifact-tag', async () => {
-    // 1. 验证 GET 请求
+  await test('GET & HEAD: should include correct x-artifact-tag in redirect response when signature and CDN are both active', async () => {
+    // 1. Verify GET request
     const getResponse = await appWithCdnAndSignature.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
@@ -241,7 +241,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
     assert.equal(getResponse.headers['x-artifact-tag'], artifactTag)
 
-    // 2. 验证 HEAD 请求
+    // 2. Verify HEAD request
     const headResponse = await appWithCdnAndSignature.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
@@ -259,10 +259,10 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('GET: 如果签名校验失败（tag 缺失），即使配置了 CDN 也应返回 404', async () => {
+  await test('GET: should return 404 if signature verification fails (tag missing) even when CDN is configured', async () => {
     const missingTagArtifactId = crypto.randomBytes(20).toString('hex')
 
-    // 使用未校验签名的 app 上传一个不带 tag 的 artifact
+    // Upload an artifact without a signature tag using the app without signature verification
     await appWithoutCdn.inject({
       method: 'PUT',
       url: `/v8/artifacts/${missingTagArtifactId}`,
