@@ -74,6 +74,27 @@ test('read-only mode', async (t) => {
   )
 
   await t.test(
+    'should return 403 when cleaning in read-only mode',
+    async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/v8/clean',
+        headers: {
+          authorization: 'Bearer changeme',
+        },
+        query: {
+          slug: team,
+        },
+      })
+      assert.equal(response.statusCode, 403)
+      assert.equal(
+        response.json().message,
+        'Remote cache is running in read-only mode',
+      )
+    },
+  )
+
+  await t.test(
     'should still allow downloading artifacts in read-only mode',
     async () => {
       const response = await app.inject({
