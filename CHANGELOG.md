@@ -1,3 +1,11 @@
+## [2.11.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.0...v2.11.1) (2026-05-23)
+
+
+### Bug Fixes
+
+* **auth/jwt:** log 5xx errors at error level with distinct message ([0e9fc9c](https://github.com/ducktors/turborepo-remote-cache/commit/0e9fc9ca18dd913c0baccb93b78df1aaaa370d89))
+* **auth/jwt:** surface upstream JWT errors and log every auth failure ([5bcb024](https://github.com/ducktors/turborepo-remote-cache/commit/5bcb0244c82c9d209820b4d4291bea39f8141392)), closes [#757](https://github.com/ducktors/turborepo-remote-cache/issues/757)
+
 # [2.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.10.0...v2.11.0) (2026-05-23)
 
 
