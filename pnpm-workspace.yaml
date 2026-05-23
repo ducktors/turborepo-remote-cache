@@ -5,6 +5,7 @@ onlyBuiltDependencies:
 
 overrides:
   '@smithy/config-resolver@<4.4.0': '>=4.4.0'
+  fast-uri@<3.1.2: '>=3.1.2'
   fast-xml-parser@<4.1.2: '>=4.1.2'
   fast-xml-parser@>=4.3.6 <5.7.0: '>=5.7.0'
   s3rver>fast-xml-parser: ^3.21.1
