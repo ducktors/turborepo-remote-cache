@@ -69,3 +69,5 @@ build
 # Certs, if placed locally for testing
 **/certs
 .omc
+docs/superpowers
+.pnpm-store

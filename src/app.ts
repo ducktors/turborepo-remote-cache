@@ -78,6 +78,9 @@ export function createApp(
             ? { message: err.message, ...err.data }
             : { message: err.output.payload.message },
         )
+    } else if (err.statusCode != null && err.statusCode < 500) {
+      reply.log.warn(err)
+      reply.code(err.statusCode).send({ message: err.message })
     } else {
       request.log.error(err)
       reply.code(500).send({ message: err.message })

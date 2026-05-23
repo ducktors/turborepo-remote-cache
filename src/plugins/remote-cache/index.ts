@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { STORAGE_PROVIDERS } from '../../env.js'
+import { STORAGE_PROVIDERS, resolveBodyLimit } from '../../env.js'
 import auth from './auth/index.js'
 import {
   artifactsEvents,
@@ -18,7 +18,12 @@ async function turboRemoteCache(
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const bodyLimit = <number>instance.config.BODY_LIMIT
+  const { value: bodyLimit, warning: bodyLimitWarning } = resolveBodyLimit(
+    instance.config.BODY_LIMIT,
+  )
+  if (bodyLimitWarning) {
+    instance.log.warn(bodyLimitWarning)
+  }
   const { apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
 
   instance.addContentTypeParser<Buffer>(
