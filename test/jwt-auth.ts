@@ -51,6 +51,14 @@ describe('JWT auth', async () => {
         },
       })
       assert.equal(resp.statusCode, 401)
+      // Should not be the default generic Boom "Unauthorized" — must carry
+      // a useful reason from fastify-jwt-jwks (e.g. "Invalid token.").
+      const message = resp.json().message
+      assert.notEqual(message, 'Unauthorized')
+      assert.ok(
+        typeof message === 'string' && message.length > 0,
+        `expected non-empty message, got: ${JSON.stringify(message)}`,
+      )
     })
     await t.test('Fails for invalid token', async () => {
       const token = invalidJwksMock.token()
@@ -65,6 +73,31 @@ describe('JWT auth', async () => {
         },
       })
       assert.equal(resp.statusCode, 401)
+      const message = resp.json().message
+      assert.notEqual(message, 'Unauthorized')
+      assert.ok(
+        typeof message === 'string' && message.length > 0,
+        `expected non-empty message, got: ${JSON.stringify(message)}`,
+      )
+    })
+    await t.test('Fails for expired token', async () => {
+      // exp = 1 → unix-epoch + 1 second, very firmly in the past.
+      const expiredToken = jwksMock.token({ exp: 1 })
+      const resp = await app.inject({
+        method: 'GET',
+        url: '/v8/artifacts/123',
+        headers: {
+          authorization: `Bearer ${expiredToken}`,
+        },
+        query: {
+          team: 'asd',
+        },
+      })
+      assert.equal(resp.statusCode, 401)
+      // fastify-jwt-jwks maps the underlying "token expired" jsonwebtoken
+      // error to the message "Expired token." — assert case-insensitively
+      // to stay resilient to upstream wording tweaks.
+      assert.match(resp.json().message, /expired/i)
     })
     await t.test('Valid token', async (t1) => {
       const artifactId = randomUUID()
