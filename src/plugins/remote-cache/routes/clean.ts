@@ -1,5 +1,5 @@
 import type { Server } from 'http'
-import { badRequest } from '@hapi/boom'
+import { badRequest, forbidden } from '@hapi/boom'
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -35,6 +35,10 @@ export const cleanCache: RouteOptions<
   schema: cleanRouteSchema,
   authorization: 'write',
   async handler(req, reply) {
+    if (this.config.READ_ONLY) {
+      throw forbidden('Remote cache is running in read-only mode')
+    }
+
     const slug = req.query.slug
     assertSafeTeamSlug(slug)
 

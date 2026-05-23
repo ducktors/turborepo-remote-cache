@@ -70,6 +70,8 @@ const schema = Type.Object(
 
     // Artifact signature verification
     TURBO_REMOTE_CACHE_SIGNATURE_KEY: Type.Optional(Type.String()),
+
+    READ_ONLY: Type.Optional(Type.Boolean({ default: false })),
   },
   {
     additionalProperties: false,

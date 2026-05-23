@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
+import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { after, describe, test } from 'node:test'
 import S3rver from 's3rver'
+
+const s3rverDirectory = mkdtempSync(join(tmpdir(), 's3rver-minio-'))
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -12,7 +16,7 @@ const testEnv = {
   LOG_FILE: 'server.log',
   TURBO_TOKEN: ['changeme'],
   STORAGE_PROVIDER: 'minio',
-  STORAGE_PATH: 'turborepo-remote-cache-test',
+  STORAGE_PATH: 'turborepo-remote-cache-test-minio',
   AWS_ACCESS_KEY_ID: 'S3RVER',
   AWS_SECRET_ACCESS_KEY: 'S3RVER',
   AWS_REGION: 'us-east-1',
@@ -21,7 +25,7 @@ Object.assign(process.env, testEnv)
 
 describe('Minio', async () => {
   const server = new S3rver({
-    directory: tmpdir(),
+    directory: s3rverDirectory,
     silent: true,
     port: 0,
     configureBuckets: [
