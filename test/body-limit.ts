@@ -12,7 +12,7 @@ const testEnv = {
   TURBO_TOKEN: ['changeme'],
   STORAGE_PROVIDER: 'local',
   STORAGE_PATH: join(tmpdir(), 'turborepo-remote-cache-test-limit'),
-  BODY_LIMIT: 10, // 仅限制 10 字节
+  BODY_LIMIT: 10, // Limit to 10 bytes only
 }
 
 test('Fastify body limit verification', async (t) => {
@@ -60,10 +60,10 @@ test('Fastify body limit verification', async (t) => {
         query: {
           team: 'superteam',
         },
-        payload: Buffer.from('12345'), // 5 字节
+        payload: Buffer.from('12345'), // 5 bytes
       })
 
-      // 如果小于 bodyLimit，则不应该被 Fastify Body Too Large (413) 拦截
+      // If size is under bodyLimit, it should not be intercepted by Fastify Body Too Large (413)
       assert.notEqual(response.statusCode, 413)
     },
   )
