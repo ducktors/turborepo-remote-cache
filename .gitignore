@@ -70,3 +70,4 @@ build
 **/certs
 .omc
 docs/superpowers
+.pnpm-store
