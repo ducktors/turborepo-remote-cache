@@ -1,3 +1,16 @@
+# [2.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.9.0...v2.10.0) (2026-05-23)
+
+
+### Bug Fixes
+
+* allow artifacts events in read-only mode ([3c74943](https://github.com/ducktors/turborepo-remote-cache/commit/3c74943933e4cdab3db072b12f7a036bf3bcf21e))
+* remove unsupported semver cooldown props from github-actions and docker dependabot config ([c018c20](https://github.com/ducktors/turborepo-remote-cache/commit/c018c20fc68f6aa9e5093f70730f4d03d7fd559b))
+
+
+### Features
+
+* support read-only mode to prevent unwanted cache update ([103e04a](https://github.com/ducktors/turborepo-remote-cache/commit/103e04ad9d4f7d6814501f5a48b1da15698dfdfb))
+
 # [2.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.9...v2.9.0) (2026-05-22)
 
 
