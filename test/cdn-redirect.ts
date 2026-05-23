@@ -222,9 +222,8 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('GET & HEAD: should include correct x-artifact-tag in redirect response when signature and CDN are both active', async () => {
-    // 1. Verify GET request
-    const getResponse = await appWithCdnAndSignature.inject({
+  await test('GET: should include correct x-artifact-tag in redirect response when signature and CDN are both active', async () => {
+    const response = await appWithCdnAndSignature.inject({
       method: 'GET',
       url: `/v8/artifacts/${artifactId}`,
       headers: {
@@ -234,15 +233,16 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
         team,
       },
     })
-    assert.equal(getResponse.statusCode, 302)
+    assert.equal(response.statusCode, 302)
     assert.equal(
-      getResponse.headers.location,
+      response.headers.location,
       `https://cdn.example.com/${team}/${artifactId}`,
     )
-    assert.equal(getResponse.headers['x-artifact-tag'], artifactTag)
+    assert.equal(response.headers['x-artifact-tag'], artifactTag)
+  })
 
-    // 2. Verify HEAD request
-    const headResponse = await appWithCdnAndSignature.inject({
+  await test('HEAD: should return 302 redirecting to CDN when signature and CDN are both active', async () => {
+    const response = await appWithCdnAndSignature.inject({
       method: 'HEAD',
       url: `/v8/artifacts/${artifactId}`,
       headers: {
@@ -252,9 +252,9 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
         team,
       },
     })
-    assert.equal(headResponse.statusCode, 302)
+    assert.equal(response.statusCode, 302)
     assert.equal(
-      headResponse.headers.location,
+      response.headers.location,
       `https://cdn.example.com/${team}/${artifactId}`,
     )
   })
