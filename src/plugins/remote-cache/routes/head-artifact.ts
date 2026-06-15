@@ -10,6 +10,7 @@ import {
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
+import { buildCdnRedirectUrl } from './utils.js'
 
 export const headArtifact: RouteOptions<
   Server,
@@ -52,18 +53,11 @@ export const headArtifact: RouteOptions<
       }
 
       if (this.config.TURBO_CACHE_READ_URL) {
-        const base = this.config.TURBO_CACHE_READ_URL
-        let artifactUrl: string
-        try {
-          const parsed = new URL(base)
-          parsed.pathname = parsed.pathname.endsWith('/')
-            ? `${parsed.pathname}${team}/${artifactId}`
-            : `${parsed.pathname}/${team}/${artifactId}`
-          artifactUrl = parsed.toString()
-        } catch {
-          const readUrl = base.endsWith('/') ? base : `${base}/`
-          artifactUrl = `${readUrl}${team}/${artifactId}`
-        }
+        const artifactUrl = buildCdnRedirectUrl(
+          this.config.TURBO_CACHE_READ_URL,
+          team,
+          artifactId,
+        )
         return reply.redirect(artifactUrl)
       }
 

@@ -289,4 +289,46 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     })
     assert.equal(response.statusCode, 404)
   })
+
+  await test('GET: 应当对 team 和 artifactId 进行编码以防止路径遍历重定向', async () => {
+    const maliciousTeam = '../../malicious-team'
+    const maliciousArtifactId = 'malicious-artifact'
+    const response = await appWithCdn.inject({
+      method: 'GET',
+      url: `/v8/artifacts/${maliciousArtifactId}`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        team: maliciousTeam,
+      },
+    })
+    assert.equal(response.statusCode, 302)
+    // 验证是否正确进行了 encode 编码，避免路径遍历逃逸
+    const expectedEncodedTeam = encodeURIComponent(maliciousTeam)
+    const expectedEncodedArtifact = encodeURIComponent(maliciousArtifactId)
+    assert.equal(
+      response.headers.location,
+      `https://cdn.example.com/${expectedEncodedTeam}/${expectedEncodedArtifact}`,
+    )
+  })
+
+  await test('启动: 如果 TURBO_CACHE_READ_URL 缺少 http/https scheme 应抛出校验错误', async () => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        NODE_ENV: 'test',
+        PORT: 3000,
+        TURBO_TOKEN: 'changeme',
+        STORAGE_PROVIDER: 'local',
+        STORAGE_PATH: storagePath,
+        STORAGE_PATH_USE_TMP_FOLDER: false,
+        TURBO_CACHE_READ_URL: 'cdn.example.com', // 无 scheme，会被校验拦截
+      },
+    })
+    await assert.rejects(async () => {
+      await app.ready()
+    })
+  })
 })
