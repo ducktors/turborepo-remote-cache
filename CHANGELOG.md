@@ -1,3 +1,14 @@
+## [2.11.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.1...v2.11.2) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** bump fast-xml-parser override to >=5.7.0 (GHSA-fj3w-jwp8-x2g3, GHSA-8gc5-j5rx-235r, GHSA-jp2q-39xq-3w4g, GHSA-gh4j-gqv2-49f6) ([e5fed7b](https://github.com/ducktors/turborepo-remote-cache/commit/e5fed7b83e599eee627c64c1a77c650416471de4))
+* **deps:** cap uuid override to v11 for CJS compatibility ([966e6ec](https://github.com/ducktors/turborepo-remote-cache/commit/966e6ec53ab700b3311af17a78048600bf99150b))
+* **deps:** override fast-uri to >=3.1.2 (GHSA-v39h-62p7-jpjc, GHSA-q3j6-qgpj-74h6) ([4a4e232](https://github.com/ducktors/turborepo-remote-cache/commit/4a4e2328819a41c0ca2262d8d159360ba19d5970))
+* **deps:** override picomatch to >=2.3.2 (GHSA-3v7f-55p6-f55p) ([fda644c](https://github.com/ducktors/turborepo-remote-cache/commit/fda644c61c0b11c437023f777ee6554ed33c6ea5))
+* **deps:** override uuid to >=11.1.1 (GHSA-w5hq-g745-h8pq) ([50687a6](https://github.com/ducktors/turborepo-remote-cache/commit/50687a6f69126bb49637f3903282a145e3fc96c2))
+
 ## [2.11.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.0...v2.11.1) (2026-05-23)
 
 
