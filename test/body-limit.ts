@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
+import http from 'node:http'
+import type { AddressInfo } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
@@ -63,10 +65,70 @@ test('BODY_LIMIT wiring', async (t) => {
       })
 
       assert.equal(response.statusCode, 413)
-      // The app's error handler now forwards err.statusCode for client errors,
-      // so the underlying fastify message reaches the client instead of being
-      // masked as a generic 500.
+      // The content-length fast path rejects with a boom 413 before any
+      // streaming starts; the app error handler forwards the boom message to
+      // the client instead of masking it as a generic 500.
       assert.match(response.json().message, /too large/i)
+    },
+  )
+
+  await t.test(
+    'rejects a chunked upload above BODY_LIMIT without content-length',
+    async () => {
+      // A chunked upload has no content-length, so the size must be caught by
+      // the streaming guard rather than the content-length fast path. This is
+      // exercised over a real socket because app.inject() cannot model a
+      // request that the server aborts mid-stream.
+      const artifactId = crypto.randomBytes(20).toString('hex')
+      await app.listen({ port: 0, host: '127.0.0.1' })
+      const { port } = app.server.address() as AddressInfo
+
+      const statusCode = await new Promise<number>((resolve, reject) => {
+        const timer = setTimeout(
+          () => reject(new Error('timed out waiting for response')),
+          5000,
+        )
+        const request = http.request(
+          {
+            host: '127.0.0.1',
+            port,
+            method: 'PUT',
+            path: `/v8/artifacts/${artifactId}?team=superteam`,
+            headers: {
+              'content-type': 'application/octet-stream',
+              'transfer-encoding': 'chunked',
+              // Avoid a lingering keep-alive socket that would delay app.close().
+              connection: 'close',
+            },
+          },
+          (res) => {
+            clearTimeout(timer)
+            const statusCode = res.statusCode ?? 0
+            res.resume()
+            res.on('end', () => {
+              request.destroy()
+              resolve(statusCode)
+            })
+          },
+        )
+        // The server resets the connection after replying 413, so the client's
+        // remaining writes fail with EPIPE/ECONNRESET — that is expected.
+        request.on('error', () => {})
+
+        const oneMb = Buffer.alloc(1024 * 1024, 1)
+        let written = 0
+        const writeNext = () => {
+          if (written >= 15) {
+            request.end()
+            return
+          }
+          written += 1
+          request.write(oneMb, () => setImmediate(writeNext))
+        }
+        writeNext()
+      })
+
+      assert.equal(statusCode, 413)
     },
   )
 
