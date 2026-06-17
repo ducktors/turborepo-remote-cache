@@ -1,8 +1,8 @@
-import { Writable } from 'node:stream'
+import { Transform, Writable } from 'node:stream'
 import { join } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { notImplemented } from '@hapi/boom'
+import { entityTooLarge, notImplemented } from '@hapi/boom'
 import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
@@ -23,6 +23,26 @@ import { type S3Options as S3Opts, createS3 } from './s3.js'
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 const TURBO_CACHE_USE_TMP_FOLDER = true as const
+
+/**
+ * Builds a passthrough stream that fails with a 413 once more than `maxBytes`
+ * have flowed through it. Used to enforce BODY_LIMIT while uploads are streamed
+ * to storage, since the request body is no longer buffered (and size-checked)
+ * in memory by fastify.
+ */
+function createSizeLimitStream(maxBytes: number): Transform {
+  let received = 0
+  return new Transform({
+    transform(chunk: Buffer, _encoding, callback) {
+      received += chunk.length
+      if (received > maxBytes) {
+        callback(entityTooLarge('Request body is too large'))
+        return
+      }
+      callback(null, chunk)
+    },
+  })
+}
 
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
@@ -162,11 +182,13 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     artifactId: string,
     team: string,
     artifact: Readable,
+    maxBytes?: number,
   ) {
-    return pipeline(
-      artifact,
-      location.createWriteStream(join(team, artifactId)),
-    )
+    const writeStream = location.createWriteStream(join(team, artifactId))
+    if (maxBytes && maxBytes > 0) {
+      return pipeline(artifact, createSizeLimitStream(maxBytes), writeStream)
+    }
+    return pipeline(artifact, writeStream)
   }
 
   async function getCachedArtifactTag(
