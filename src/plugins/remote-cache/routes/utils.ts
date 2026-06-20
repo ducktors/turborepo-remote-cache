@@ -1,6 +1,6 @@
 /**
- * 为给定的基础 URL、团队 ID 和缓存 ID 构建 CDN 重定向 URL。
- * 对各路径段进行编码以防止路径遍历攻击。
+ * Builds the CDN redirect URL for a given base URL, team ID, and artifact ID.
+ * Encodes path segments to prevent path traversal attacks.
  */
 export function buildCdnRedirectUrl(
   base: string,

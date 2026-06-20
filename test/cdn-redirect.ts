@@ -290,7 +290,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     assert.equal(response.statusCode, 404)
   })
 
-  await test('GET: 应当对 team 和 artifactId 进行编码以防止路径遍历重定向', async () => {
+  await test('GET: should encode team and artifactId to prevent path traversal redirection', async () => {
     const maliciousTeam = '../../malicious-team'
     const maliciousArtifactId = 'malicious-artifact'
     const response = await appWithCdn.inject({
@@ -313,7 +313,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     )
   })
 
-  await test('启动: 如果 TURBO_CACHE_READ_URL 缺少 http/https scheme 应抛出校验错误', async () => {
+  await test('Startup: should throw validation error if TURBO_CACHE_READ_URL lacks http/https scheme', async () => {
     const { createApp } = await import('../src/app.js')
     const app = createApp({
       logger: false,
