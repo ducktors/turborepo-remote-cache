@@ -1,5 +1,5 @@
 import { Writable } from 'node:stream'
-import { join } from 'path'
+import { posix as posixPath } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
 import { notImplemented } from '@hapi/boom'
@@ -23,6 +23,19 @@ import { type S3Options as S3Opts, createS3 } from './s3.js'
 const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 const TURBO_CACHE_USE_TMP_FOLDER = true as const
+
+/**
+ * Builds the storage key for an artifact.
+ *
+ * Always uses POSIX ('/') separators, regardless of the host OS. These keys are
+ * object keys for remote stores (S3/GCS/Azure) and abstract-blob-store paths,
+ * not native filesystem paths. Using the platform-dependent `path.join` would
+ * emit '\' on Windows, producing keys that artifacts cached by Linux/macOS
+ * runners can never resolve (and vice versa). See issue #800.
+ */
+export function getArtifactPath(team: string, artifactId: string): string {
+  return posixPath.join(team, artifactId)
+}
 
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
@@ -125,12 +138,12 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   const location = createStorageLocation(provider, providerOptions)
 
   function getArtifactTagPath(artifactId: string, team: string): string {
-    return join(team, `${artifactId}.tag`)
+    return getArtifactPath(team, `${artifactId}.tag`)
   }
 
   async function getCachedArtifact(artifactId: string, team: string) {
     return new Promise((resolve, reject) => {
-      const artifactPath = join(team, artifactId)
+      const artifactPath = getArtifactPath(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
@@ -145,7 +158,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 
   async function existsCachedArtifact(artifactId: string, team: string) {
     return new Promise<void>((resolve, reject) => {
-      const artifactPath = join(team, artifactId)
+      const artifactPath = getArtifactPath(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
@@ -165,7 +178,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   ) {
     return pipeline(
       artifact,
-      location.createWriteStream(join(team, artifactId)),
+      location.createWriteStream(getArtifactPath(team, artifactId)),
     )
   }
 
