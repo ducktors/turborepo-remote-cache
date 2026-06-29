@@ -58,7 +58,7 @@ jobs:
           build-args: |
             PACKAGE_VERSION=${{ steps.package-version.outputs.current-version}}
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v2.1.0
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v2.1.0
         with:
           subject-name: docker.io/ducktors/turborepo-remote-cache
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
@@ -110,7 +110,7 @@ jobs:
           build-args: |
             PACKAGE_VERSION=${{ steps.package-version.outputs.current-version}}
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v2.1.0
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v2.1.0
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
