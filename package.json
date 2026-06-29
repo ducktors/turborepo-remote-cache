@@ -51,7 +51,7 @@
     "@azure/storage-blob": "^12.23.0",
     "@fastify/aws-lambda": "^5.0.0",
     "@fastify/jwt": "10.0.0",
-    "@google-cloud/storage": "7.21.0",
+    "@google-cloud/storage": "^7.21.0",
     "@hapi/boom": "10.0.0",
     "@sinclair/typebox": "0.25.21",
     "ajv": "8.18.0",
