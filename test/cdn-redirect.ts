@@ -304,7 +304,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
       },
     })
     assert.equal(response.statusCode, 302)
-    // 验证是否正确进行了 encode 编码，避免路径遍历逃逸
+    // Verify that encoding was applied correctly, preventing path traversal escape
     const expectedEncodedTeam = encodeURIComponent(maliciousTeam)
     const expectedEncodedArtifact = encodeURIComponent(maliciousArtifactId)
     assert.equal(
@@ -324,7 +324,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
         STORAGE_PROVIDER: 'local',
         STORAGE_PATH: storagePath,
         STORAGE_PATH_USE_TMP_FOLDER: false,
-        TURBO_CACHE_READ_URL: 'cdn.example.com', // 无 scheme，会被校验拦截
+        TURBO_CACHE_READ_URL: 'cdn.example.com', // Missing scheme, should be rejected by validation
       },
     })
     await assert.rejects(async () => {
