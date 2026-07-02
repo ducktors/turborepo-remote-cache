@@ -54,7 +54,7 @@ export function createApp(
 
   app.register(config, { overrides: options.configOverrides }).after(() => {
     app.register(remoteCache, {
-      provider: app.config.STORAGE_PROVIDER,
+      provider: app.config?.STORAGE_PROVIDER,
     })
   })
 
