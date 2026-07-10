@@ -19,6 +19,40 @@ export interface S3Options {
   s3OptionsPassthrough?: S3ClientConfig
 }
 
+/**
+ * Whether an S3 SDK error should be treated as a cache miss (the object isn't
+ * available) rather than a real backend failure (throttling, network, 5xx).
+ *
+ * A missing object normally surfaces as 404 (`NotFound` for HeadObject,
+ * `NoSuchKey` for GetObject). However, S3 returns **403** for a missing object
+ * when the caller's IAM policy lacks `s3:ListBucket` — a common least-privilege
+ * setup where only `GetObject`/`PutObject` are granted. In that configuration
+ * every cache miss is a 403, so 403 must be treated as a miss too; otherwise
+ * every miss would become a 5xx.
+ *
+ * Everything else — 5xx, throttling (`SlowDown`), timeouts, connection errors —
+ * is a genuine backend failure and must NOT be masked as a miss, so it surfaces
+ * as a 5xx instead of silently degrading the cache hit rate.
+ */
+export function isCacheMissError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) {
+    return false
+  }
+  const err = error as {
+    name?: string
+    Code?: string
+    $metadata?: { httpStatusCode?: number }
+  }
+  const statusCode = err.$metadata?.httpStatusCode
+  return (
+    err.name === 'NotFound' ||
+    err.name === 'NoSuchKey' ||
+    err.Code === 'NoSuchKey' ||
+    statusCode === 404 ||
+    statusCode === 403
+  )
+}
+
 // AWS_ envs are default for aws-sdk
 export function createS3({
   accessKey = process.env.S3_ACCESS_KEY,
@@ -64,7 +98,12 @@ export function createS3({
         await client.send(new HeadObjectCommand({ Bucket: bucket, Key: key }))
         return cb(null, true)
       } catch (error) {
-        return cb(null, false)
+        if (isCacheMissError(error)) {
+          return cb(null, false)
+        }
+        // A real backend failure (throttling, network, 5xx). Propagate it
+        // instead of reporting a cache miss, so it surfaces as a 5xx.
+        return cb(error as Error)
       }
     },
     createReadStream: (key: string) => {
