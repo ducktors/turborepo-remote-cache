@@ -127,6 +127,7 @@ describe('Artifact signature verification', async () => {
       },
     })
     assert.equal(headResponse.statusCode, 404)
+    assert.equal(headResponse.json().message, 'Artifact tag not found')
 
     const getResponse = await app.inject({
       method: 'GET',
@@ -139,6 +140,7 @@ describe('Artifact signature verification', async () => {
       },
     })
     assert.equal(getResponse.statusCode, 404)
+    assert.equal(getResponse.json().message, 'Artifact tag not found')
   })
 
   await test('should allow access without signature tag when signature verification is disabled', async () => {

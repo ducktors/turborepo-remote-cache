@@ -33,6 +33,13 @@ export interface S3Options {
  * Everything else — 5xx, throttling (`SlowDown`), timeouts, connection errors —
  * is a genuine backend failure and must NOT be masked as a miss, so it surfaces
  * as a 5xx instead of silently degrading the cache hit rate.
+ *
+ * Trade-off: because 403 is treated as a miss, a genuine auth failure (invalid
+ * or expired credentials, a signature error, or a bucket policy that denies
+ * access) is also reported as a cache miss rather than surfacing as an error.
+ * This is deliberate — it keeps the common least-privilege setup working — but
+ * it means a 404 from this server does not strictly guarantee the object is
+ * absent; a persistent collapse in hit rate can indicate an auth problem.
  */
 export function isCacheMissError(error: unknown): boolean {
   if (typeof error !== 'object' || error === null) {

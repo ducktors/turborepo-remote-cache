@@ -34,14 +34,27 @@ export const getArtifact: RouteOptions<
     }
 
     try {
-      // If signature verification is enabled, check for artifact tag first.
-      // A missing tag is treated as a cache miss (handled in the catch below).
+      // If signature verification is enabled, check for artifact tag first
       if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY) {
-        const artifactTag = await this.location.getCachedArtifactTag(
-          artifactId,
-          team,
-        )
-        reply.header('x-artifact-tag', artifactTag)
+        try {
+          const artifactTag = await this.location.getCachedArtifactTag(
+            artifactId,
+            team,
+          )
+          reply.header('x-artifact-tag', artifactTag)
+        } catch (err) {
+          // A missing tag is treated as a cache miss. Any other error is a real
+          // backend failure and is rethrown to surface as a 5xx.
+          if (!(err instanceof ArtifactNotFoundError)) {
+            throw err
+          }
+          req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
+          return reply.code(404).send({
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'Artifact tag not found',
+          })
+        }
       }
 
       const artifact = await this.location.getCachedArtifact(artifactId, team)
