@@ -393,6 +393,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "salpers",
+      "name": "Sebastian Alpers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23464191?v=4",
+      "profile": "https://github.com/salpers",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
