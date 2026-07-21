@@ -1,7 +1,9 @@
 import assert from 'node:assert'
 import crypto from 'node:crypto'
-import { PassThrough, Readable } from 'node:stream'
+import { Readable } from 'node:stream'
 import { afterEach, mock, test } from 'node:test'
+import { BlobServiceClient } from '@azure/storage-blob'
+import { createAzureBlobStorage } from '../src/plugins/remote-cache/storage/azure-blob-storage.js'
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -22,12 +24,11 @@ test('Azure Blob Storage', async (t) => {
    */
   const { BlobServiceClient } = await import('@azure/storage-blob')
 
-  const uploadStream = (stream) => {
-    const writable = new PassThrough()
-    return writable.pipe(stream)
-  }
-
-  const uploadStreamMock = mock.fn(uploadStream)
+  // Mirrors the real blockBlobClient.uploadStream, which returns
+  // Promise<BlobUploadCommonResponse>. The adapter now awaits this in `final`,
+  // so it must be a promise; the passed-in stream is still captured as
+  // arguments[0] for the "should upload an artifact" assertion below.
+  const uploadStreamMock = mock.fn((_stream) => Promise.resolve({}))
 
   mock.method(BlobServiceClient, 'fromConnectionString', () => ({
     getContainerClient: () => ({
@@ -239,5 +240,52 @@ test('Azure Blob Storage', async (t) => {
       assert.equal(response.statusCode, 200)
       assert.deepEqual(response.json(), {})
     },
+  )
+})
+
+test('createWriteStream completes only after Azure commits the upload', async () => {
+  // Isolated from the suite above: own mock so afterEach(mock.restoreAll) there
+  // cannot strip it, and a caller-controlled deferred upload promise so we can
+  // observe ordering deterministically (no Azurite, no timing race).
+  let resolveUpload!: (value: unknown) => void
+  const uploadPromise = new Promise((resolve) => {
+    resolveUpload = resolve
+  })
+
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlockBlobClient: () => ({
+        uploadStream: () => uploadPromise,
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const writeStream = storage.createWriteStream('superteam/hash.tag')
+  let finished = false
+  writeStream.on('finish', () => {
+    finished = true
+  })
+  writeStream.end('tag-payload')
+
+  // Flush microtasks/immediates: the payload has been fully written and ended.
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.equal(
+    finished,
+    false,
+    'write stream must not finish before the upload promise resolves',
+  )
+
+  resolveUpload({})
+  await uploadPromise
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.equal(
+    finished,
+    true,
+    'write stream must finish once the upload promise resolves',
   )
 })
