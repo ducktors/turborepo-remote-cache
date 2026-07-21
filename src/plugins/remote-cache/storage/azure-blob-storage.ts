@@ -1,4 +1,4 @@
-import { PassThrough } from 'node:stream'
+import { PassThrough, Writable } from 'node:stream'
 import { BlobServiceClient } from '@azure/storage-blob'
 import { StorageProvider } from './index.js'
 
@@ -34,9 +34,17 @@ export function createAzureBlobStorage({
     },
     createWriteStream(artifactPath) {
       const blockBlobClient = containerClient.getBlockBlobClient(artifactPath)
-      const stream = new PassThrough()
-      blockBlobClient.uploadStream(stream)
-      return stream
+      const passThrough = new PassThrough()
+      const uploadPromise = blockBlobClient.uploadStream(passThrough)
+      return new Writable({
+        write(chunk, encoding, callback) {
+          passThrough.write(chunk, encoding, callback)
+        },
+        final(callback) {
+          passThrough.end()
+          uploadPromise.then(() => callback()).catch(callback)
+        },
+      })
     },
   }
 }
