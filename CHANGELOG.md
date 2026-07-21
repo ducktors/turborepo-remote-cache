@@ -1,3 +1,10 @@
+## [2.11.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.2...v2.11.3) (2026-07-21)
+
+
+### Bug Fixes
+
+* **azure-blob-storage:** await block blob upload so signed .tag writes persist ([66289c1](https://github.com/ducktors/turborepo-remote-cache/commit/66289c1a70591727f34adfa539e53e455cd2af7b)), closes [#831](https://github.com/ducktors/turborepo-remote-cache/issues/831) [#791](https://github.com/ducktors/turborepo-remote-cache/issues/791) [#656](https://github.com/ducktors/turborepo-remote-cache/issues/656) [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
 ## [2.11.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.1...v2.11.2) (2026-06-15)
 
 
