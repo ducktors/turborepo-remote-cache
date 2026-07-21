@@ -130,6 +130,7 @@ fix: fix a bug ---> 1.0.x
       <td align="center" valign="top" width="14.28%"><a href="http://modin.us"><img src="https://avatars.githubusercontent.com/u/45493372?v=4?s=100" width="100px;" alt="Konstantin Modin"/><br /><sub><b>Konstantin Modin</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=KonstantinModin" title="Code">💻</a></td>
     </tr>
     <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MFA-G"><img src="https://avatars.githubusercontent.com/u/136257088?v=4?s=100" width="100px;" alt="Mochammad Fadhlan Al-Ghiffari"/><br /><sub><b>Mochammad Fadhlan Al-Ghiffari</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=MFA-G" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/salpers"><img src="https://avatars.githubusercontent.com/u/23464191?v=4?s=100" width="100px;" alt="Sebastian Alpers"/><br /><sub><b>Sebastian Alpers</b></sub></a><br /><a href="https://github.com/ducktors/turborepo-remote-cache/commits?author=salpers" title="Code">💻</a></td>
     </tr>
   </tbody>
