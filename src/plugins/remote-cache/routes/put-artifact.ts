@@ -1,11 +1,18 @@
 import type { Server } from 'http'
-import { Readable } from 'stream'
-import { badRequest, forbidden, preconditionFailed } from '@hapi/boom'
+import type { Readable } from 'node:stream'
+import {
+  badRequest,
+  entityTooLarge,
+  forbidden,
+  isBoom,
+  preconditionFailed,
+} from '@hapi/boom'
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
+import { resolveBodyLimit } from '../../../env.js'
 import {
   type Headers,
   type Params,
@@ -21,7 +28,7 @@ export const putArtifact: RouteOptions<
     Querystring: Querystring
     Params: Params
     Headers: Headers
-    Body: Buffer
+    Body: Readable
   }
 > = {
   url: '/artifacts/:id',
@@ -38,6 +45,16 @@ export const putArtifact: RouteOptions<
       throw badRequest(`querystring should have required property 'team'`)
     }
 
+    const { value: bodyLimit } = resolveBodyLimit(this.config.BODY_LIMIT)
+
+    // Reject oversized uploads up front when the client advertises the size,
+    // so we never start streaming to storage. The guard inside
+    // createCachedArtifact is the backstop for chunked/unknown-length requests.
+    const contentLength = Number(req.headers['content-length'])
+    if (Number.isFinite(contentLength) && contentLength > bodyLimit) {
+      throw entityTooLarge('Request body is too large')
+    }
+
     try {
       const artifactTag = req.headers['x-artifact-tag']
 
@@ -45,7 +62,8 @@ export const putArtifact: RouteOptions<
         this.location.createCachedArtifact(
           artifactId,
           team,
-          Readable.from(req.body),
+          req.body,
+          bodyLimit,
         ),
       ]
 
@@ -59,6 +77,11 @@ export const putArtifact: RouteOptions<
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
+      // Surface a body-too-large rejection from the streaming guard as 413
+      // instead of masking it as a generic storage error.
+      if (isBoom(err) && err.output.statusCode === 413) {
+        throw err
+      }
       // we need this error throw since turbo retries if the error is in 5xx range
       throw preconditionFailed('Error during the artifact creation', err)
     }
