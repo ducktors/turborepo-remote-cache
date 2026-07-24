@@ -10,6 +10,7 @@ import {
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
+import { buildCdnRedirectUrl } from './utils.js'
 
 export const headArtifact: RouteOptions<
   Server,
@@ -35,7 +36,11 @@ export const headArtifact: RouteOptions<
       // If signature verification is enabled, check for artifact tag existence first
       if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY) {
         try {
-          await this.location.existsCachedArtifactTag(artifactId, team)
+          const artifactTag = await this.location.getCachedArtifactTag(
+            artifactId,
+            team,
+          )
+          reply.header('x-artifact-tag', artifactTag)
         } catch (err) {
           // A missing tag is treated as a cache miss
           req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
@@ -45,6 +50,15 @@ export const headArtifact: RouteOptions<
             message: 'Artifact tag not found',
           })
         }
+      }
+
+      if (this.config.TURBO_CACHE_READ_URL) {
+        const artifactUrl = buildCdnRedirectUrl(
+          this.config.TURBO_CACHE_READ_URL,
+          team,
+          artifactId,
+        )
+        return reply.redirect(artifactUrl)
       }
 
       const artifact = await this.location.existsCachedArtifact(
