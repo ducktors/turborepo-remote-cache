@@ -62,8 +62,8 @@ export const getArtifact: RouteOptions<
       return reply.send(artifact)
     } catch (err) {
       // Only a genuine "not found" is a cache miss (404). Any other error is a
-      // real backend failure: rethrow it so it surfaces as a 5xx and shows up
-      // in logs/metrics instead of masquerading as a cache miss.
+      // real backend failure: rethrow it so the app-level error handler logs
+      // it and returns a 5xx instead of masquerading as a cache miss.
       if (err instanceof ArtifactNotFoundError) {
         req.log.info(err, 'Artifact not found')
         return reply.code(404).send({
@@ -72,7 +72,6 @@ export const getArtifact: RouteOptions<
           message: 'Artifact not found',
         })
       }
-      req.log.error(err, `Failed to fetch artifact ${artifactId}`)
       throw err
     }
   },
