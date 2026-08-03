@@ -1,3 +1,10 @@
+## [2.11.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.6...v2.11.7) (2026-08-03)
+
+
+### Bug Fixes
+
+* **storage:** propagate Azure download failures instead of hanging the request ([57a5502](https://github.com/ducktors/turborepo-remote-cache/commit/57a550283f6f4f5c0c879e4d00bbadc8f21cfc25))
+
 ## [2.11.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.5...v2.11.6) (2026-08-03)
 
 
