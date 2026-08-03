@@ -54,6 +54,19 @@ type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
     ? GoogleCloudStorageOptions
     : never
 
+/**
+ * Raised when an artifact (or its signature tag) genuinely does not exist in
+ * the storage backend. Route handlers translate this — and only this — into a
+ * 404 cache miss; any other error is a real backend failure and surfaces as a
+ * 5xx.
+ */
+export class ArtifactNotFoundError extends Error {
+  constructor(artifactPath: string) {
+    super(`Artifact ${artifactPath} doesn't exist.`)
+    this.name = 'ArtifactNotFoundError'
+  }
+}
+
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {
   exists: (
@@ -149,7 +162,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(artifactPath))
         }
         resolve(location.createReadStream(artifactPath))
       })
@@ -164,7 +177,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(artifactPath))
         }
         resolve()
       })
@@ -193,7 +206,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(tagPath))
         }
         const stream = location.createReadStream(tagPath)
         const chunks: Buffer[] = []
@@ -215,7 +228,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(tagPath))
         }
         resolve()
       })
