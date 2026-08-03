@@ -41,7 +41,7 @@ jobs:
       - name: Run tests with coverage
         run: pnpm test:coverage
       - name: Coveralls
-        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # master
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           fail-on-error: false # https://status.coveralls.io/incidents/pdbt7vdzlvpj
