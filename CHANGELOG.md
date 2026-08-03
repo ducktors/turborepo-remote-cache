@@ -1,3 +1,12 @@
+## [2.11.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.5...v2.11.6) (2026-08-03)
+
+
+### Bug Fixes
+
+* **routes:** drop route-level error log before rethrow to avoid double logging ([c06af34](https://github.com/ducktors/turborepo-remote-cache/commit/c06af347a91638f55498cf629d295178e6a186a3))
+* **storage:** address review feedback (preserve tag message, document 403 trade-off) ([2a72a91](https://github.com/ducktors/turborepo-remote-cache/commit/2a72a91e0e1fbf4ed8e6a353d11fbc15f70c998d))
+* **storage:** surface backend failures as 5xx instead of masking as cache miss ([1b1581e](https://github.com/ducktors/turborepo-remote-cache/commit/1b1581edb126df6267b7985dc199083357658bb3)), closes [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
 ## [2.11.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.4...v2.11.5) (2026-07-21)
 
 
