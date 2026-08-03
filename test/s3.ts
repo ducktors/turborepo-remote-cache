@@ -5,8 +5,60 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { after, describe, test } from 'node:test'
 import S3erver from 's3rver'
+import { isCacheMissError } from '../src/plugins/remote-cache/storage/s3.js'
 
 const s3rverDirectory = mkdtempSync(join(tmpdir(), 's3rver-s3-'))
+
+describe('isCacheMissError', () => {
+  test('treats a missing object as a cache miss', () => {
+    // HeadObject on a missing key
+    assert.equal(
+      isCacheMissError({
+        name: 'NotFound',
+        $metadata: { httpStatusCode: 404 },
+      }),
+      true,
+    )
+    // GetObject on a missing key
+    assert.equal(
+      isCacheMissError({
+        name: 'NoSuchKey',
+        $metadata: { httpStatusCode: 404 },
+      }),
+      true,
+    )
+    assert.equal(isCacheMissError({ Code: 'NoSuchKey' }), true)
+    // S3 returns 403 for a missing object when the IAM policy lacks
+    // s3:ListBucket (least-privilege setups). Must still be a cache miss.
+    assert.equal(
+      isCacheMissError({ name: 'Unknown', $metadata: { httpStatusCode: 403 } }),
+      true,
+    )
+  })
+
+  test('treats real backend failures as errors, not cache misses', () => {
+    // Throttling
+    assert.equal(
+      isCacheMissError({
+        name: 'SlowDown',
+        $metadata: { httpStatusCode: 503 },
+      }),
+      false,
+    )
+    // Server error
+    assert.equal(
+      isCacheMissError({
+        name: 'InternalError',
+        $metadata: { httpStatusCode: 500 },
+      }),
+      false,
+    )
+    // Network error (no metadata)
+    assert.equal(isCacheMissError(new Error('connect ECONNREFUSED')), false)
+    assert.equal(isCacheMissError(null), false)
+    assert.equal(isCacheMissError(undefined), false)
+  })
+})
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -40,8 +92,17 @@ describe('Amazon S3', async () => {
     S3_ENDPOINT: `http://localhost:${address.port}`,
   })
 
-  after((ctx, done) => {
-    server.close(done)
+  let serverClosed = false
+  async function closeServer() {
+    if (serverClosed) {
+      return
+    }
+    serverClosed = true
+    await new Promise<void>((resolve) => server.close(() => resolve()))
+  }
+
+  after(async () => {
+    await closeServer()
   })
 
   const artifactId = crypto.randomBytes(20).toString('hex')
@@ -168,5 +229,45 @@ describe('Amazon S3', async () => {
     })
     assert.equal(response.statusCode, 404)
     assert.equal(response.json().message, 'Artifact not found')
+  })
+
+  // Regression test: a real storage-backend failure must surface as a 5xx,
+  // not be masked as a 404 cache miss. We simulate the backend being down by
+  // shutting down the S3 server, so requests fail with a connection error
+  // rather than a genuine not-found. This must run last.
+  await test('should return 5xx (not 404) when the storage backend fails', async () => {
+    await closeServer()
+
+    const getResponse = await app.inject({
+      method: 'GET',
+      url: '/v8/artifacts/some-artifact',
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        team,
+      },
+    })
+    assert.equal(
+      getResponse.statusCode >= 500,
+      true,
+      `expected 5xx, got ${getResponse.statusCode}`,
+    )
+
+    const headResponse = await app.inject({
+      method: 'HEAD',
+      url: '/v8/artifacts/some-artifact',
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        team,
+      },
+    })
+    assert.equal(
+      headResponse.statusCode >= 500,
+      true,
+      `expected 5xx, got ${headResponse.statusCode}`,
+    )
   })
 })
