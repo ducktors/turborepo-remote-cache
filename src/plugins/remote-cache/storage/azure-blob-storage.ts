@@ -25,11 +25,25 @@ export function createAzureBlobStorage({
     createReadStream(artifactPath) {
       const blobClient = containerClient.getBlobClient(artifactPath)
       const stream = new PassThrough()
-      blobClient.download().then((response) => {
-        if (response.readableStreamBody) {
-          response.readableStreamBody.pipe(stream)
-        }
-      })
+      blobClient
+        .download()
+        .then((response) => {
+          if (!response.readableStreamBody) {
+            throw new Error(
+              `Artifact ${artifactPath} download returned no readable body.`,
+            )
+          }
+          // pipe() does not forward errors, so a body that fails partway
+          // through (dropped connection) has to be wired through explicitly.
+          response.readableStreamBody
+            .on('error', (err) => stream.destroy(err))
+            .pipe(stream)
+        })
+        // A real backend failure (network, throttling, 5xx) or a response
+        // without a body. Destroy the stream with the error so it surfaces as a
+        // 5xx: leaving the rejection unhandled would hang the request and, under
+        // Node's default --unhandled-rejections=throw, terminate the process.
+        .catch((err) => stream.destroy(err))
       return stream
     },
     createWriteStream(artifactPath) {
