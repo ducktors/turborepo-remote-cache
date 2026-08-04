@@ -1,5 +1,5 @@
 import { Writable } from 'node:stream'
-import { join } from 'path'
+import { posix as posixPath } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
 import { notImplemented } from '@hapi/boom'
@@ -24,6 +24,19 @@ const pipeline = promisify(pipelineCallback)
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 const TURBO_CACHE_USE_TMP_FOLDER = true as const
 
+/**
+ * Builds the storage key for an artifact.
+ *
+ * Always uses POSIX ('/') separators, regardless of the host OS. These keys are
+ * object keys for remote stores (S3/GCS/Azure) and abstract-blob-store paths,
+ * not native filesystem paths. Using the platform-dependent `path.join` would
+ * emit '\' on Windows, producing keys that artifacts cached by Linux/macOS
+ * runners can never resolve (and vice versa). See issue #800.
+ */
+export function getArtifactPath(team: string, artifactId: string): string {
+  return posixPath.join(team, artifactId)
+}
+
 type LocalOptions = Partial<LocalOpts>
 type S3Options = Omit<S3Opts, 'bucket'> & LocalOptions
 type GoogleCloudStorageOptions = Omit<GCSOpts, 'bucket'> & LocalOptions
@@ -40,6 +53,19 @@ type ProviderOptions<Provider extends STORAGE_PROVIDERS> =
     : Provider extends typeof STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE
     ? GoogleCloudStorageOptions
     : never
+
+/**
+ * Raised when an artifact (or its signature tag) genuinely does not exist in
+ * the storage backend. Route handlers translate this — and only this — into a
+ * 404 cache miss; any other error is a real backend failure and surfaces as a
+ * 5xx.
+ */
+export class ArtifactNotFoundError extends Error {
+  constructor(artifactPath: string) {
+    super(`Artifact ${artifactPath} doesn't exist.`)
+    this.name = 'ArtifactNotFoundError'
+  }
+}
 
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {
@@ -125,18 +151,18 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   const location = createStorageLocation(provider, providerOptions)
 
   function getArtifactTagPath(artifactId: string, team: string): string {
-    return join(team, `${artifactId}.tag`)
+    return getArtifactPath(team, `${artifactId}.tag`)
   }
 
   async function getCachedArtifact(artifactId: string, team: string) {
     return new Promise((resolve, reject) => {
-      const artifactPath = join(team, artifactId)
+      const artifactPath = getArtifactPath(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(artifactPath))
         }
         resolve(location.createReadStream(artifactPath))
       })
@@ -145,13 +171,13 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 
   async function existsCachedArtifact(artifactId: string, team: string) {
     return new Promise<void>((resolve, reject) => {
-      const artifactPath = join(team, artifactId)
+      const artifactPath = getArtifactPath(team, artifactId)
       location.exists(artifactPath, (err, exists) => {
         if (err) {
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact ${artifactPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(artifactPath))
         }
         resolve()
       })
@@ -165,7 +191,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   ) {
     return pipeline(
       artifact,
-      location.createWriteStream(join(team, artifactId)),
+      location.createWriteStream(getArtifactPath(team, artifactId)),
     )
   }
 
@@ -180,7 +206,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(tagPath))
         }
         const stream = location.createReadStream(tagPath)
         const chunks: Buffer[] = []
@@ -202,7 +228,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
           return reject(err)
         }
         if (!exists) {
-          return reject(new Error(`Artifact tag ${tagPath} doesn't exist.`))
+          return reject(new ArtifactNotFoundError(tagPath))
         }
         resolve()
       })

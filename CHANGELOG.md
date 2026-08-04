@@ -1,3 +1,40 @@
+## [2.11.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.6...v2.11.7) (2026-08-03)
+
+
+### Bug Fixes
+
+* **storage:** propagate Azure download failures instead of hanging the request ([57a5502](https://github.com/ducktors/turborepo-remote-cache/commit/57a550283f6f4f5c0c879e4d00bbadc8f21cfc25))
+
+## [2.11.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.5...v2.11.6) (2026-08-03)
+
+
+### Bug Fixes
+
+* **routes:** drop route-level error log before rethrow to avoid double logging ([c06af34](https://github.com/ducktors/turborepo-remote-cache/commit/c06af347a91638f55498cf629d295178e6a186a3))
+* **storage:** address review feedback (preserve tag message, document 403 trade-off) ([2a72a91](https://github.com/ducktors/turborepo-remote-cache/commit/2a72a91e0e1fbf4ed8e6a353d11fbc15f70c998d))
+* **storage:** surface backend failures as 5xx instead of masking as cache miss ([1b1581e](https://github.com/ducktors/turborepo-remote-cache/commit/1b1581edb126df6267b7985dc199083357658bb3)), closes [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
+## [2.11.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.4...v2.11.5) (2026-07-21)
+
+
+### Bug Fixes
+
+* override shell-quote ([e03a32b](https://github.com/ducktors/turborepo-remote-cache/commit/e03a32ba712f94fd6638f2e5f5b5eb12b8b2fb00))
+
+## [2.11.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.3...v2.11.4) (2026-07-21)
+
+
+### Bug Fixes
+
+* **storage:** use POSIX separators for artifact keys ([1e5fa6f](https://github.com/ducktors/turborepo-remote-cache/commit/1e5fa6f3dc4427a33a7935d0c9dcffda09032b29)), closes [#800](https://github.com/ducktors/turborepo-remote-cache/issues/800)
+
+## [2.11.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.2...v2.11.3) (2026-07-21)
+
+
+### Bug Fixes
+
+* **azure-blob-storage:** await block blob upload so signed .tag writes persist ([66289c1](https://github.com/ducktors/turborepo-remote-cache/commit/66289c1a70591727f34adfa539e53e455cd2af7b)), closes [#831](https://github.com/ducktors/turborepo-remote-cache/issues/831) [#791](https://github.com/ducktors/turborepo-remote-cache/issues/791) [#656](https://github.com/ducktors/turborepo-remote-cache/issues/656) [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
 ## [2.11.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.1...v2.11.2) (2026-06-15)
 
 
