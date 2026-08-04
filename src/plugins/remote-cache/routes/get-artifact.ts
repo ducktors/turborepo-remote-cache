@@ -11,6 +11,7 @@ import {
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
+import { buildCdnRedirectUrl } from './utils.js'
 
 export const getArtifact: RouteOptions<
   Server,
@@ -55,6 +56,15 @@ export const getArtifact: RouteOptions<
             message: 'Artifact tag not found',
           })
         }
+      }
+
+      if (this.config.TURBO_CACHE_READ_URL) {
+        const artifactUrl = buildCdnRedirectUrl(
+          this.config.TURBO_CACHE_READ_URL,
+          team,
+          artifactId,
+        )
+        return reply.redirect(artifactUrl)
       }
 
       const artifact = await this.location.getCachedArtifact(artifactId, team)
