@@ -1,3 +1,16 @@
+# [2.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.7...v2.12.0) (2026-08-04)
+
+
+### Bug Fixes
+
+* **remote-cache:** address path traversal and validate CDN URL scheme ([0963658](https://github.com/ducktors/turborepo-remote-cache/commit/096365812e5b6addefd4c759e122d31730eecbe9))
+* return correct x-artifact-tag header in HEAD route and restore test assertions ([5686f1a](https://github.com/ducktors/turborepo-remote-cache/commit/5686f1a0d0b7a9c56f561e538f4f76baa2a94e27))
+
+
+### Features
+
+* support separate read URL to use a CDN ([#557](https://github.com/ducktors/turborepo-remote-cache/issues/557)) ([e6b535f](https://github.com/ducktors/turborepo-remote-cache/commit/e6b535f0b76bdc3d1d39f4ee18aa4a73b2e8f348))
+
 ## [2.11.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.6...v2.11.7) (2026-08-03)
 
 
