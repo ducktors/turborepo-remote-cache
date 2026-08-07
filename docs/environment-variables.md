@@ -16,8 +16,12 @@ nav_order: 2
 | `JWKS_URL` | string | optional | | JWKS metadata url for retrieving public keys for verifying JWTs|
 | `JWT_ISSUER` | string | optional | | JWT Issuer, optional even if using JWT authentication, to match `iss` field in JWT.
 | `JWT_AUDIENCE` | string | optional | | JWT Audience, optional even if using JWT authentication, to match `aud` field in JWT.
+| `JWT_SCOPE_CLAIM` | string | optional | 'scope' | Defines which token claim provides scopes in a space-separated string field.
 | `JWT_READ_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of scopes.
 | `JWT_WRITE_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of scopes.
+| `JWT_ROLES_CLAIM` | string | optional | 'roles' | Defines which token claim provides roles in a string array field.
+| `JWT_READ_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of roles.
+| `JWT_WRITE_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of roles.
 | `LOG_LEVEL` | string | optional | `'info'` | Possibile values are [one of these](https://github.com/ducktors/turborepo-remote-cache/blob/main/src/logger.ts#L3) |
 | `ENABLE_STATUS_LOG` | boolean | optional | `'true'` | Enable/Disable logging for the status endpoint |
 | `LOG_MODE` | string | optional | `stdout` | Setting it to 'file' enables writing logs to file |
