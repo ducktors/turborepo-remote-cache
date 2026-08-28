@@ -9,6 +9,12 @@ nav_order: 1
 
 > **Note:** This guide is a community contribution, so it's not officially supported by the maintainers of this repository.
 
+> **Warning:** AWS Lambda has a [6 MB synchronous invocation payload
+> limit](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)
+> for both requests and responses. Artifacts larger than 6 MB cannot be uploaded
+> using this deployment method and Turbo will report a `413 Payload Too Large`
+> warning.
+
 The server can be deployed to run in an AWS Lambda. The following steps take you
 through creating:
 
