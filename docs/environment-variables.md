@@ -64,7 +64,12 @@ Notes:
 - When `TURBO_REMOTE_CACHE_SIGNATURE_KEY` is set, the `x-artifact-tag` header is
   still resolved from the storage provider before the redirect is issued, so
   signature verification keeps working.
-- Because reads never reach the storage provider, the server cannot tell a hit
-  from a miss: a request for an artifact that does not exist is redirected and
-  the CDN answers `404`.
+- Because reads are redirected before the storage provider is consulted, the
+  server cannot tell a hit from a miss: a request for an artifact that does not
+  exist is still redirected and the CDN answers `404`. The exception is
+  `TURBO_REMOTE_CACHE_SIGNATURE_KEY`: the tag lookup runs first, so a missing
+  tag returns `404` from the server.
+- The redirect target is not protected by the server's authentication. Restrict
+  access at the CDN - for example with a signed URL, a token in the base URL
+  query string, or an origin rule.
 
