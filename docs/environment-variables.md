@@ -31,5 +31,45 @@ nav_order: 2
 | `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
 | `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | optional | | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. See [Artifact Integrity and Authenticity Verification](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching#artifact-integrity-and-authenticity-verification) for more info. |
 | `READ_ONLY` | boolean | optional | `false` | If set to `true`, the server runs in read-only mode: cache reads (`GET`/`HEAD /artifacts/:id`) and event acknowledgements (`POST /artifacts/events`) continue to work, while mutating requests (`PUT /artifacts/:id` and `POST /clean`) are rejected with a `403 Forbidden`. Useful for sharing a CI-populated cache with local developers without allowing them to modify entries. |
+| `TURBO_CACHE_READ_URL` | string | optional | | If set, cache reads (`GET`/`HEAD /artifacts/:id`) are answered with a `302` redirect to `<TURBO_CACHE_READ_URL>/<teamId>/<artifactId>` instead of being streamed from the storage provider. Writes are unaffected and still go to the configured `STORAGE_PROVIDER`. Use it to serve reads from a CDN or proxy (CloudFront, Cloudflare, ...) to cut egress cost and latency. Must include the scheme (`http://` or `https://`); the server fails to start otherwise. See [Serving cache reads from a CDN](#serving-cache-reads-from-a-cdn). |
 
 Both `SSL_KEY_PATH` and `SSL_CERT_PATH` must be set to enable HTTPS.
+
+## Serving cache reads from a CDN
+
+Setting `TURBO_CACHE_READ_URL` splits cache reads from cache writes:
+
+- `PUT /artifacts/:id` keeps writing to the configured `STORAGE_PROVIDER`.
+- `GET`/`HEAD /artifacts/:id` return `302 Found` with a `Location` of
+  `<TURBO_CACHE_READ_URL>/<teamId>/<artifactId>`, and the Turborepo client
+  follows the redirect to fetch the artifact from the CDN.
+
+```sh
+STORAGE_PROVIDER=s3
+STORAGE_PATH=my-turbo-cache-bucket
+TURBO_CACHE_READ_URL=https://cdn.example.com
+```
+
+With the configuration above, a request for artifact `abc123` on team `myteam`
+is redirected to `https://cdn.example.com/myteam/abc123`.
+
+Notes:
+
+- The CDN must be backed by the same bucket/container as `STORAGE_PATH`, and
+  must expose artifacts under the `<teamId>/<artifactId>` path layout.
+- A path or query string on the base URL is preserved, so
+  `https://cdn.example.com/cache?token=secret` redirects to
+  `https://cdn.example.com/cache/myteam/abc123?token=secret`.
+- Team and artifact identifiers are URL-encoded when building the redirect.
+- When `TURBO_REMOTE_CACHE_SIGNATURE_KEY` is set, the `x-artifact-tag` header is
+  still resolved from the storage provider before the redirect is issued, so
+  signature verification keeps working.
+- Because reads are redirected before the storage provider is consulted, the
+  server cannot tell a hit from a miss: a request for an artifact that does not
+  exist is still redirected and the CDN answers `404`. The exception is
+  `TURBO_REMOTE_CACHE_SIGNATURE_KEY`: the tag lookup runs first, so a missing
+  tag returns `404` from the server.
+- The redirect target is not protected by the server's authentication. Restrict
+  access at the CDN - for example with a signed URL, a token in the base URL
+  query string, or an origin rule.
+
