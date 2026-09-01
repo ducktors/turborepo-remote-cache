@@ -9,6 +9,17 @@ nav_order: 1
 
 > **Note:** This guide is a community contribution, so it's not officially supported by the maintainers of this repository.
 
+> **Warning:** AWS Lambda has a [6 MB synchronous invocation payload
+> limit](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)
+> for each request and each response. The handler encodes artifact bodies as
+> base64, which adds about 33% overhead. The true artifact limit is therefore
+> near 4.5 MB. Turbo cannot upload or download artifacts above this size, and
+> reports a `413 Payload Too Large` warning. The `BODY_LIMIT` variable does not
+> change this limit, because AWS rejects the request before the server receives
+> it. To remove the limit for reads, put a CDN in front of your bucket and set
+> [`TURBO_CACHE_READ_URL`](https://ducktors.github.io/turborepo-remote-cache/environment-variables).
+> Writes still have the 6 MB limit.
+
 The server can be deployed to run in an AWS Lambda. The following steps take you
 through creating:
 
