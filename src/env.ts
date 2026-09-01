@@ -1,5 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
-import Ajv from 'ajv'
+import { Ajv } from 'ajv'
 import { envSchema } from 'env-schema'
 
 const NODE_ENVS = {
@@ -89,8 +89,7 @@ export type Config = Static<typeof schema>
 let _env: Config
 export function load(overrides?: Partial<Config>) {
   _env = envSchema<Static<typeof schema>>({
-    // we call the default method because Ajv provides wrong types. ref https://github.com/ajv-validator/ajv/issues/2132
-    ajv: new Ajv.default({
+    ajv: new Ajv({
       removeAdditional: true,
       useDefaults: true,
       coerceTypes: true,
