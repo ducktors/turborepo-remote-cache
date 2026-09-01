@@ -429,6 +429,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "yhay81",
+      "name": "Yusuke Hayashi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11132792?v=4",
+      "profile": "https://yusuke-hayashi.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
