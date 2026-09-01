@@ -1,3 +1,11 @@
+## [2.12.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.1...v2.12.2) (2026-09-01)
+
+
+### Bug Fixes
+
+* address review comment on [#889](https://github.com/ducktors/turborepo-remote-cache/issues/889) ([71930c5](https://github.com/ducktors/turborepo-remote-cache/commit/71930c5f27daefb36d025e11d269e0aca0773935))
+* Running in Lambda has inherent 6mb request size limit ([#677](https://github.com/ducktors/turborepo-remote-cache/issues/677)) ([6cc0c1d](https://github.com/ducktors/turborepo-remote-cache/commit/6cc0c1d5d3b35790ed71a289e569b8a4bd6518f9))
+
 ## [2.12.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.0...v2.12.1) (2026-09-01)
 
 
