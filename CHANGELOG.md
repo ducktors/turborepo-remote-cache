@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.0...v2.12.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* **env:** use named Ajv export instead of default workaround ([c81d403](https://github.com/ducktors/turborepo-remote-cache/commit/c81d403d34f607be4ee1e18088d0268d61b73147))
+
 # [2.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.7...v2.12.0) (2026-08-04)
 
 
