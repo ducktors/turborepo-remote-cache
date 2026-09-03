@@ -50,8 +50,15 @@ export const putArtifact: RouteOptions<
     // Reject oversized uploads up front when the client advertises the size,
     // so we never start streaming to storage. The guard inside
     // createCachedArtifact is the backstop for chunked/unknown-length requests.
+    // A negative or non-numeric advertised length is meaningless, so it can
+    // neither pass nor fail this check on its own; such requests fall through
+    // to the in-pipeline byte counter like any unknown-length upload.
     const contentLength = Number(req.headers['content-length'])
-    if (Number.isFinite(contentLength) && contentLength > bodyLimit) {
+    if (
+      Number.isFinite(contentLength) &&
+      contentLength >= 0 &&
+      contentLength > bodyLimit
+    ) {
       throw entityTooLarge('Request body is too large')
     }
 
