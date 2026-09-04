@@ -1,8 +1,9 @@
-import { Writable } from 'node:stream'
+import { randomUUID } from 'node:crypto'
+import { Transform, Writable } from 'node:stream'
 import { posix as posixPath } from 'path'
 import { Readable, pipeline as pipelineCallback } from 'stream'
 import { promisify } from 'util'
-import { notImplemented } from '@hapi/boom'
+import { entityTooLarge, notImplemented } from '@hapi/boom'
 import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
@@ -21,6 +22,25 @@ import {
 import { type S3Options as S3Opts, createS3 } from './s3.js'
 
 const pipeline = promisify(pipelineCallback)
+
+/**
+ * Best-effort cleanup of a temporary artifact key. A failure here must never
+ * mask the upload error that triggered the cleanup, so it is swallowed: the
+ * leftover is a stale temp key that no lookup path can resolve, not a
+ * corrupt cache entry.
+ */
+async function removeQuietly(
+  remove: StorageProvider['remove'],
+  artifactPath: string,
+): Promise<void> {
+  if (!remove) {
+    return
+  }
+  await new Promise<void>((resolve) => {
+    remove(artifactPath, () => resolve())
+  })
+}
+
 const TURBO_CACHE_FOLDER_NAME = 'turborepocache' as const
 const TURBO_CACHE_USE_TMP_FOLDER = true as const
 
@@ -35,6 +55,26 @@ const TURBO_CACHE_USE_TMP_FOLDER = true as const
  */
 export function getArtifactPath(team: string, artifactId: string): string {
   return posixPath.join(team, artifactId)
+}
+
+/**
+ * Builds a passthrough stream that fails with a 413 once more than `maxBytes`
+ * have flowed through it. Used to enforce BODY_LIMIT while uploads are streamed
+ * to storage, since the request body is no longer buffered (and size-checked)
+ * in memory by fastify.
+ */
+function createSizeLimitStream(maxBytes: number): Transform {
+  let received = 0
+  return new Transform({
+    transform(chunk: Buffer, _encoding, callback) {
+      received += chunk.length
+      if (received > maxBytes) {
+        callback(entityTooLarge('Request body is too large'))
+        return
+      }
+      callback(null, chunk)
+    },
+  })
 }
 
 type LocalOptions = Partial<LocalOpts>
@@ -75,6 +115,21 @@ export interface StorageProvider {
   ) => void
   createReadStream: (artifactPath: string) => Readable
   createWriteStream: (artifactPath: string) => Writable
+  /**
+   * Atomically publishes an already-written artifact under its final path.
+   *
+   * Optional: only providers that can promote without re-transferring the
+   * payload implement it (currently local, via same-filesystem `rename`).
+   * Object stores would need a server-side copy plus a delete, which costs a
+   * full extra pass over every artifact, so they opt out and keep writing
+   * directly to the final key.
+   */
+  promote?: (
+    fromPath: string,
+    toPath: string,
+    cb: (err: Error | null) => void,
+  ) => void
+  remove?: (artifactPath: string, cb: (err: Error | null) => void) => void
 }
 
 function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
@@ -188,11 +243,53 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     artifactId: string,
     team: string,
     artifact: Readable,
+    maxBytes?: number,
   ) {
-    return pipeline(
-      artifact,
-      location.createWriteStream(getArtifactPath(team, artifactId)),
-    )
+    const artifactPath = getArtifactPath(team, artifactId)
+    const { promote, remove } = location
+
+    // Providers that cannot promote cheaply write straight to the final path.
+    if (!promote) {
+      return writeArtifactStream(artifactPath, artifact, maxBytes)
+    }
+
+    // Stream into a sibling temporary key and publish it only once the whole
+    // body has landed. Without this, a mid-upload failure (size-limit breach,
+    // client disconnect) leaves a truncated file at the final path, which
+    // `exists` then reports as a cache hit and `createReadStream` serves as a
+    // valid artifact. The temporary key is removed on failure; the final path
+    // is deliberately left untouched, so a failed overwrite cannot destroy an
+    // artifact that is already cached.
+    const tempPath = `${artifactPath}.${randomUUID()}.tmp`
+    try {
+      await writeArtifactStream(tempPath, artifact, maxBytes)
+    } catch (err) {
+      await removeQuietly(remove, tempPath)
+      throw err
+    }
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        promote(tempPath, artifactPath, (err) =>
+          err ? reject(err) : resolve(),
+        )
+      })
+    } catch (err) {
+      await removeQuietly(remove, tempPath)
+      throw err
+    }
+  }
+
+  async function writeArtifactStream(
+    artifactPath: string,
+    artifact: Readable,
+    maxBytes?: number,
+  ) {
+    const writeStream = location.createWriteStream(artifactPath)
+    if (maxBytes && maxBytes > 0) {
+      return pipeline(artifact, createSizeLimitStream(maxBytes), writeStream)
+    }
+    return pipeline(artifact, writeStream)
   }
 
   async function getCachedArtifactTag(

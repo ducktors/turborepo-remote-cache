@@ -140,6 +140,13 @@ export function createS3({
       })
 
       const uploadPromise = upload.done()
+      let aborted = false
+
+      // `destroy()` below abandons this promise deliberately. Without a
+      // handler attached at creation time, the resulting rejection (or the
+      // AbortError from `upload.abort()`) surfaces as an unhandled rejection
+      // and takes the process down.
+      uploadPromise.catch(() => {})
 
       const writeStream = new Writable({
         write(chunk, encoding, callback) {
@@ -148,6 +155,26 @@ export function createS3({
         final(callback) {
           passThrough.end()
           uploadPromise.then(() => callback()).catch(callback)
+        },
+        /**
+         * `pipeline()` destroys the destination when an upstream stage fails
+         * (e.g. the BODY_LIMIT transform rejecting an oversized upload), and
+         * destruction skips `final()`. Propagate it: end the internal
+         * PassThrough that feeds the SDK and abort the multipart upload, so
+         * uploaded parts are discarded instead of accruing storage cost.
+         */
+        destroy(err, callback) {
+          if (aborted) {
+            callback(err)
+            return
+          }
+          aborted = true
+          passThrough.destroy()
+          // Fire-and-forget: abort() is a network round-trip to S3, and
+          // blocking the destroy callback on it would stall `pipeline()` (and
+          // therefore the HTTP response) until the remote cleanup returns.
+          upload.abort().catch(() => {})
+          callback(err)
         },
       })
 
