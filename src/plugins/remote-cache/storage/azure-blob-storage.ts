@@ -49,16 +49,61 @@ export function createAzureBlobStorage({
     createWriteStream(artifactPath) {
       const blockBlobClient = containerClient.getBlockBlobClient(artifactPath)
       const passThrough = new PassThrough()
-      const uploadPromise = blockBlobClient.uploadStream(passThrough)
-      return new Writable({
+      const controller = new AbortController()
+      // `undefined` keeps the SDK defaults for the block size and concurrency.
+      const uploadPromise = blockBlobClient.uploadStream(
+        passThrough,
+        undefined,
+        undefined,
+        { abortSignal: controller.signal },
+      )
+      let completed = false
+
+      const writeStream = new Writable({
         write(chunk, encoding, callback) {
           passThrough.write(chunk, encoding, callback)
         },
         final(callback) {
           passThrough.end()
-          uploadPromise.then(() => callback()).catch(callback)
+          uploadPromise
+            .then(() => {
+              completed = true
+              callback()
+            })
+            .catch(callback)
+        },
+        /**
+         * `pipeline()` destroys the destination when an upstream stage fails
+         * (for example, when the BODY_LIMIT transform rejects an oversized
+         * upload), and destruction skips `final()`. `autoDestroy` also calls
+         * this method after a successful upload. In that case, only forward
+         * the error.
+         */
+        destroy(err, callback) {
+          if (completed) {
+            callback(err)
+            return
+          }
+          // The SDK reads the PassThrough through its `data`, `end` and `error`
+          // events only. Without an error, the upload promise never settles
+          // and keeps its buffers in memory.
+          passThrough.destroy(err ?? new Error('Upload aborted'))
+          // The signal cancels a block list commit that is in progress. Do not
+          // wait for remote work here: that delays `pipeline()` and the HTTP
+          // response.
+          controller.abort()
+          callback(err)
         },
       })
+
+      // When a block upload fails, the SDK pauses the PassThrough. A pending
+      // `write()` then never calls back, so `pipeline()` stalls. Destroy the
+      // writable with the upload error to fail the request. Attach this
+      // handler at creation time, so the rejection after `destroy()` is not
+      // unhandled. A destroyed writable ignores the second `destroy()` call.
+      uploadPromise.catch((err) => writeStream.destroy(err))
+
+      return writeStream
     },
   }
 }

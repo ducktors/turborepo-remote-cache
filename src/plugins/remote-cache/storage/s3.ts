@@ -140,6 +140,8 @@ export function createS3({
       })
 
       const uploadPromise = upload.done()
+      let aborted = false
+      let completed = false
 
       const writeStream = new Writable({
         write(chunk, encoding, callback) {
@@ -147,9 +149,44 @@ export function createS3({
         },
         final(callback) {
           passThrough.end()
-          uploadPromise.then(() => callback()).catch(callback)
+          uploadPromise
+            .then(() => {
+              completed = true
+              callback()
+            })
+            .catch(callback)
+        },
+        /**
+         * `pipeline()` destroys the destination when an upstream stage fails
+         * (e.g. the BODY_LIMIT transform rejecting an oversized upload), and
+         * destruction skips `final()`. Propagate it: end the internal
+         * PassThrough that feeds the SDK and abort the multipart upload, so
+         * uploaded parts are discarded instead of accruing storage cost.
+         */
+        destroy(err, callback) {
+          // `autoDestroy` also calls this method after a successful upload.
+          // Do not abort a completed upload.
+          if (aborted || completed) {
+            callback(err)
+            return
+          }
+          aborted = true
+          passThrough.destroy()
+          // Fire-and-forget: abort() is a network round-trip to S3, and
+          // blocking the destroy callback on it would stall `pipeline()` (and
+          // therefore the HTTP response) until the remote cleanup returns.
+          upload.abort().catch(() => {})
+          callback(err)
         },
       })
+
+      // When an UploadPart request fails, lib-storage stops reading the
+      // PassThrough and aborts the multipart upload. A pending `write()` then
+      // never calls back, so `pipeline()` stalls. Destroy the writable with
+      // the upload error to fail the request. Attach this handler at creation
+      // time, so the rejection after `destroy()` is not unhandled. A destroyed
+      // writable ignores the second `destroy()` call.
+      uploadPromise.catch((err) => writeStream.destroy(err))
 
       return writeStream
     },
