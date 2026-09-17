@@ -16,12 +16,12 @@ nav_order: 2
 | `JWKS_URL` | string | optional | | JWKS metadata url for retrieving public keys for verifying JWTs|
 | `JWT_ISSUER` | string | optional | | JWT Issuer, optional even if using JWT authentication, to match `iss` field in JWT.
 | `JWT_AUDIENCE` | string | optional | | JWT Audience, optional even if using JWT authentication, to match `aud` field in JWT.
-| `JWT_SCOPE_CLAIM` | string | optional | 'scope' | Defines which token claim provides scopes in a space-separated string field.
+| `JWT_SCOPE_CLAIM` | string | optional | `scope` | The name of the JWT claim that lists the scopes of a token. The claim value can be a string with scopes separated by spaces, or an array of strings. If the value is empty, the server uses `scope`. |
 | `JWT_READ_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of scopes.
 | `JWT_WRITE_SCOPES` | string | optional | | If specified, one of the scopes listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of scopes.
-| `JWT_ROLES_CLAIM` | string | optional | 'roles' | Defines which token claim provides roles in a string array field.
-| `JWT_READ_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of roles.
-| `JWT_WRITE_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of roles.
+| `JWT_ROLES_CLAIM` | string | optional | `roles` | The name of the JWT claim that lists the roles of a token. The claim value can be a string with roles separated by spaces, or an array of strings. If the value is empty, the server uses `roles`. |
+| `JWT_READ_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to read from the cache. You can specify multiple options with a comma-delimited string of roles. If you also set `JWT_READ_SCOPES`, the token must have one of the read scopes and one of the read roles. |
+| `JWT_WRITE_ROLES` | string | optional | | If specified, one of the roles listed here must be present in order to write to the cache. You can specify multiple options with a comma-delimited string of roles. If you also set `JWT_WRITE_SCOPES`, the token must have one of the write scopes and one of the write roles. |
 | `JWT_TEAM_CLAIM` | string | optional | | The name of the JWT claim that lists the teams that a token can use. It has an effect only with `AUTH_MODE=jwt`. If set, the server rejects with `403 Forbidden` a request for a team that is not in the claim. If not set or empty, each valid token can read and write the cache of all teams. See [Team isolation](#team-isolation). |
 | `LOG_LEVEL` | string | optional | `'info'` | Possibile values are [one of these](https://github.com/ducktors/turborepo-remote-cache/blob/main/src/logger.ts#L3) |
 | `ENABLE_STATUS_LOG` | boolean | optional | `'true'` | Enable/Disable logging for the status endpoint |
@@ -104,8 +104,9 @@ Notes:
 - The server uses the claim name as a top-level key of the token payload. It
   does not read nested properties. A namespaced claim name, for example
   `https://example.com/teams`, is also a top-level key.
-- The team check does not replace `JWT_READ_SCOPES` and `JWT_WRITE_SCOPES`. If
-  you set scopes, the token must also have a required scope.
+- The team check does not replace the scope and role checks. If you set
+  `JWT_READ_SCOPES`, `JWT_WRITE_SCOPES`, `JWT_READ_ROLES` or `JWT_WRITE_ROLES`,
+  the token must also have a required scope or role.
 - You cannot use a team name that contains `/`. For example, the GitHub OIDC
   `repository` claim has values such as `octo-org/octo-repo`. The server
   rejects a request for this team with `400 Bad Request`.
