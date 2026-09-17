@@ -1,3 +1,17 @@
+## [2.14.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.0...v2.14.1) (2026-09-17)
+
+
+### Bug Fixes
+
+* **remote-cache:** abort the Azure block upload when the write stream is destroyed ([9b7de13](https://github.com/ducktors/turborepo-remote-cache/commit/9b7de13a1d9561a8564ea88d9a8df0da722897a9))
+* **remote-cache:** abort the S3 multipart upload when the write stream is destroyed ([094391a](https://github.com/ducktors/turborepo-remote-cache/commit/094391a487c0d473fc9cd83a9cbfc1fba616da23))
+* **remote-cache:** close the connection when an upload fails before the body ends ([5cccf24](https://github.com/ducktors/turborepo-remote-cache/commit/5cccf24bf8577b9888d1fc7499b80fbd4be52628))
+* **remote-cache:** do not abort a completed S3 upload on destroy ([429926a](https://github.com/ducktors/turborepo-remote-cache/commit/429926a0e97e00a31a4ed682b39f2287dccf87db))
+* **remote-cache:** fail the write stream when the storage upload fails ([411d6bc](https://github.com/ducktors/turborepo-remote-cache/commit/411d6bc6e0f475cbc7018f29909991bbc662a230))
+* **remote-cache:** ignore a negative content-length in the body-limit fast path ([0a015d9](https://github.com/ducktors/turborepo-remote-cache/commit/0a015d9854057c3f8afcf5b2b99ae039ab61977d))
+* **remote-cache:** publish streamed artifacts atomically via a temporary key ([784c65d](https://github.com/ducktors/turborepo-remote-cache/commit/784c65de268aae9e7d9e729184c87c2c4391276c))
+* **remote-cache:** stream artifact uploads to storage instead of buffering full body in memory ([c4a422f](https://github.com/ducktors/turborepo-remote-cache/commit/c4a422fc5a14fca0400ae869c66987dff6991098)), closes [#679](https://github.com/ducktors/turborepo-remote-cache/issues/679)
+
 # [2.14.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.13.0...v2.14.0) (2026-09-17)
 
 
