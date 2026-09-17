@@ -1,11 +1,19 @@
 import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
+import fs from 'node:fs'
 import type { AddressInfo } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { Writable } from 'node:stream'
 import { test } from 'node:test'
 import { putChunked } from './helpers/chunked-upload.js'
+import {
+  openKeepAliveConnection,
+  requestHead,
+  within,
+} from './helpers/keep-alive.js'
 
+const ONE_MB = 1024 * 1024
 const TEN_MB = 10 * 1024 * 1024
 
 const testEnv = {
@@ -161,6 +169,117 @@ test('BODY_LIMIT wiring', async (t) => {
       })
       assert.equal(get.statusCode, 200)
       assert.deepEqual(get.rawPayload, original)
+    },
+  )
+
+  // Fastify closes the connection when its own body parser fails, because the
+  // client can send more data. The route reads the body itself, so it must do
+  // the same. Otherwise the server stops reading the socket, and the next
+  // request on the same connection gets no response.
+  await t.test(
+    'closes a keep-alive connection when a chunked upload exceeds BODY_LIMIT',
+    async (t) => {
+      const connection = openKeepAliveConnection(port)
+      t.after(() => connection.destroy())
+      const artifactId = crypto.randomBytes(20).toString('hex')
+      connection.write(
+        requestHead('PUT', `/v8/artifacts/${artifactId}?team=superteam`, [
+          'Content-Type: application/octet-stream',
+          'Transfer-Encoding: chunked',
+        ]),
+      )
+      // The server reads 10 MB, and then fails on the small last chunk.
+      connection.sendChunks(TEN_MB + 16 * 1024)
+
+      const response = await within(connection.nextResponse(), 5000, 'a 413')
+      assert.equal(response.statusCode, 413)
+      await within(connection.closed, 2000, 'the server closes the socket')
+      assert.equal(response.headers.connection, 'close')
+    },
+  )
+
+  await t.test(
+    'closes a keep-alive connection when content-length exceeds BODY_LIMIT',
+    async (t) => {
+      // The client sends only a small part of the declared body. The socket
+      // closes only if the server does not wait for the remaining bytes.
+      const connection = openKeepAliveConnection(port)
+      t.after(() => connection.destroy())
+      const artifactId = crypto.randomBytes(20).toString('hex')
+      connection.write(
+        requestHead('PUT', `/v8/artifacts/${artifactId}?team=superteam`, [
+          'Content-Type: application/octet-stream',
+          `Content-Length: ${15 * ONE_MB}`,
+        ]),
+      )
+      connection.write(Buffer.alloc(64 * 1024, 1))
+
+      const response = await within(connection.nextResponse(), 2000, 'a 413')
+      assert.equal(response.statusCode, 413)
+      await within(connection.closed, 2000, 'the server closes the socket')
+      assert.equal(response.headers.connection, 'close')
+    },
+  )
+
+  await t.test(
+    'closes a keep-alive connection when storage fails before the body ends',
+    async (t) => {
+      // fs-blob-store gets its file stream from `fs.createWriteStream`. This
+      // stub fails after 1 MB, so the upload fails partway through the body.
+      t.mock.method(fs, 'createWriteStream', () => {
+        let written = 0
+        return new Writable({
+          write(chunk: Buffer, _encoding, callback) {
+            written += chunk.length
+            callback(written > ONE_MB ? new Error('disk failure') : null)
+          },
+        })
+      })
+      const connection = openKeepAliveConnection(port)
+      t.after(() => connection.destroy())
+      const artifactId = crypto.randomBytes(20).toString('hex')
+      connection.write(
+        requestHead('PUT', `/v8/artifacts/${artifactId}?team=superteam`, [
+          'Content-Type: application/octet-stream',
+          'Transfer-Encoding: chunked',
+        ]),
+      )
+      // The stub reads 1 MB, and then fails on the small last chunk.
+      connection.sendChunks(ONE_MB + 16 * 1024)
+
+      const response = await within(connection.nextResponse(), 5000, 'a 412')
+      assert.equal(response.statusCode, 412)
+      await within(connection.closed, 2000, 'the server closes the socket')
+      assert.equal(response.headers.connection, 'close')
+    },
+  )
+
+  await t.test(
+    'keeps a keep-alive connection usable after a successful upload',
+    async (t) => {
+      const connection = openKeepAliveConnection(port)
+      t.after(() => connection.destroy())
+      const artifactId = crypto.randomBytes(20).toString('hex')
+      const body = Buffer.alloc(1024, 1)
+      connection.write(
+        requestHead('PUT', `/v8/artifacts/${artifactId}?team=superteam`, [
+          'Content-Type: application/octet-stream',
+          `Content-Length: ${body.length}`,
+        ]),
+      )
+      connection.write(body)
+
+      const put = await within(connection.nextResponse(), 2000, 'a 200')
+      assert.equal(put.statusCode, 200)
+      assert.notEqual(put.headers.connection, 'close')
+
+      connection.write(requestHead('GET', '/v8/artifacts/status', []))
+      const status = await within(
+        connection.nextResponse(),
+        2000,
+        'a response to the second request on the socket',
+      )
+      assert.equal(status.statusCode, 200)
     },
   )
 

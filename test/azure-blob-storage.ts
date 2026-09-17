@@ -483,6 +483,7 @@ test('createWriteStream aborts the Azure upload when the pipeline fails', async 
     },
   })
 
+  let timer: NodeJS.Timeout | undefined
   const outcome = await Promise.race([
     pipeline(
       Readable.from([Buffer.from('first'), Buffer.from('second')]),
@@ -492,8 +493,11 @@ test('createWriteStream aborts the Azure upload when the pipeline fails', async 
       () => 'resolved',
       (error: Error) => error.message,
     ),
-    new Promise((resolve) => setTimeout(() => resolve('hung'), 1000)),
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve('hung'), 1000)
+    }),
   ])
+  clearTimeout(timer)
   // Let a rejection without a handler reach the `unhandledRejection` event.
   await new Promise((resolve) => setImmediate(resolve))
   process.off('unhandledRejection', onUnhandled)

@@ -62,6 +62,12 @@ export const putArtifact: RouteOptions<
       contentLength >= 0 &&
       contentLength > bodyLimit
     ) {
+      // Close the connection, as the Fastify body parser does when a body
+      // fails. Otherwise Node reads and discards the whole declared body
+      // before it reuses the connection. HTTP/2 forbids this header.
+      if (req.raw.httpVersionMajor === 1) {
+        reply.header('connection', 'close')
+      }
       throw entityTooLarge('Request body is too large')
     }
 
@@ -87,6 +93,14 @@ export const putArtifact: RouteOptions<
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
+      // When the upload fails before the body ends, `pipeline()` destroys the
+      // request and the server stops reading the socket. The Fastify body
+      // parser closes the connection on a body error, because the client can
+      // send more data. Do the same, or the next request on a keep-alive
+      // connection gets no response. HTTP/2 forbids this header.
+      if (req.raw.httpVersionMajor === 1 && !req.raw.complete) {
+        reply.header('connection', 'close')
+      }
       // Surface a body-too-large rejection from the streaming guard as 413
       // instead of masking it as a generic storage error.
       if (isBoom(err) && err.output.statusCode === 413) {
