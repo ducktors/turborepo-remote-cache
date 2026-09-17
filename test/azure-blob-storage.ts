@@ -1,7 +1,8 @@
 import assert from 'node:assert'
 import crypto from 'node:crypto'
-import { Readable } from 'node:stream'
+import { Readable, Transform, pipeline as pipelineCallback } from 'node:stream'
 import { afterEach, mock, test } from 'node:test'
+import { promisify } from 'node:util'
 import { BlobServiceClient } from '@azure/storage-blob'
 import { createAzureBlobStorage } from '../src/plugins/remote-cache/storage/azure-blob-storage.js'
 
@@ -403,4 +404,128 @@ test('createWriteStream completes only after Azure commits the upload', async ()
     true,
     'write stream must finish once the upload promise resolves',
   )
+})
+
+const pipeline = promisify(pipelineCallback)
+
+// Mirrors the SDK BufferScheduler: the upload settles on the `end` or `error`
+// event of the stream only, and never on `close`. The test reads the recorded
+// state, not the returned promise, so an unhandled rejection stays visible.
+function mockBlockUpload() {
+  const upload: {
+    stream?: Readable
+    abortSignal?: AbortSignal
+    outcome?: 'end' | Error
+  } = {}
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlockBlobClient: () => ({
+        uploadStream: (
+          stream: Readable,
+          _bufferSize,
+          _concurrency,
+          options,
+        ) => {
+          upload.stream = stream
+          upload.abortSignal = options?.abortSignal
+          return new Promise((resolve, reject) => {
+            stream.on('data', () => {})
+            stream.on('end', () => {
+              upload.outcome = 'end'
+              resolve({})
+            })
+            stream.on('error', (err) => {
+              upload.outcome = err
+              reject(err)
+            })
+          })
+        },
+      }),
+    }),
+  }))
+  return upload
+}
+
+test('createWriteStream aborts the Azure upload when the pipeline fails', async () => {
+  // pipeline() destroys the destination when an upstream stage fails, and
+  // destruction skips final(). The SDK does not listen for `close`. Unless
+  // destroy() gives the PassThrough an error, the upload promise never settles
+  // and keeps its buffers and requests alive.
+  const upload = mockBlockUpload()
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const unhandled: unknown[] = []
+  const onUnhandled = (reason: unknown) => unhandled.push(reason)
+  process.on('unhandledRejection', onUnhandled)
+
+  let chunks = 0
+  const sizeLimit = new Transform({
+    transform(chunk, _encoding, callback) {
+      chunks++
+      if (chunks > 1) {
+        callback(new Error('Request body is too large'))
+        return
+      }
+      callback(null, chunk)
+    },
+  })
+
+  const outcome = await Promise.race([
+    pipeline(
+      Readable.from([Buffer.from('first'), Buffer.from('second')]),
+      sizeLimit,
+      storage.createWriteStream('superteam/hash'),
+    ).then(
+      () => 'resolved',
+      (error: Error) => error.message,
+    ),
+    new Promise((resolve) => setTimeout(() => resolve('hung'), 1000)),
+  ])
+  // Let a rejection without a handler reach the `unhandledRejection` event.
+  await new Promise((resolve) => setImmediate(resolve))
+  process.off('unhandledRejection', onUnhandled)
+
+  assert.equal(outcome, 'Request body is too large')
+  assert.equal(upload.stream?.destroyed, true, 'the PassThrough is destroyed')
+  assert.ok(
+    upload.outcome instanceof Error,
+    'the PassThrough must fail with an error, so the SDK upload settles',
+  )
+  assert.equal(
+    upload.abortSignal?.aborted,
+    true,
+    'destroy must abort the SDK request',
+  )
+  assert.deepEqual(
+    unhandled.map(String),
+    [],
+    'aborting the upload must not leave an unhandled rejection',
+  )
+  mock.restoreAll()
+})
+
+test('createWriteStream does not abort a completed Azure upload', async () => {
+  // autoDestroy calls destroy() after a successful finish. That call must not
+  // abort the request of an upload that is already complete.
+  const upload = mockBlockUpload()
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const writeStream = storage.createWriteStream('superteam/hash')
+  await pipeline(Readable.from([Buffer.from('cache data')]), writeStream)
+  await new Promise((resolve) => setImmediate(resolve))
+
+  assert.equal(writeStream.destroyed, true, 'autoDestroy destroys the stream')
+  assert.equal(upload.outcome, 'end')
+  assert.equal(
+    upload.abortSignal?.aborted,
+    false,
+    'a completed upload must not be aborted',
+  )
+  mock.restoreAll()
 })

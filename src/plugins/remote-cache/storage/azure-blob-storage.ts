@@ -49,14 +49,55 @@ export function createAzureBlobStorage({
     createWriteStream(artifactPath) {
       const blockBlobClient = containerClient.getBlockBlobClient(artifactPath)
       const passThrough = new PassThrough()
-      const uploadPromise = blockBlobClient.uploadStream(passThrough)
+      const controller = new AbortController()
+      // `undefined` keeps the SDK defaults for the block size and concurrency.
+      const uploadPromise = blockBlobClient.uploadStream(
+        passThrough,
+        undefined,
+        undefined,
+        { abortSignal: controller.signal },
+      )
+      let completed = false
+
+      // `destroy()` below abandons this promise deliberately. Without a
+      // handler attached at creation time, its rejection surfaces as an
+      // unhandled rejection and stops the process.
+      uploadPromise.catch(() => {})
+
       return new Writable({
         write(chunk, encoding, callback) {
           passThrough.write(chunk, encoding, callback)
         },
         final(callback) {
           passThrough.end()
-          uploadPromise.then(() => callback()).catch(callback)
+          uploadPromise
+            .then(() => {
+              completed = true
+              callback()
+            })
+            .catch(callback)
+        },
+        /**
+         * `pipeline()` destroys the destination when an upstream stage fails
+         * (for example, when the BODY_LIMIT transform rejects an oversized
+         * upload), and destruction skips `final()`. `autoDestroy` also calls
+         * this method after a successful upload. In that case, only forward
+         * the error.
+         */
+        destroy(err, callback) {
+          if (completed) {
+            callback(err)
+            return
+          }
+          // The SDK reads the PassThrough through its `data`, `end` and `error`
+          // events only. Without an error, the upload promise never settles
+          // and keeps its buffers in memory.
+          passThrough.destroy(err ?? new Error('Upload aborted'))
+          // The signal cancels a block list commit that is in progress. Do not
+          // wait for remote work here: that delays `pipeline()` and the HTTP
+          // response.
+          controller.abort()
+          callback(err)
         },
       })
     },
