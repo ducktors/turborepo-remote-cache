@@ -290,7 +290,7 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
     assert.equal(response.statusCode, 404)
   })
 
-  await test('GET: should encode team and artifactId to prevent path traversal redirection', async () => {
+  await test('GET: should reject a path traversal team before the redirect', async () => {
     const maliciousTeam = '../../malicious-team'
     const maliciousArtifactId = 'malicious-artifact'
     const response = await appWithCdn.inject({
@@ -303,10 +303,27 @@ describe('CDN Redirect (TURBO_CACHE_READ_URL)', async () => {
         team: maliciousTeam,
       },
     })
+    assert.equal(response.statusCode, 400)
+    assert.equal(response.json().message, 'Invalid team')
+    assert.equal(response.headers.location, undefined)
+  })
+
+  await test('GET: should encode team and artifactId in the redirect URL', async () => {
+    const teamToEncode = 'team name?#'
+    const artifactIdToEncode = 'artifact id'
+    const response = await appWithCdn.inject({
+      method: 'GET',
+      url: `/v8/artifacts/${encodeURIComponent(artifactIdToEncode)}`,
+      headers: {
+        authorization: 'Bearer changeme',
+      },
+      query: {
+        team: teamToEncode,
+      },
+    })
     assert.equal(response.statusCode, 302)
-    // Verify that encoding was applied correctly, preventing path traversal escape
-    const expectedEncodedTeam = encodeURIComponent(maliciousTeam)
-    const expectedEncodedArtifact = encodeURIComponent(maliciousArtifactId)
+    const expectedEncodedTeam = encodeURIComponent(teamToEncode)
+    const expectedEncodedArtifact = encodeURIComponent(artifactIdToEncode)
     assert.equal(
       response.headers.location,
       `https://cdn.example.com/${expectedEncodedTeam}/${expectedEncodedArtifact}`,
