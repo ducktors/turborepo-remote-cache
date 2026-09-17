@@ -38,6 +38,7 @@ const schema = Type.Object(
     JWKS_URL: Type.Optional(Type.String()),
     JWT_READ_SCOPES: Type.Optional(Type.String({ separator: ',' })),
     JWT_WRITE_SCOPES: Type.Optional(Type.String({ separator: ',' })),
+    JWT_TEAM_CLAIM: Type.Optional(Type.String()),
     TURBO_TOKEN: Type.Optional(Type.String({ separator: ',' })),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),

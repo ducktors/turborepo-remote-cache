@@ -12,6 +12,7 @@ import {
   type Querystring,
   artifactsRouteSchemaWithHeaders,
 } from './schema.js'
+import { assertSafePathSegment, getTeamFromQuery } from './utils.js'
 
 export const putArtifact: RouteOptions<
   Server,
@@ -33,10 +34,12 @@ export const putArtifact: RouteOptions<
       throw forbidden('Remote cache is running in read-only mode')
     }
     const artifactId = req.params.id
-    const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used
+    const team = getTeamFromQuery(req.query)
     if (!team) {
       throw badRequest(`querystring should have required property 'team'`)
     }
+    assertSafePathSegment(team, 'team')
+    assertSafePathSegment(artifactId, 'id')
 
     try {
       const artifactTag = req.headers['x-artifact-tag']

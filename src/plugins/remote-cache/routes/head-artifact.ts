@@ -11,7 +11,11 @@ import {
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
-import { buildCdnRedirectUrl } from './utils.js'
+import {
+  assertSafePathSegment,
+  buildCdnRedirectUrl,
+  getTeamFromQuery,
+} from './utils.js'
 
 export const headArtifact: RouteOptions<
   Server,
@@ -28,10 +32,12 @@ export const headArtifact: RouteOptions<
   authorization: 'read',
   async handler(req, reply) {
     const artifactId = req.params.id
-    const team = req.query.teamId ?? req.query.team ?? req.query.slug // turborepo client passes team as slug when --team cli option is used
+    const team = getTeamFromQuery(req.query)
     if (!team) {
       throw badRequest(`querystring should have required property 'team'`)
     }
+    assertSafePathSegment(team, 'team')
+    assertSafePathSegment(artifactId, 'id')
 
     try {
       // If signature verification is enabled, check for artifact tag existence first

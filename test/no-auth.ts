@@ -147,4 +147,87 @@ test('AUTH_MODE=none', async (t) => {
       assert.deepEqual(response.body, 'test cache data')
     },
   )
+
+  function injectArtifact(
+    method: 'GET' | 'HEAD' | 'PUT',
+    id: string,
+    query: Record<string, string>,
+  ) {
+    if (method === 'PUT') {
+      return app.inject({
+        method,
+        url: `/v8/artifacts/${id}`,
+        headers: {
+          'content-type': 'application/octet-stream',
+        },
+        query,
+        payload: Buffer.from('test cache data'),
+      })
+    }
+    return app.inject({
+      method,
+      url: `/v8/artifacts/${id}`,
+      query,
+    })
+  }
+
+  for (const method of ['PUT', 'GET', 'HEAD'] as const) {
+    for (const unsafeId of ['..%2Fescape', 'abc%5Cdef', 'abc%00def']) {
+      await t.test(
+        `should return 400 when ${method} uses the unsafe id ${unsafeId}`,
+        async () => {
+          const response = await injectArtifact(method, unsafeId, { team })
+          assert.equal(response.statusCode, 400)
+          // A HEAD response has no body.
+          if (method !== 'HEAD') {
+            assert.equal(response.json().message, 'Invalid id')
+          }
+        },
+      )
+    }
+
+    for (const unsafeTeam of ['../victim', 'a/b', '.', 'a\0b']) {
+      await t.test(
+        `should return 400 when ${method} uses the unsafe team ${JSON.stringify(
+          unsafeTeam,
+        )}`,
+        async () => {
+          const response = await injectArtifact(method, artifactId, {
+            team: unsafeTeam,
+          })
+          assert.equal(response.statusCode, 400)
+          // A HEAD response has no body.
+          if (method !== 'HEAD') {
+            assert.equal(response.json().message, 'Invalid team')
+          }
+        },
+      )
+    }
+  }
+
+  // Run the new team first. Before the fix, an empty id on an existing team
+  // stops the server process.
+  for (const [label, emptyIdTeam] of [
+    ['a new team', `empty-id-${crypto.randomBytes(8).toString('hex')}`],
+    ['an existing team', team],
+  ]) {
+    await t.test(`should return 400 for an empty id on ${label}`, async () => {
+      for (const method of ['PUT', 'GET', 'HEAD'] as const) {
+        const response = await injectArtifact(method, '', {
+          team: emptyIdTeam,
+        })
+        assert.equal(response.statusCode, 400, method)
+        // A HEAD response has no body.
+        if (method !== 'HEAD') {
+          assert.equal(response.json().message, 'Invalid id', method)
+        }
+      }
+
+      // The rejected requests must not change the team storage.
+      const response = await injectArtifact('PUT', artifactId, {
+        team: emptyIdTeam,
+      })
+      assert.equal(response.statusCode, 200)
+    })
+  }
 })
