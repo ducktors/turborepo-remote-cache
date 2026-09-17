@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { after, before, describe, test } from 'node:test'
+import type { FastifyInstance } from 'fastify'
 import mockJWKS from 'mock-jwks'
 
 const jwksUrl = 'http://test.com/.well-known/jwks.json'
@@ -33,6 +34,28 @@ before(() => {
   }
 })
 after(() => stopJwks?.())
+
+// Sends a GET or PUT request for an artifact with a bearer token.
+function requestArtifact(
+  app: FastifyInstance,
+  method: 'GET' | 'PUT',
+  token: string,
+  artifactId: string,
+  team: string,
+) {
+  return app.inject({
+    method,
+    url: `/v8/artifacts/${artifactId}`,
+    headers: {
+      authorization: `Bearer ${token}`,
+      'content-type': 'application/octet-stream',
+    },
+    query: {
+      team,
+    },
+    payload: method === 'PUT' ? Buffer.from('test cache data') : undefined,
+  })
+}
 
 describe('JWT auth', async () => {
   await test('without authorization scopes configured', async (t) => {
@@ -192,6 +215,359 @@ describe('JWT auth', async () => {
       })
       assert.equal(resp.statusCode, 403)
     })
+  })
+
+  await test('with authorization roles defined', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_READ_ROLES: 'Artifacts.Reader',
+        JWT_WRITE_ROLES: 'Artifacts.Writer',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+    const artifactId = randomUUID()
+    const team = randomUUID()
+    const token = jwksMock.token({
+      roles: ['Artifacts.Reader', 'Artifacts.Writer'],
+    })
+
+    await t.test('creates cache entry', async () => {
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
+
+    await t.test('fetches artifact', async () => {
+      const resp = await app.inject({
+        method: 'GET',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        query: {
+          team,
+        },
+      })
+      assert.equal(resp.statusCode, 200)
+    })
+
+    await t.test('forbidden with token without required roles', async () => {
+      const token = jwksMock.token({ roles: ['InvalidRole'] })
+      const resp = await app.inject({
+        method: 'GET',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+        query: {
+          team,
+        },
+      })
+      assert.equal(resp.statusCode, 403)
+    })
+
+    await t.test(
+      'forbidden with token without required roles claim',
+      async () => {
+        const token = jwksMock.token({})
+        const resp = await app.inject({
+          method: 'GET',
+          url: `/v8/artifacts/${artifactId}`,
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          query: {
+            team,
+          },
+        })
+        assert.equal(resp.statusCode, 403)
+      },
+    )
+
+    await t.test(
+      'rejects PUT from a token with the read role only',
+      async () => {
+        const token = jwksMock.token({ roles: ['Artifacts.Reader'] })
+        const otherArtifactId = randomUUID()
+        const created = await requestArtifact(
+          app,
+          'PUT',
+          token,
+          otherArtifactId,
+          team,
+        )
+        assert.equal(created.statusCode, 403)
+        // The token can read, and the rejected PUT did not write the artifact.
+        const response = await requestArtifact(
+          app,
+          'GET',
+          token,
+          otherArtifactId,
+          team,
+        )
+        assert.equal(response.statusCode, 404)
+      },
+    )
+
+    await t.test('reads a roles claim that is a string', async () => {
+      // The roles in the string are separated by spaces.
+      const token = jwksMock.token({
+        roles: 'Artifacts.Reader Artifacts.Writer',
+      })
+      const otherArtifactId = randomUUID()
+      for (const method of ['PUT', 'GET'] as const) {
+        const response = await requestArtifact(
+          app,
+          method,
+          token,
+          otherArtifactId,
+          team,
+        )
+        assert.equal(response.statusCode, 200, method)
+      }
+    })
+
+    await t.test(
+      'ignores items of a roles claim that are not strings',
+      async () => {
+        const token = jwksMock.token({ roles: [42, 'Artifacts.Reader'] })
+        const response = await requestArtifact(
+          app,
+          'GET',
+          token,
+          artifactId,
+          team,
+        )
+        assert.equal(response.statusCode, 200)
+      },
+    )
+  })
+
+  await test('ignores empty items in the required scopes and roles', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_READ_SCOPES: 'artifacts:read,',
+        JWT_READ_ROLES: 'Artifacts.Reader,',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+
+    await t.test(
+      'rejects a token with an empty scope and an empty role',
+      async () => {
+        const token = jwksMock.token({ scope: [''], roles: [''] })
+        const response = await requestArtifact(
+          app,
+          'GET',
+          token,
+          randomUUID(),
+          randomUUID(),
+        )
+        assert.equal(response.statusCode, 403)
+      },
+    )
+  })
+
+  await test('with an alternative scope claim name', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_SCOPE_CLAIM: 'scp',
+        JWT_READ_SCOPES: 'artifacts:read,artifacts:write',
+        JWT_WRITE_SCOPES: 'artifacts:write',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+    const team = randomUUID()
+
+    await t.test('supports alternative scope claim name', async () => {
+      const artifactId = randomUUID()
+      const token = jwksMock.token({ scp: 'artifacts:write' })
+
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
+
+    await t.test('reads a scope claim that is an array', async () => {
+      const token = jwksMock.token({
+        scp: ['artifacts:read', 'artifacts:write'],
+      })
+      const artifactId = randomUUID()
+      for (const method of ['PUT', 'GET'] as const) {
+        const response = await requestArtifact(
+          app,
+          method,
+          token,
+          artifactId,
+          team,
+        )
+        assert.equal(response.statusCode, 200, method)
+      }
+    })
+
+    await t.test('does not read the default scope claim', async () => {
+      const token = jwksMock.token({ scope: 'artifacts:write' })
+      const response = await requestArtifact(
+        app,
+        'PUT',
+        token,
+        randomUUID(),
+        team,
+      )
+      assert.equal(response.statusCode, 403)
+    })
+  })
+
+  await test('with an alternative roles claim name', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_ROLES_CLAIM: 'groups',
+        JWT_READ_ROLES: 'Artifacts.Reader',
+        JWT_WRITE_ROLES: 'Artifacts.Writer',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+
+    await t.test('supports alternative roles claim name', async () => {
+      const artifactId = randomUUID()
+      const team = randomUUID()
+      const token = jwksMock.token({
+        groups: ['Artifacts.Reader', 'Artifacts.Writer'],
+      })
+
+      const response = await app.inject({
+        method: 'PUT',
+        url: `/v8/artifacts/${artifactId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/octet-stream',
+        },
+        query: {
+          team,
+        },
+        payload: Buffer.from('test cache data'),
+      })
+      assert.equal(response.statusCode, 200)
+    })
+  })
+
+  await test('handles empty scope and roles claim names as not set', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_SCOPE_CLAIM: '',
+        JWT_ROLES_CLAIM: '',
+        JWT_READ_SCOPES: 'artifacts:read',
+        JWT_READ_ROLES: 'Artifacts.Reader',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+    assert.equal(app.config.JWT_SCOPE_CLAIM, '')
+    assert.equal(app.config.JWT_ROLES_CLAIM, '')
+
+    // The server reads the default claims "scope" and "roles".
+    const token = jwksMock.token({
+      scope: 'artifacts:read',
+      roles: ['Artifacts.Reader'],
+    })
+    const response = await requestArtifact(
+      app,
+      'GET',
+      token,
+      randomUUID(),
+      randomUUID(),
+    )
+    assert.equal(response.statusCode, 404)
+  })
+
+  await test('with authorization scopes and roles defined', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_READ_SCOPES: 'artifacts:read',
+        JWT_WRITE_SCOPES: 'artifacts:write',
+        JWT_READ_ROLES: 'Artifacts.Reader',
+        JWT_WRITE_ROLES: 'Artifacts.Writer',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+    const team = randomUUID()
+    const scope = 'artifacts:read artifacts:write'
+    const roles = ['Artifacts.Reader', 'Artifacts.Writer']
+
+    await t.test('allows a token with the scopes and the roles', async () => {
+      const token = jwksMock.token({ scope, roles })
+      const artifactId = randomUUID()
+      for (const method of ['PUT', 'GET'] as const) {
+        const response = await requestArtifact(
+          app,
+          method,
+          token,
+          artifactId,
+          team,
+        )
+        assert.equal(response.statusCode, 200, method)
+      }
+    })
+
+    await t.test(
+      'rejects a token with only the scopes or only the roles',
+      async () => {
+        for (const payload of [{ scope }, { roles }]) {
+          const token = jwksMock.token(payload)
+          for (const method of ['PUT', 'GET'] as const) {
+            const response = await requestArtifact(
+              app,
+              method,
+              token,
+              randomUUID(),
+              team,
+            )
+            assert.equal(
+              response.statusCode,
+              403,
+              `${method} with ${JSON.stringify(payload)}`,
+            )
+          }
+        }
+      },
+    )
   })
 })
 
