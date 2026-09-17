@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.3...v2.13.0) (2026-09-17)
+
+
+### Features
+
+* **auth/jwt:** add JWT_TEAM_CLAIM to limit tokens to their teams ([34b925a](https://github.com/ducktors/turborepo-remote-cache/commit/34b925af6d94c208c36d96ceee815aad647c79f7))
+
 ## [2.12.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.2...v2.12.3) (2026-09-02)
 
 
