@@ -1,3 +1,16 @@
+# [2.14.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.13.0...v2.14.0) (2026-09-17)
+
+
+### Bug Fixes
+
+* **jwt-auth:** ignore empty items in the required scopes and roles ([6745c16](https://github.com/ducktors/turborepo-remote-cache/commit/6745c160aa094764dbfbf25725c7d7596f4dc329))
+* **jwt-auth:** read scopes, roles and teams with one claim parser ([7fbea56](https://github.com/ducktors/turborepo-remote-cache/commit/7fbea56bdfc1a569b8beb7b2d080e9702affd6c7))
+
+
+### Features
+
+* **jwt-auth:** support check on roles claim and support alternative scope claim name ([7af9743](https://github.com/ducktors/turborepo-remote-cache/commit/7af9743d5bd6a1fedf0e5157b5a5fa0c2990fbb1)), closes [#619](https://github.com/ducktors/turborepo-remote-cache/issues/619)
+
 # [2.13.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.3...v2.13.0) (2026-09-17)
 
 
