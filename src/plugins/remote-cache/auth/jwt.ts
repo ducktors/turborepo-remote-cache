@@ -1,4 +1,3 @@
-import { FastifyJWT } from '@fastify/jwt'
 import { Boom, forbidden, isBoom, unauthorized } from '@hapi/boom'
 import { FastifyRequest } from 'fastify'
 import { fastifyJwtJwks } from 'fastify-jwt-jwks'
@@ -13,38 +12,38 @@ declare module '@fastify/jwt' {
   }
 }
 
+// The claim name is a top-level key of the payload. A namespaced claim such as
+// "https://example.com/teams" is also a top-level key. The claim value can be
+// a string with values separated by spaces, or an array of strings. Any other
+// value gives no values.
+function readClaimValues(
+  payload: { [claim: string]: unknown },
+  claimName: string,
+): string[] {
+  const claim = payload[claimName]
+  if (typeof claim === 'string') {
+    return claim.split(' ').filter((value) => value.length > 0)
+  }
+  if (Array.isArray(claim)) {
+    return claim.filter((value): value is string => typeof value === 'string')
+  }
+  return []
+}
+
+// A token must have one of the required values. An empty list of required
+// values adds no requirement.
+function hasOneOf(required: string[], values: Set<string>) {
+  return required.length === 0 || required.some((value) => values.has(value))
+}
+
 export default fp(async (fastify) => {
   if (!fastify.config.JWKS_URL) {
     throw new Error('Must provide JWKS url when using JWT authentication')
   }
 
-  function extractTokenScopes(payload: FastifyJWT['payload']): Set<string> {
-    if (typeof fastify.config.JWT_SCOPE_CLAIM === 'string') {
-      const scopeClaim = payload[fastify.config.JWT_SCOPE_CLAIM]
-
-      if (typeof scopeClaim === 'string') {
-        return new Set(scopeClaim.split(' '))
-      }
-    }
-
-    return new Set<string>()
-  }
-
-  function extractUserRoles(payload: FastifyJWT['payload']): Set<string> {
-    if (typeof fastify.config.JWT_ROLES_CLAIM === 'string') {
-      const rolesClaim = payload[fastify.config.JWT_ROLES_CLAIM]
-
-      if (
-        Array.isArray(rolesClaim) &&
-        rolesClaim.every((role) => typeof role === 'string')
-      ) {
-        return new Set(rolesClaim)
-      }
-    }
-
-    return new Set<string>()
-  }
-
+  // An empty claim name has the same effect as no value.
+  const scopeClaim = fastify.config.JWT_SCOPE_CLAIM || 'scope'
+  const rolesClaim = fastify.config.JWT_ROLES_CLAIM || 'roles'
   const teamClaim = fastify.config.JWT_TEAM_CLAIM
   if (!teamClaim) {
     fastify.log.warn(
@@ -57,67 +56,47 @@ export default fp(async (fastify) => {
     issuer: fastify.config.JWT_ISSUER,
     jwksUrl: fastify.config.JWKS_URL,
     formatUser(payload) {
-      // The claim name is a top-level key of the payload. A namespaced claim
-      // such as "https://example.com/teams" is also a top-level key.
-      const claim = teamClaim ? payload[teamClaim] : undefined
-      let teams: string[] = []
-      if (typeof claim === 'string') {
-        teams = claim.split(' ').filter((team) => team.length > 0)
-      } else if (Array.isArray(claim)) {
-        teams = claim.filter((team): team is string => typeof team === 'string')
-      }
       return {
-        scopes: extractTokenScopes(payload),
-        roles: extractUserRoles(payload),
-        teams: new Set(teams),
-      } satisfies FastifyJWT['user']
+        scopes: new Set(readClaimValues(payload, scopeClaim)),
+        roles: new Set(readClaimValues(payload, rolesClaim)),
+        teams: new Set(teamClaim ? readClaimValues(payload, teamClaim) : []),
+      }
     },
   })
   const readScopes = [fastify.config.JWT_READ_SCOPES || []].flat()
-  const readRoles = [fastify.config.JWT_READ_ROLES || []].flat()
-
-  async function authorizeRead(request: FastifyRequest) {
-    if (
-      readScopes.length !== 0 &&
-      !readScopes.some((scope) => request.user.scopes.has(scope))
-    ) {
-      throw forbidden()
-    }
-
-    if (
-      readRoles.length !== 0 &&
-      !readRoles.some((role) => request.user.roles.has(role))
-    ) {
-      throw forbidden()
-    }
-  }
-
   const writeScopes = [fastify.config.JWT_WRITE_SCOPES || []].flat()
+  const readRoles = [fastify.config.JWT_READ_ROLES || []].flat()
   const writeRoles = [fastify.config.JWT_WRITE_ROLES || []].flat()
-
-  async function authorizeWrite(request: FastifyRequest) {
-    if (
-      writeScopes.length !== 0 &&
-      !writeScopes.some((scope) => request.user.scopes.has(scope))
-    ) {
-      throw forbidden()
-    }
-
-    if (
-      writeRoles.length !== 0 &&
-      !writeRoles.some((role) => request.user.roles.has(role))
-    ) {
-      throw forbidden()
-    }
-  }
-
   fastify.addHook('onRequest', fastify.authenticate)
   fastify.addHook('onRoute', async (route) => {
-    if (route.authorization && route.authorization === 'read') {
+    // When scopes and roles are both set, the token must pass both checks.
+    if (
+      route.authorization &&
+      route.authorization === 'read' &&
+      (readScopes.length > 0 || readRoles.length > 0)
+    ) {
+      async function authorizeRead(request: FastifyRequest) {
+        if (
+          !hasOneOf(readScopes, request.user.scopes) ||
+          !hasOneOf(readRoles, request.user.roles)
+        )
+          throw forbidden()
+      }
       route.onRequest = [...[route.onRequest ?? []].flat(), authorizeRead]
     }
 
-    if (route.authorization && route.authorization === 'write') {
+    if (
+      route.authorization &&
+      route.authorization === 'write' &&
+      (writeScopes.length > 0 || writeRoles.length > 0)
+    ) {
+      async function authorizeWrite(request: FastifyRequest) {
+        if (
+          !hasOneOf(writeScopes, request.user.scopes) ||
+          !hasOneOf(writeRoles, request.user.roles)
+        )
+          throw forbidden()
+      }
       route.onRequest = [...[route.onRequest ?? []].flat(), authorizeWrite]
     }
 
