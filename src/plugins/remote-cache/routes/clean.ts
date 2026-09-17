@@ -10,17 +10,7 @@ import {
   type Querystring,
   cleanRouteSchema,
 } from './clean-schema.js'
-
-function assertSafeTeamSlug(slug: string): void {
-  if (
-    slug === '.' ||
-    slug.includes('..') ||
-    slug.includes('/') ||
-    slug.includes('\\')
-  ) {
-    throw badRequest('Invalid slug')
-  }
-}
+import { assertSafePathSegment, getTeamFromQuery } from './utils.js'
 
 export const cleanCache: RouteOptions<
   Server,
@@ -39,8 +29,12 @@ export const cleanCache: RouteOptions<
       throw forbidden('Remote cache is running in read-only mode')
     }
 
-    const slug = req.query.slug
-    assertSafeTeamSlug(slug)
+    // Use the same team resolver as the JWT team authorization.
+    const slug = getTeamFromQuery(req.query)
+    if (!slug) {
+      throw badRequest(`querystring must have required property 'slug'`)
+    }
+    assertSafePathSegment(slug, 'slug')
 
     const olderThanDays = req.query.olderThan ?? DEFAULT_OLDER_THAN_DAYS
     const result = await this.location.cleanStaleArtifacts(slug, olderThanDays)
