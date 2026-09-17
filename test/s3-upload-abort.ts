@@ -31,6 +31,8 @@ async function waitFor(condition: () => boolean, message: () => string) {
  */
 function createFakeS3() {
   const requests: RecordedRequest[] = []
+  // A test sets `uploadPartStatus` to make UploadPart requests fail.
+  const backend = { uploadPartStatus: 200 }
   const server = http.createServer((req, res) => {
     const url = req.url ?? ''
     requests.push({ method: req.method ?? '', url })
@@ -46,6 +48,13 @@ function createFakeS3() {
         respond(
           200,
           '<?xml version="1.0" encoding="UTF-8"?><InitiateMultipartUploadResult><Bucket>bucket</Bucket><Key>key</Key><UploadId>test-upload-id</UploadId></InitiateMultipartUploadResult>',
+        )
+        return
+      }
+      if (req.method === 'PUT' && backend.uploadPartStatus !== 200) {
+        respond(
+          backend.uploadPartStatus,
+          '<?xml version="1.0" encoding="UTF-8"?><Error><Code>InternalError</Code><Message>Backend failure</Message></Error>',
         )
         return
       }
@@ -67,11 +76,11 @@ function createFakeS3() {
       respond(200)
     })
   })
-  return { server, requests }
+  return { server, requests, backend }
 }
 
 describe('S3 upload abort on stream destroy', async () => {
-  const { server, requests } = createFakeS3()
+  const { server, requests, backend } = createFakeS3()
   await new Promise<void>((resolve) =>
     server.listen(0, '127.0.0.1', () => resolve()),
   )
@@ -197,6 +206,58 @@ describe('S3 upload abort on stream destroy', async () => {
     assert.ok(
       !requests.some((r) => r.method === 'DELETE'),
       'a successful upload must not be aborted',
+    )
+  })
+
+  await test('a failed part upload fails the pipeline', async () => {
+    // When an UploadPart request fails, lib-storage stops reading the stream.
+    // Unless the adapter destroys the writable with the upload error, a
+    // pending write never calls back and the request stalls.
+    const unhandled: unknown[] = []
+    const onUnhandled = (reason: unknown) => unhandled.push(reason)
+    process.on('unhandledRejection', onUnhandled)
+    requests.length = 0
+    backend.uploadPartStatus = 500
+
+    let timer: NodeJS.Timeout | undefined
+    const outcome = await Promise.race([
+      pipeline(megabytes(64), store.createWriteStream('key')).then(
+        () => 'resolved',
+        (error: Error) => error,
+      ),
+      new Promise((resolve) => {
+        timer = setTimeout(() => resolve('hung'), 5000)
+      }),
+    ])
+    clearTimeout(timer)
+    backend.uploadPartStatus = 200
+
+    assert.ok(
+      outcome instanceof Error,
+      `expected the pipeline to fail with the upload error, got ${outcome}`,
+    )
+    // lib-storage aborts the multipart upload before it rejects.
+    await waitFor(
+      () =>
+        requests.some(
+          (r) => r.method === 'DELETE' && r.url.includes('uploadId='),
+        ),
+      () =>
+        `expected an AbortMultipartUpload, got ${requests
+          .map((r) => r.method)
+          .join(', ')}`,
+    )
+    process.off('unhandledRejection', onUnhandled)
+
+    assert.equal(
+      requests.filter((r) => r.method === 'DELETE').length,
+      1,
+      'the upload must be aborted exactly once',
+    )
+    assert.deepEqual(
+      unhandled.map(String),
+      [],
+      'a failed upload must not leave an unhandled rejection',
     )
   })
 })

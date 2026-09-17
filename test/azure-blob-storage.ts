@@ -411,7 +411,9 @@ const pipeline = promisify(pipelineCallback)
 // Mirrors the SDK BufferScheduler: the upload settles on the `end` or `error`
 // event of the stream only, and never on `close`. The test reads the recorded
 // state, not the returned promise, so an unhandled rejection stays visible.
-function mockBlockUpload() {
+// With `failAfterBytes`, a block upload fails after that many bytes. Then the
+// mock pauses the stream and rejects, as BufferScheduler does.
+function mockBlockUpload({ failAfterBytes = Number.POSITIVE_INFINITY } = {}) {
   const upload: {
     stream?: Readable
     abortSignal?: AbortSignal
@@ -429,7 +431,15 @@ function mockBlockUpload() {
           upload.stream = stream
           upload.abortSignal = options?.abortSignal
           return new Promise((resolve, reject) => {
-            stream.on('data', () => {})
+            let received = 0
+            stream.on('data', (chunk: Buffer) => {
+              received += chunk.length
+              if (received > failAfterBytes) {
+                stream.pause()
+                upload.outcome = new Error('Block upload failed')
+                reject(upload.outcome)
+              }
+            })
             stream.on('end', () => {
               upload.outcome = 'end'
               resolve({})
@@ -526,6 +536,51 @@ test('createWriteStream does not abort a completed Azure upload', async () => {
     upload.abortSignal?.aborted,
     false,
     'a completed upload must not be aborted',
+  )
+  mock.restoreAll()
+})
+
+test('createWriteStream fails when the Azure block upload fails', async () => {
+  // The SDK pauses the PassThrough when a block upload fails. Unless the
+  // adapter destroys the writable with the upload error, a pending write never
+  // calls back and the request stalls.
+  mockBlockUpload({ failAfterBytes: 256 * 1024 })
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const unhandled: unknown[] = []
+  const onUnhandled = (reason: unknown) => unhandled.push(reason)
+  process.on('unhandledRejection', onUnhandled)
+
+  const source = Readable.from(
+    (function* () {
+      for (let i = 0; i < 64; i++) {
+        yield Buffer.alloc(64 * 1024, 1)
+      }
+    })(),
+  )
+  let timer: NodeJS.Timeout | undefined
+  const outcome = await Promise.race([
+    pipeline(source, storage.createWriteStream('superteam/hash')).then(
+      () => 'resolved',
+      (error: Error) => error.message,
+    ),
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve('hung'), 1000)
+    }),
+  ])
+  clearTimeout(timer)
+  // Let a rejection without a handler reach the `unhandledRejection` event.
+  await new Promise((resolve) => setImmediate(resolve))
+  process.off('unhandledRejection', onUnhandled)
+
+  assert.equal(outcome, 'Block upload failed')
+  assert.deepEqual(
+    unhandled.map(String),
+    [],
+    'a failed upload must not leave an unhandled rejection',
   )
   mock.restoreAll()
 })

@@ -143,12 +143,6 @@ export function createS3({
       let aborted = false
       let completed = false
 
-      // `destroy()` below abandons this promise deliberately. Without a
-      // handler attached at creation time, the resulting rejection (or the
-      // AbortError from `upload.abort()`) surfaces as an unhandled rejection
-      // and takes the process down.
-      uploadPromise.catch(() => {})
-
       const writeStream = new Writable({
         write(chunk, encoding, callback) {
           passThrough.write(chunk, encoding, callback)
@@ -185,6 +179,14 @@ export function createS3({
           callback(err)
         },
       })
+
+      // When an UploadPart request fails, lib-storage stops reading the
+      // PassThrough and aborts the multipart upload. A pending `write()` then
+      // never calls back, so `pipeline()` stalls. Destroy the writable with
+      // the upload error to fail the request. Attach this handler at creation
+      // time, so the rejection after `destroy()` is not unhandled. A destroyed
+      // writable ignores the second `destroy()` call.
+      uploadPromise.catch((err) => writeStream.destroy(err))
 
       return writeStream
     },

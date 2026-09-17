@@ -59,12 +59,7 @@ export function createAzureBlobStorage({
       )
       let completed = false
 
-      // `destroy()` below abandons this promise deliberately. Without a
-      // handler attached at creation time, its rejection surfaces as an
-      // unhandled rejection and stops the process.
-      uploadPromise.catch(() => {})
-
-      return new Writable({
+      const writeStream = new Writable({
         write(chunk, encoding, callback) {
           passThrough.write(chunk, encoding, callback)
         },
@@ -100,6 +95,15 @@ export function createAzureBlobStorage({
           callback(err)
         },
       })
+
+      // When a block upload fails, the SDK pauses the PassThrough. A pending
+      // `write()` then never calls back, so `pipeline()` stalls. Destroy the
+      // writable with the upload error to fail the request. Attach this
+      // handler at creation time, so the rejection after `destroy()` is not
+      // unhandled. A destroyed writable ignores the second `destroy()` call.
+      uploadPromise.catch((err) => writeStream.destroy(err))
+
+      return writeStream
     },
   }
 }
