@@ -2,3 +2,28 @@ onlyBuiltDependencies:
   - '@biomejs/biome'
   - esbuild
   - msw
+
+overrides:
+  '@smithy/config-resolver@<4.4.0': '>=4.4.0'
+  fast-uri@<3.1.2: '>=3.1.2'
+  fast-xml-parser@<4.1.2: '>=4.1.2'
+  fast-xml-parser@>=4.3.6 <5.7.0: '>=5.7.0'
+  s3rver>fast-xml-parser: ^3.21.1
+  glob@>=11.0.0 <11.1.0: '>=11.1.0'
+  handlebars@<4.7.9: '>=4.7.9'
+  js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'
+  jws@<3.2.3: '>=3.2.3'
+  jsonwebtoken>jws: '4.0.1'
+  koa@>=2.16.2 <2.16.3: '>=2.16.3'
+  lodash-es@<4.18.1: '>=4.18.1'
+  lodash@<4.18.1: '>=4.18.1'
+  minimatch@>=5.0.0 <5.1.9: '>=5.1.9'
+  minimatch@>=6.0.0 <6.2.3: '>=6.2.3'
+  minimatch@>=7.0.0 <7.4.9: '>=7.4.9'
+  minimatch@>=8.0.0 <8.0.7: '>=8.0.7'
+  minimatch@>=9.0.0 <9.0.9: '>=9.0.9'
+  node-forge@<1.4.0: '>=1.4.0'
+  picomatch@<2.3.2: '>=2.3.2'
+  shell-quote: 1.9.0
+  tmp@<=0.2.3: '>=0.2.4'
+  uuid@<11.1.1: '>=11.1.1 <12'

@@ -18,7 +18,21 @@ const params = Type.Object(
 )
 export type Params = Static<typeof params>
 
+const headers = Type.Object(
+  {
+    'x-artifact-tag': Type.Optional(Type.String()),
+  },
+  { additionalProperties: true },
+)
+export type Headers = Static<typeof headers>
+
 export const artifactsRouteSchema = {
   querystring,
   params,
+}
+
+export const artifactsRouteSchemaWithHeaders = {
+  querystring,
+  params,
+  headers,
 }

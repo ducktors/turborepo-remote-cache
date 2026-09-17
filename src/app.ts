@@ -1,6 +1,10 @@
 import * as fs from 'node:fs'
 import { isBoom } from '@hapi/boom'
-import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify'
+import Fastify, {
+  FastifyError,
+  FastifyInstance,
+  FastifyServerOptions,
+} from 'fastify'
 import hyperid from 'hyperid'
 import { Config, env } from './env.js'
 import { logger } from './logger.js'
@@ -50,7 +54,7 @@ export function createApp(
 
   app.register(config, { overrides: options.configOverrides }).after(() => {
     app.register(remoteCache, {
-      provider: app.config.STORAGE_PROVIDER,
+      provider: app.config?.STORAGE_PROVIDER,
     })
   })
 
@@ -61,7 +65,7 @@ export function createApp(
     },
   })
 
-  app.setErrorHandler((err, request, reply) => {
+  app.setErrorHandler((err: FastifyError, request, reply) => {
     if (err.validation) {
       reply.log.warn(err)
       reply.code(400).send({ message: err.message })
@@ -74,6 +78,9 @@ export function createApp(
             ? { message: err.message, ...err.data }
             : { message: err.output.payload.message },
         )
+    } else if (err.statusCode != null && err.statusCode < 500) {
+      reply.log.warn(err)
+      reply.code(err.statusCode).send({ message: err.message })
     } else {
       request.log.error(err)
       reply.code(500).send({ message: err.message })

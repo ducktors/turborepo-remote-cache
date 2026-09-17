@@ -1,5 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
-import Ajv from 'ajv'
+import { Ajv } from 'ajv'
 import { envSchema } from 'env-schema'
 
 const NODE_ENVS = {
@@ -20,12 +20,19 @@ export const STORAGE_PROVIDERS = {
 export type STORAGE_PROVIDERS =
   typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]
 
+// Schema default for BODY_LIMIT (100 MB). Exported so the runtime fallback uses
+// the same value as the schema's `default`.
+export const BODY_LIMIT_DEFAULT = 104857600
+
 const schema = Type.Object(
   {
     NODE_ENV: Type.Optional(
       Type.Enum(NODE_ENVS, { default: NODE_ENVS.PRODUCTION }),
     ),
-    AUTH_MODE: Type.Optional(Type.Enum({ static: 'static', jwt: 'jwt' })),
+    AUTH_MODE: Type.Optional(
+      Type.Enum({ static: 'static', jwt: 'jwt', none: 'none' }),
+    ),
+    HOST: Type.String({ default: '0.0.0.0' }),
     JWT_AUDIENCE: Type.Optional(Type.String({ separator: ',' })),
     JWT_ISSUER: Type.Optional(Type.String()),
     JWKS_URL: Type.Optional(Type.String()),
@@ -35,6 +42,7 @@ const schema = Type.Object(
     JWT_ROLES_CLAIM: Type.String({ default: 'roles' }),
     JWT_READ_ROLES: Type.Optional(Type.String({ separator: ',' })),
     JWT_WRITE_ROLES: Type.Optional(Type.String({ separator: ',' })),
+    JWT_TEAM_CLAIM: Type.Optional(Type.String()),
     TURBO_TOKEN: Type.Optional(Type.String({ separator: ',' })),
     PORT: Type.Number({ default: 3000 }),
     LOG_LEVEL: Type.Optional(Type.String({ default: 'info' })),
@@ -44,7 +52,7 @@ const schema = Type.Object(
     STORAGE_PROVIDER: Type.Optional(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
-    BODY_LIMIT: Type.Optional(Type.Number({ default: 104857600 })),
+    BODY_LIMIT: Type.Optional(Type.Number({ default: BODY_LIMIT_DEFAULT })),
     STORAGE_PATH: Type.Optional(Type.String()),
     STORAGE_PATH_USE_TMP_FOLDER: Type.Optional(Type.Boolean({ default: true })),
     HTTP2: Type.Optional(Type.Boolean({ default: false })),
@@ -68,6 +76,14 @@ const schema = Type.Object(
     // SSL support
     SSL_KEY_PATH: Type.Optional(Type.String()),
     SSL_CERT_PATH: Type.Optional(Type.String()),
+
+    // Artifact signature verification
+    TURBO_REMOTE_CACHE_SIGNATURE_KEY: Type.Optional(Type.String()),
+
+    READ_ONLY: Type.Optional(Type.Boolean({ default: false })),
+    TURBO_CACHE_READ_URL: Type.Optional(
+      Type.String({ pattern: '^https?:\\/\\/.+$' }),
+    ),
   },
   {
     additionalProperties: false,
@@ -78,8 +94,7 @@ export type Config = Static<typeof schema>
 let _env: Config
 export function load(overrides?: Partial<Config>) {
   _env = envSchema<Static<typeof schema>>({
-    // we call the default method because Ajv provides wrong types. ref https://github.com/ajv-validator/ajv/issues/2132
-    ajv: new Ajv.default({
+    ajv: new Ajv({
       removeAdditional: true,
       useDefaults: true,
       coerceTypes: true,
@@ -98,4 +113,25 @@ export const env = {
   get() {
     return _env
   },
+}
+
+/**
+ * Resolves a candidate BODY_LIMIT value to one that is safe to hand to
+ * fastify. If the input is not a finite positive integer (e.g. NaN, 0,
+ * negative, non-numeric) we fall back to the schema default and return a
+ * warning string so the caller can surface it through its logger.
+ */
+export function resolveBodyLimit(input: unknown): {
+  value: number
+  warning?: string
+} {
+  if (typeof input === 'number' && Number.isFinite(input) && input > 0) {
+    return { value: Math.floor(input) }
+  }
+  return {
+    value: BODY_LIMIT_DEFAULT,
+    warning: `BODY_LIMIT value ${String(
+      input,
+    )} is not a positive finite number; falling back to default ${BODY_LIMIT_DEFAULT}`,
+  }
 }

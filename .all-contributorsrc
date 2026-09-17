@@ -339,6 +339,105 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "lmuraru-plenty",
+      "name": "liviu.muraru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88090606?v=4",
+      "profile": "https://github.com/lmuraru-plenty",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "chintan9",
+      "name": "Chintan Prajapati",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1642564?v=4",
+      "profile": "https://github.com/chintan9",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "clemens",
+      "name": "Clemens Kofler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3749?v=4",
+      "profile": "https://clemenskofler.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ThallesP",
+      "name": "Thalles Passos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76017384?v=4",
+      "profile": "http://thalles.me",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kheyse",
+      "name": "Karel Heyse",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2493640?v=4",
+      "profile": "https://github.com/kheyse",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "KonstantinModin",
+      "name": "Konstantin Modin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45493372?v=4",
+      "profile": "http://modin.us",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "salpers",
+      "name": "Sebastian Alpers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23464191?v=4",
+      "profile": "https://github.com/salpers",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "shpendnilafresha",
+      "name": "Shpend Nila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/188880388?v=4",
+      "profile": "https://github.com/shpendnilafresha",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cf3901646",
+      "name": "Charlie Freeman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/243496084?v=4",
+      "profile": "https://github.com/cf3901646",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "limd96",
+      "name": "Damian Lim",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65203826?v=4",
+      "profile": "https://www.pave.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "yhay81",
+      "name": "Yusuke Hayashi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11132792?v=4",
+      "profile": "https://yusuke-hayashi.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

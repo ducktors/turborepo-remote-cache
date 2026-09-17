@@ -1,7 +1,9 @@
 import assert from 'node:assert'
 import crypto from 'node:crypto'
-import { PassThrough, Readable } from 'node:stream'
+import { Readable } from 'node:stream'
 import { afterEach, mock, test } from 'node:test'
+import { BlobServiceClient } from '@azure/storage-blob'
+import { createAzureBlobStorage } from '../src/plugins/remote-cache/storage/azure-blob-storage.js'
 
 const testEnv = {
   NODE_ENV: 'test',
@@ -22,12 +24,11 @@ test('Azure Blob Storage', async (t) => {
    */
   const { BlobServiceClient } = await import('@azure/storage-blob')
 
-  const uploadStream = (stream) => {
-    const writable = new PassThrough()
-    return writable.pipe(stream)
-  }
-
-  const uploadStreamMock = mock.fn(uploadStream)
+  // Mirrors the real blockBlobClient.uploadStream, which returns
+  // Promise<BlobUploadCommonResponse>. The adapter now awaits this in `final`,
+  // so it must be a promise; the passed-in stream is still captured as
+  // arguments[0] for the "should upload an artifact" assertion below.
+  const uploadStreamMock = mock.fn((_stream) => Promise.resolve({}))
 
   mock.method(BlobServiceClient, 'fromConnectionString', () => ({
     getContainerClient: () => ({
@@ -239,5 +240,167 @@ test('Azure Blob Storage', async (t) => {
       assert.equal(response.statusCode, 200)
       assert.deepEqual(response.json(), {})
     },
+  )
+})
+
+// Resolves to the stream's outcome, or to 'hung' if it neither errored nor
+// ended. Without a bound, a stream that is never ended or destroyed would stall
+// the whole suite instead of failing this test with a usable message.
+function readStreamOutcome(
+  stream: NodeJS.ReadableStream,
+): Promise<{ type: 'error'; error: Error } | { type: 'end' } | 'hung'> {
+  return Promise.race([
+    new Promise<{ type: 'error'; error: Error } | { type: 'end' }>(
+      (resolve) => {
+        stream.on('error', (error: Error) => resolve({ type: 'error', error }))
+        stream.on('end', () => resolve({ type: 'end' }))
+        stream.resume()
+      },
+    ),
+    new Promise<'hung'>((resolve) => setTimeout(() => resolve('hung'), 200)),
+  ])
+}
+
+test('createReadStream surfaces a download failure as a stream error', async () => {
+  // A failing backend must destroy the returned stream with the underlying
+  // error. Swallowing the rejection leaves the stream open (the request hangs)
+  // and produces an unhandled rejection, which terminates the process under
+  // Node's default --unhandled-rejections=throw.
+  const downloadError = new Error('backend unavailable')
+
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlobClient: () => ({
+        download: () => Promise.reject(downloadError),
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const outcome = await readStreamOutcome(
+    storage.createReadStream('superteam/hash'),
+  )
+
+  assert.deepEqual(
+    outcome,
+    { type: 'error', error: downloadError },
+    'a rejected download must destroy the stream with the original error',
+  )
+  mock.restoreAll()
+})
+
+test('createReadStream errors when the response carries no body', async () => {
+  // Azure types readableStreamBody as optional. If it is absent the stream was
+  // previously never ended or destroyed, so the request hung until timeout
+  // rather than failing fast.
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlobClient: () => ({
+        download: () => Promise.resolve({}),
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const outcome = await readStreamOutcome(
+    storage.createReadStream('superteam/hash'),
+  )
+
+  assert.equal(
+    outcome !== 'hung' && outcome.type,
+    'error',
+    'a response without a readable body must error instead of hanging',
+  )
+  mock.restoreAll()
+})
+
+test('createReadStream surfaces a mid-download failure as a stream error', async () => {
+  // The download promise resolves, then the body fails partway through (dropped
+  // connection). pipe() does not forward errors from source to destination, so
+  // the failure has to be wired through explicitly or the request hangs.
+  const midStreamError = new Error('connection reset')
+
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlobClient: () => ({
+        download: () => {
+          const body = new Readable({ read() {} })
+          body.push('partial cache data')
+          setImmediate(() => body.destroy(midStreamError))
+          return Promise.resolve({ readableStreamBody: body })
+        },
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const outcome = await readStreamOutcome(
+    storage.createReadStream('superteam/hash'),
+  )
+
+  assert.deepEqual(
+    outcome,
+    { type: 'error', error: midStreamError },
+    'a body that fails mid-download must error the returned stream',
+  )
+  mock.restoreAll()
+})
+
+test('createWriteStream completes only after Azure commits the upload', async () => {
+  // Isolated from the suite above: own mock so afterEach(mock.restoreAll) there
+  // cannot strip it, and a caller-controlled deferred upload promise so we can
+  // observe ordering deterministically (no Azurite, no timing race).
+  let resolveUpload!: (value: unknown) => void
+  const uploadPromise = new Promise((resolve) => {
+    resolveUpload = resolve
+  })
+
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlockBlobClient: () => ({
+        uploadStream: () => uploadPromise,
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const writeStream = storage.createWriteStream('superteam/hash.tag')
+  let finished = false
+  writeStream.on('finish', () => {
+    finished = true
+  })
+  writeStream.end('tag-payload')
+
+  // Flush microtasks/immediates: the payload has been fully written and ended.
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.equal(
+    finished,
+    false,
+    'write stream must not finish before the upload promise resolves',
+  )
+
+  resolveUpload({})
+  await uploadPromise
+  await new Promise((resolve) => setImmediate(resolve))
+  assert.equal(
+    finished,
+    true,
+    'write stream must finish once the upload promise resolves',
   )
 })

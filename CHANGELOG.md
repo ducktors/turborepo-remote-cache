@@ -1,3 +1,274 @@
+# [2.13.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.3...v2.13.0) (2026-09-17)
+
+
+### Features
+
+* **auth/jwt:** add JWT_TEAM_CLAIM to limit tokens to their teams ([34b925a](https://github.com/ducktors/turborepo-remote-cache/commit/34b925af6d94c208c36d96ceee815aad647c79f7))
+
+## [2.12.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.2...v2.12.3) (2026-09-02)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.8.5 to 5.12.1 ([082d8d1](https://github.com/ducktors/turborepo-remote-cache/commit/082d8d1a89df9ddc470ed932e71f6178aa5c86a7))
+
+## [2.12.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.1...v2.12.2) (2026-09-01)
+
+
+### Bug Fixes
+
+* address review comment on [#889](https://github.com/ducktors/turborepo-remote-cache/issues/889) ([71930c5](https://github.com/ducktors/turborepo-remote-cache/commit/71930c5f27daefb36d025e11d269e0aca0773935))
+* Running in Lambda has inherent 6mb request size limit ([#677](https://github.com/ducktors/turborepo-remote-cache/issues/677)) ([6cc0c1d](https://github.com/ducktors/turborepo-remote-cache/commit/6cc0c1d5d3b35790ed71a289e569b8a4bd6518f9))
+
+## [2.12.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.12.0...v2.12.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* **env:** use named Ajv export instead of default workaround ([c81d403](https://github.com/ducktors/turborepo-remote-cache/commit/c81d403d34f607be4ee1e18088d0268d61b73147))
+
+# [2.12.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.7...v2.12.0) (2026-08-04)
+
+
+### Bug Fixes
+
+* **remote-cache:** address path traversal and validate CDN URL scheme ([0963658](https://github.com/ducktors/turborepo-remote-cache/commit/096365812e5b6addefd4c759e122d31730eecbe9))
+* return correct x-artifact-tag header in HEAD route and restore test assertions ([5686f1a](https://github.com/ducktors/turborepo-remote-cache/commit/5686f1a0d0b7a9c56f561e538f4f76baa2a94e27))
+
+
+### Features
+
+* support separate read URL to use a CDN ([#557](https://github.com/ducktors/turborepo-remote-cache/issues/557)) ([e6b535f](https://github.com/ducktors/turborepo-remote-cache/commit/e6b535f0b76bdc3d1d39f4ee18aa4a73b2e8f348))
+
+## [2.11.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.6...v2.11.7) (2026-08-03)
+
+
+### Bug Fixes
+
+* **storage:** propagate Azure download failures instead of hanging the request ([57a5502](https://github.com/ducktors/turborepo-remote-cache/commit/57a550283f6f4f5c0c879e4d00bbadc8f21cfc25))
+
+## [2.11.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.5...v2.11.6) (2026-08-03)
+
+
+### Bug Fixes
+
+* **routes:** drop route-level error log before rethrow to avoid double logging ([c06af34](https://github.com/ducktors/turborepo-remote-cache/commit/c06af347a91638f55498cf629d295178e6a186a3))
+* **storage:** address review feedback (preserve tag message, document 403 trade-off) ([2a72a91](https://github.com/ducktors/turborepo-remote-cache/commit/2a72a91e0e1fbf4ed8e6a353d11fbc15f70c998d))
+* **storage:** surface backend failures as 5xx instead of masking as cache miss ([1b1581e](https://github.com/ducktors/turborepo-remote-cache/commit/1b1581edb126df6267b7985dc199083357658bb3)), closes [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
+## [2.11.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.4...v2.11.5) (2026-07-21)
+
+
+### Bug Fixes
+
+* override shell-quote ([e03a32b](https://github.com/ducktors/turborepo-remote-cache/commit/e03a32ba712f94fd6638f2e5f5b5eb12b8b2fb00))
+
+## [2.11.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.3...v2.11.4) (2026-07-21)
+
+
+### Bug Fixes
+
+* **storage:** use POSIX separators for artifact keys ([1e5fa6f](https://github.com/ducktors/turborepo-remote-cache/commit/1e5fa6f3dc4427a33a7935d0c9dcffda09032b29)), closes [#800](https://github.com/ducktors/turborepo-remote-cache/issues/800)
+
+## [2.11.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.2...v2.11.3) (2026-07-21)
+
+
+### Bug Fixes
+
+* **azure-blob-storage:** await block blob upload so signed .tag writes persist ([66289c1](https://github.com/ducktors/turborepo-remote-cache/commit/66289c1a70591727f34adfa539e53e455cd2af7b)), closes [#831](https://github.com/ducktors/turborepo-remote-cache/issues/831) [#791](https://github.com/ducktors/turborepo-remote-cache/issues/791) [#656](https://github.com/ducktors/turborepo-remote-cache/issues/656) [#815](https://github.com/ducktors/turborepo-remote-cache/issues/815)
+
+## [2.11.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.1...v2.11.2) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** bump fast-xml-parser override to >=5.7.0 (GHSA-fj3w-jwp8-x2g3, GHSA-8gc5-j5rx-235r, GHSA-jp2q-39xq-3w4g, GHSA-gh4j-gqv2-49f6) ([e5fed7b](https://github.com/ducktors/turborepo-remote-cache/commit/e5fed7b83e599eee627c64c1a77c650416471de4))
+* **deps:** cap uuid override to v11 for CJS compatibility ([966e6ec](https://github.com/ducktors/turborepo-remote-cache/commit/966e6ec53ab700b3311af17a78048600bf99150b))
+* **deps:** override fast-uri to >=3.1.2 (GHSA-v39h-62p7-jpjc, GHSA-q3j6-qgpj-74h6) ([4a4e232](https://github.com/ducktors/turborepo-remote-cache/commit/4a4e2328819a41c0ca2262d8d159360ba19d5970))
+* **deps:** override picomatch to >=2.3.2 (GHSA-3v7f-55p6-f55p) ([fda644c](https://github.com/ducktors/turborepo-remote-cache/commit/fda644c61c0b11c437023f777ee6554ed33c6ea5))
+* **deps:** override uuid to >=11.1.1 (GHSA-w5hq-g745-h8pq) ([50687a6](https://github.com/ducktors/turborepo-remote-cache/commit/50687a6f69126bb49637f3903282a145e3fc96c2))
+
+## [2.11.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.11.0...v2.11.1) (2026-05-23)
+
+
+### Bug Fixes
+
+* **auth/jwt:** log 5xx errors at error level with distinct message ([0e9fc9c](https://github.com/ducktors/turborepo-remote-cache/commit/0e9fc9ca18dd913c0baccb93b78df1aaaa370d89))
+* **auth/jwt:** surface upstream JWT errors and log every auth failure ([5bcb024](https://github.com/ducktors/turborepo-remote-cache/commit/5bcb0244c82c9d209820b4d4291bea39f8141392)), closes [#757](https://github.com/ducktors/turborepo-remote-cache/issues/757)
+
+# [2.11.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.10.0...v2.11.0) (2026-05-23)
+
+
+### Bug Fixes
+
+* **app:** forward non-500 status codes from fastify errors ([e58ebe4](https://github.com/ducktors/turborepo-remote-cache/commit/e58ebe433007e3e736ba728c9fab3eae6103f6df))
+* **remote-cache:** use resolveBodyLimit for octet-stream parser bodyLimit ([768e02e](https://github.com/ducktors/turborepo-remote-cache/commit/768e02ed81952339ac24e170ab574308b5a0fac9))
+* **server:** wire BODY_LIMIT through resolveBodyLimit and log resolved value ([406f680](https://github.com/ducktors/turborepo-remote-cache/commit/406f68023c57b7d48f4d8676aaa743b70430665a))
+
+
+### Features
+
+* **env:** add resolveBodyLimit helper and BODY_LIMIT_DEFAULT constant ([28bf392](https://github.com/ducktors/turborepo-remote-cache/commit/28bf3920d9ebb6418a7d5f4338708cd2043f16ba))
+
+# [2.10.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.9.0...v2.10.0) (2026-05-23)
+
+
+### Bug Fixes
+
+* allow artifacts events in read-only mode ([3c74943](https://github.com/ducktors/turborepo-remote-cache/commit/3c74943933e4cdab3db072b12f7a036bf3bcf21e))
+* remove unsupported semver cooldown props from github-actions and docker dependabot config ([c018c20](https://github.com/ducktors/turborepo-remote-cache/commit/c018c20fc68f6aa9e5093f70730f4d03d7fd559b))
+
+
+### Features
+
+* support read-only mode to prevent unwanted cache update ([103e04a](https://github.com/ducktors/turborepo-remote-cache/commit/103e04ad9d4f7d6814501f5a48b1da15698dfdfb))
+
+# [2.9.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.9...v2.9.0) (2026-05-22)
+
+
+### Bug Fixes
+
+* add local cache cleanup endpoint: fix lint ([7eb9fdf](https://github.com/ducktors/turborepo-remote-cache/commit/7eb9fdf6f2c0c8731b90f39b135d80ba30dd5743))
+* add local cache cleanup endpoint: fix PR comments ([c1f3332](https://github.com/ducktors/turborepo-remote-cache/commit/c1f3332d4cbdf6d03554a6b11b0b936fbf844085))
+* add local cache cleanup endpoint: fix PR comments: remove unused file ([1ea2e29](https://github.com/ducktors/turborepo-remote-cache/commit/1ea2e29b0366e1dcd559cdd88cabdaad832ee864))
+
+
+### Features
+
+* add local cache cleanup endpoint ([f96b497](https://github.com/ducktors/turborepo-remote-cache/commit/f96b4974a26ed7e4ff9150e46245de550a3503db))
+
+## [2.8.9](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.8...v2.8.9) (2026-05-21)
+
+
+### Bug Fixes
+
+* **deps:** bump @tootallnate/once from 2.0.0 to 2.0.1 ([9da875f](https://github.com/ducktors/turborepo-remote-cache/commit/9da875f69ed7394f5ddb244251b0d79dbafc1e79))
+
+## [2.8.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.7...v2.8.8) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump bn.js from 4.12.2 to 4.12.3 ([cb20c1e](https://github.com/ducktors/turborepo-remote-cache/commit/cb20c1eeec376f61635b3c53292e04223d6f359f))
+
+## [2.8.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.6...v2.8.7) (2026-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump koa from 3.1.1 to 3.2.0 ([7f5ad66](https://github.com/ducktors/turborepo-remote-cache/commit/7f5ad66e09e29c11d475e7258d0b3279c5ce91e5))
+
+## [2.8.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.5...v2.8.6) (2026-05-05)
+
+
+### Bug Fixes
+
+* bump @fastify/jwt to 10.0.0 and fastify-jwt-jwks to 3.0.0 ([c3dde35](https://github.com/ducktors/turborepo-remote-cache/commit/c3dde35d09e08e8c75c7005a8461768c01d6ad75))
+
+## [2.8.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.4...v2.8.5) (2026-05-01)
+
+
+### Bug Fixes
+
+* **deps:** bump picomatch from 2.3.1 to 2.3.2 ([89d53f7](https://github.com/ducktors/turborepo-remote-cache/commit/89d53f7775a9e08fbe1f0edaa0340d39b44c0ade))
+
+## [2.8.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.3...v2.8.4) (2026-04-15)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.8.3 to 5.8.5 ([11de616](https://github.com/ducktors/turborepo-remote-cache/commit/11de616c18c9f569a97ff9f50abe6bfb722c114b))
+
+## [2.8.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.2...v2.8.3) (2026-04-13)
+
+
+### Bug Fixes
+
+* move to node24 as default version ([b1ec9b9](https://github.com/ducktors/turborepo-remote-cache/commit/b1ec9b9b694a0658f880af0938256101bf7f615d))
+
+## [2.8.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.1...v2.8.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.8.1 to 5.8.3 ([cb3e8c9](https://github.com/ducktors/turborepo-remote-cache/commit/cb3e8c9b756ac47961fd6ca8a87f11f854561520))
+
+## [2.8.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.8.0...v2.8.1) (2026-03-05)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.7.3 to 5.8.1 ([78a53d9](https://github.com/ducktors/turborepo-remote-cache/commit/78a53d93b98176b7581770771b947c75bb6b1f96))
+
+# [2.8.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.4...v2.8.0) (2026-02-27)
+
+
+### Bug Fixes
+
+* use 0.0.0.0 as default HOST and document HOST env var ([37be088](https://github.com/ducktors/turborepo-remote-cache/commit/37be0884e52cbda1c0b28c51453c136cbfb98645))
+
+
+### Features
+
+* add option to specify host via environment variable ([4880a4e](https://github.com/ducktors/turborepo-remote-cache/commit/4880a4e13849ca076ac7340c1bcc6e6cd44f7bac))
+
+## [2.7.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.3...v2.7.4) (2026-02-24)
+
+
+### Bug Fixes
+
+* **deps:** bump ajv from 8.12.0 to 8.18.0 ([e3cb8b9](https://github.com/ducktors/turborepo-remote-cache/commit/e3cb8b9993de3b800889230943f1533502e49df9))
+
+## [2.7.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.2...v2.7.3) (2026-02-12)
+
+
+### Bug Fixes
+
+* **deps:** bump jws from 4.0.0 to 4.0.1 ([f08e2ab](https://github.com/ducktors/turborepo-remote-cache/commit/f08e2abcce83c0ddafa34aade08f9adf4346c1c5))
+
+## [2.7.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.1...v2.7.2) (2026-02-04)
+
+
+### Bug Fixes
+
+* bump nodejs to 20.20.0-alpine ([4cbb8fb](https://github.com/ducktors/turborepo-remote-cache/commit/4cbb8fb769535ee876db12693137bcfb5b4dd075))
+
+## [2.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.0...v2.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.3.2 to 5.7.3 ([2713c74](https://github.com/ducktors/turborepo-remote-cache/commit/2713c74ab007877518b8761d0e154f2748b8c3f6))
+* update deps and release step ([4d0c6eb](https://github.com/ducktors/turborepo-remote-cache/commit/4d0c6ebf34e2b699333925b047efa17e48f9f5bd))
+
+## [2.7.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.7.0...v2.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.3.2 to 5.7.3 ([2713c74](https://github.com/ducktors/turborepo-remote-cache/commit/2713c74ab007877518b8761d0e154f2748b8c3f6))
+
+# [2.7.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.2...v2.7.0) (2025-12-22)
+
+
+### Bug Fixes
+
+* **deps:** bump js-yaml from 4.1.0 to 4.1.1 ([21246ec](https://github.com/ducktors/turborepo-remote-cache/commit/21246ec918de8dde1ff1f9cc8f0893cdfb2080d2))
+* linting ([8ada468](https://github.com/ducktors/turborepo-remote-cache/commit/8ada4686716bfdb982808eb9298d1c7fd1036435))
+
+
+### Features
+
+* add artifact signature verification ([69ffc31](https://github.com/ducktors/turborepo-remote-cache/commit/69ffc31f57cbc962b317092c698fc6ec77610601))
+* add AUTH_MODE none ([f048db8](https://github.com/ducktors/turborepo-remote-cache/commit/f048db8962646d2b670948bfda53ab5183cea2c6))
+
+## [2.6.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.1...v2.6.2) (2025-11-05)
+
+
+### Bug Fixes
+
+* **deps:** bump koa from 2.16.2 to 2.16.3 ([a17cb3e](https://github.com/ducktors/turborepo-remote-cache/commit/a17cb3e54b39da88a3b341c44ae994722442f3db))
+
 ## [2.6.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.6.0...v2.6.1) (2025-07-11)
 
 

@@ -4,31 +4,30 @@ import fs from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
+import { Storage } from '@google-cloud/storage'
 import fsbs from 'fs-blob-store'
 
-class GCSMock {
-  bucket(bucket: string) {
-    const path = join(tmpdir(), bucket)
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path)
-    }
+function createBucketMock(bucket: string) {
+  const path = join(tmpdir(), bucket)
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path)
+  }
 
-    return {
-      file: (filePath: string) => {
-        const store = fsbs(path)
-        return {
-          exists: (cb) => {
-            return store.exists(filePath, cb)
-          },
-          createReadStream() {
-            return store.createReadStream(filePath)
-          },
-          createWriteStream() {
-            return store.createWriteStream(filePath)
-          },
-        }
-      },
-    }
+  return {
+    file: (filePath: string) => {
+      const store = fsbs(path)
+      return {
+        exists: (cb) => {
+          return store.exists(filePath, cb)
+        },
+        createReadStream() {
+          return store.createReadStream(filePath)
+        },
+        createWriteStream() {
+          return store.createWriteStream(filePath)
+        },
+      }
+    },
   }
 }
 const commonTestEnv = {
@@ -54,10 +53,13 @@ test('Google Cloud Storage', async (t) => {
     GCS_PRIVATE_KEY:
       '-----BEGIN PRIVATE KEY-----\nFooBarKey\n-----END PRIVATE KEY-----\n',
   }
-  const GCS = await import('@google-cloud/storage')
-  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
-    return GCSMock
-  })
+  const mockedGCSBucket = t.mock.method(
+    Storage.prototype,
+    'bucket',
+    function (bucket: string) {
+      return createBucketMock(bucket)
+    },
+  )
   /**
    * END MOCKS
    */
@@ -78,7 +80,7 @@ test('Google Cloud Storage', async (t) => {
   })
 
   await t.test('creates a GCS storage instance', async () => {
-    assert.equal(mockedGCS.mock.calls.length, 1)
+    assert.equal(mockedGCSBucket.mock.calls.length, 1)
   })
 
   await t.test(
@@ -240,10 +242,13 @@ test('Google Cloud Storage ADC', async (t) => {
    * MOCKS
    */
 
-  const GCS = await import('@google-cloud/storage')
-  const mockedGCS = t.mock.getter(GCS, 'Storage', function () {
-    return GCSMock
-  })
+  const mockedGCSBucket = t.mock.method(
+    Storage.prototype,
+    'bucket',
+    function (bucket: string) {
+      return createBucketMock(bucket)
+    },
+  )
   /**
    * END MOCKS
    */
@@ -264,7 +269,7 @@ test('Google Cloud Storage ADC', async (t) => {
   })
 
   await t.test('creates a GCS storage instance', async () => {
-    assert.equal(mockedGCS.mock.calls.length, 1)
+    assert.equal(mockedGCSBucket.mock.calls.length, 1)
   })
 
   await t.test('uploads an artifact', async () => {
