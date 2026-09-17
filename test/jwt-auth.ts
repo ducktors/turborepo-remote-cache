@@ -356,6 +356,34 @@ describe('JWT auth', async () => {
     )
   })
 
+  await test('ignores empty items in the required scopes and roles', async (t) => {
+    const { createApp } = await import('../src/app.js')
+    const app = createApp({
+      logger: false,
+      configOverrides: {
+        JWT_READ_SCOPES: 'artifacts:read,',
+        JWT_READ_ROLES: 'Artifacts.Reader,',
+      },
+    })
+    await app.ready()
+    t.after(() => app.close())
+
+    await t.test(
+      'rejects a token with an empty scope and an empty role',
+      async () => {
+        const token = jwksMock.token({ scope: [''], roles: [''] })
+        const response = await requestArtifact(
+          app,
+          'GET',
+          token,
+          randomUUID(),
+          randomUUID(),
+        )
+        assert.equal(response.statusCode, 403)
+      },
+    )
+  })
+
   await test('with an alternative scope claim name', async (t) => {
     const { createApp } = await import('../src/app.js')
     const app = createApp({

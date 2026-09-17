@@ -104,9 +104,9 @@ Notes:
 - The server uses the claim name as a top-level key of the token payload. It
   does not read nested properties. A namespaced claim name, for example
   `https://example.com/teams`, is also a top-level key.
-- The team check does not replace the scope and role checks. If you set
-  `JWT_READ_SCOPES`, `JWT_WRITE_SCOPES`, `JWT_READ_ROLES` or `JWT_WRITE_ROLES`,
-  the token must also have a required scope or role.
+- The team check does not replace the scope and role checks. The token must
+  also pass each scope check and each role check that you configure with
+  `JWT_READ_SCOPES`, `JWT_WRITE_SCOPES`, `JWT_READ_ROLES` and `JWT_WRITE_ROLES`.
 - You cannot use a team name that contains `/`. For example, the GitHub OIDC
   `repository` claim has values such as `octo-org/octo-repo`. The server
   rejects a request for this team with `400 Bad Request`.

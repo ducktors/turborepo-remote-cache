@@ -30,6 +30,12 @@ function readClaimValues(
   return []
 }
 
+// The env schema splits a comma-separated value into an array. A trailing comma
+// gives an empty item. A token claim with an empty item must not match it.
+function requiredValues(value: string | string[] | undefined): string[] {
+  return [value || []].flat().filter((item) => item.length > 0)
+}
+
 // A token must have one of the required values. An empty list of required
 // values adds no requirement.
 function hasOneOf(required: string[], values: Set<string>) {
@@ -63,10 +69,10 @@ export default fp(async (fastify) => {
       }
     },
   })
-  const readScopes = [fastify.config.JWT_READ_SCOPES || []].flat()
-  const writeScopes = [fastify.config.JWT_WRITE_SCOPES || []].flat()
-  const readRoles = [fastify.config.JWT_READ_ROLES || []].flat()
-  const writeRoles = [fastify.config.JWT_WRITE_ROLES || []].flat()
+  const readScopes = requiredValues(fastify.config.JWT_READ_SCOPES)
+  const writeScopes = requiredValues(fastify.config.JWT_WRITE_SCOPES)
+  const readRoles = requiredValues(fastify.config.JWT_READ_ROLES)
+  const writeRoles = requiredValues(fastify.config.JWT_WRITE_ROLES)
   fastify.addHook('onRequest', fastify.authenticate)
   fastify.addHook('onRoute', async (route) => {
     // When scopes and roles are both set, the token must pass both checks.
