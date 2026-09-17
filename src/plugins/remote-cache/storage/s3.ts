@@ -141,6 +141,7 @@ export function createS3({
 
       const uploadPromise = upload.done()
       let aborted = false
+      let completed = false
 
       // `destroy()` below abandons this promise deliberately. Without a
       // handler attached at creation time, the resulting rejection (or the
@@ -154,7 +155,12 @@ export function createS3({
         },
         final(callback) {
           passThrough.end()
-          uploadPromise.then(() => callback()).catch(callback)
+          uploadPromise
+            .then(() => {
+              completed = true
+              callback()
+            })
+            .catch(callback)
         },
         /**
          * `pipeline()` destroys the destination when an upstream stage fails
@@ -164,7 +170,9 @@ export function createS3({
          * uploaded parts are discarded instead of accruing storage cost.
          */
         destroy(err, callback) {
-          if (aborted) {
+          // `autoDestroy` also calls this method after a successful upload.
+          // Do not abort a completed upload.
+          if (aborted || completed) {
             callback(err)
             return
           }
