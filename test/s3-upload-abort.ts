@@ -11,6 +11,17 @@ const PART_SIZE_MB = 5
 
 type RecordedRequest = { method: string; url: string }
 
+/** Polls `condition` every 10 ms. Fails if it is not true after 5 s. */
+async function waitFor(condition: () => boolean, message: () => string) {
+  const deadline = Date.now() + 5000
+  while (!condition()) {
+    if (Date.now() > deadline) {
+      assert.fail(message())
+    }
+    await new Promise((resolve) => setTimeout(resolve, 10))
+  }
+}
+
 /**
  * Minimal S3 stand-in that records the commands it receives.
  *
@@ -135,20 +146,24 @@ describe('S3 upload abort on stream destroy', async () => {
       /too large/i,
     )
 
-    // Let the fire-and-forget abort reach the backend.
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    // Wait until the fire-and-forget abort reaches the backend. Keep the
+    // unhandled rejection listener attached until the wait ends.
+    await waitFor(
+      () =>
+        requests.some(
+          (r) => r.method === 'DELETE' && r.url.includes('uploadId='),
+        ),
+      () =>
+        `expected an AbortMultipartUpload, got ${requests
+          .map((r) => r.method)
+          .join(', ')}`,
+    )
     process.off('unhandledRejection', onUnhandled)
 
     const methods = requests.map((r) => r.method)
     assert.ok(
       requests.some((r) => r.method === 'POST' && r.url.includes('uploads')),
       `expected a CreateMultipartUpload, got ${methods.join(', ')}`,
-    )
-    assert.ok(
-      requests.some(
-        (r) => r.method === 'DELETE' && r.url.includes('uploadId='),
-      ),
-      `expected an AbortMultipartUpload, got ${methods.join(', ')}`,
     )
     assert.ok(
       !requests.some(
