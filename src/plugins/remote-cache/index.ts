@@ -18,7 +18,7 @@ async function turboRemoteCache(
     provider?: STORAGE_PROVIDERS
   },
 ) {
-  const { value: bodyLimit, warning: bodyLimitWarning } = resolveBodyLimit(
+  const { warning: bodyLimitWarning } = resolveBodyLimit(
     instance.config.BODY_LIMIT,
   )
   if (bodyLimitWarning) {
@@ -26,11 +26,16 @@ async function turboRemoteCache(
   }
   const { apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
 
-  instance.addContentTypeParser<Buffer>(
+  // Stream the upload body straight through to storage instead of buffering the
+  // whole request into the heap. A custom parser without `parseAs` receives the
+  // raw request stream as `payload`, so we hand it to the route untouched. The
+  // BODY_LIMIT is enforced while streaming (see `put-artifact` and
+  // `createCachedArtifact`) because Fastify only auto-enforces it for `parseAs`
+  // parsers. See https://github.com/ducktors/turborepo-remote-cache/issues/679
+  instance.addContentTypeParser(
     'application/octet-stream',
-    { parseAs: 'buffer', bodyLimit },
-    async function parser(request, payload) {
-      return payload
+    (_request, payload, done) => {
+      done(null, payload)
     },
   )
 

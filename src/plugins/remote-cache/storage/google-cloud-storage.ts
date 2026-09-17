@@ -45,6 +45,9 @@ export function createGoogleCloudStorage({
         .file(artifactPath)
         .createReadStream() as NodeJS.ReadStream
     },
+    // No destroy handler is necessary. The SDK destroys its internal upload
+    // pipeline when this writable closes, so an unfinished upload never
+    // becomes a visible object.
     createWriteStream(artifactPath) {
       return turboBucket.file(artifactPath).createWriteStream()
     },
