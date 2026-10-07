@@ -54,7 +54,7 @@ export const headArtifact: RouteOptions<
           if (!(err instanceof ArtifactNotFoundError)) {
             throw err
           }
-          req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
+          req.log.info({ artifactId, team }, 'Artifact tag not found')
           return reply.code(404).send({
             statusCode: 404,
             error: 'Not Found',
@@ -82,7 +82,7 @@ export const headArtifact: RouteOptions<
       // real backend failure: rethrow it so the app-level error handler logs
       // it and returns a 5xx instead of masquerading as a cache miss.
       if (err instanceof ArtifactNotFoundError) {
-        req.log.info(err, 'Artifact not found')
+        req.log.info({ artifactId, team }, 'Artifact not found')
         return reply.code(404).send({
           statusCode: 404,
           error: 'Not Found',
