@@ -55,7 +55,7 @@ export const getArtifact: RouteOptions<
           if (!(err instanceof ArtifactNotFoundError)) {
             throw err
           }
-          req.log.info(err, `Could not retrieve artifact tag for ${artifactId}`)
+          req.log.info({ artifactId, team }, 'Artifact tag not found')
           return reply.code(404).send({
             statusCode: 404,
             error: 'Not Found',
