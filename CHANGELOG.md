@@ -1,3 +1,11 @@
+## [2.14.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.2...v2.14.3) (2026-10-07)
+
+
+### Bug Fixes
+
+* **remote-cache:** log cache misses without the error object ([747c9d0](https://github.com/ducktors/turborepo-remote-cache/commit/747c9d067b5dfc0c85d18d7712a34e7cd3ec408c))
+* **remote-cache:** log missing artifact tags without the error object ([caed3c9](https://github.com/ducktors/turborepo-remote-cache/commit/caed3c9c72e3e377766ac096cc56bfd532fca623))
+
 ## [2.14.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.1...v2.14.2) (2026-10-02)
 
 
