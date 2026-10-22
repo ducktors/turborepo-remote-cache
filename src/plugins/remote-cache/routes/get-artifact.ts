@@ -41,6 +41,23 @@ export const getArtifact: RouteOptions<
     assertSafePathSegment(artifactId, 'id')
 
     try {
+      if (
+        this.location.getCachedArtifactSnapshot &&
+        (!this.config.TURBO_CACHE_READ_URL ||
+          this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY)
+      ) {
+        const requireTag = Boolean(this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY)
+        const snapshot = await this.location.getCachedArtifactSnapshot(
+          artifactId,
+          team,
+          requireTag,
+        )
+        const artifact = await snapshot.open()
+        if (requireTag) reply.header('x-artifact-tag', snapshot.tag)
+        reply.header('Content-Type', 'application/octet-stream')
+        return reply.send(artifact)
+      }
+
       // If signature verification is enabled, check for artifact tag first
       if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY) {
         try {

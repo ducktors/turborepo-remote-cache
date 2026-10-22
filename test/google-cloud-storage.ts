@@ -17,8 +17,20 @@ function createBucketMock(bucket: string) {
     file: (filePath: string) => {
       const store = fsbs(path)
       return {
+        interceptors: [],
         exists: (cb) => {
           return store.exists(filePath, cb)
+        },
+        async getMetadata() {
+          const exists = await new Promise((resolve, reject) => {
+            store.exists(filePath, (error, found) =>
+              error ? reject(error) : resolve(found),
+            )
+          })
+          if (!exists) {
+            throw Object.assign(new Error('Not found'), { code: 404 })
+          }
+          return [{ generation: '1' }]
         },
         createReadStream() {
           return store.createReadStream(filePath)

@@ -47,6 +47,53 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 
 ## Google Cloud Storage
 
+### Artifact publication and signatures
+
+Artifacts are streamed directly into a GCS object. When signatures are enabled,
+the `x-artifact-tag` is included in the upload's custom metadata (`artifact-tag`),
+not written as a separate `.tag` object. GCS publishes the body and metadata
+atomically, and the server waits for the SDK's upload completion before returning
+success. Concurrent uploads can overwrite one another; each published generation
+contains one upload's body and tag. Failures before GCS finalizes an upload,
+including the tested interrupted streams and streaming `BODY_LIMIT` failures,
+leave the prior object untouched. An error response does not prove that an
+upload was never published: finalization can succeed before its acknowledgement
+is lost, and SDK checksum validation or cleanup can fail after publication.
+Preserving the prior object after such post-publication failures is not
+guaranteed. No server-local locks or additional object copies are required.
+
+GET reads the object's metadata and streams that exact generation. If an
+overwrite removes the selected generation before it can be opened, GET returns
+a cache miss instead of combining a new body with an old tag. Object Versioning
+is not required; enabling it can keep the selected older generation readable.
+HEAD checks the same metadata without downloading the body. Storage failures
+other than not-found remain errors, not cache misses.
+
+Existing unsigned objects remain readable when signatures are disabled.
+With signatures enabled, objects without an embedded tag are cache misses,
+even if a legacy `.tag` object exists: a sidecar cannot prove which body it
+belongs to. These entries are rebuilt by clients; do not migrate by copying
+sidecar tags onto existing objects. An unsigned overwrite does not retain the
+previous generation's tag.
+
+Upgrade all cache-server writers and readers together, draining old instances
+before the new instances accept traffic. Mixed old/new versions are not safe
+for signed caching: old instances still read and write independent sidecars.
+Signed GCS GET and HEAD requests are served by this server even when
+`TURBO_CACHE_READ_URL` is set, because an unversioned CDN redirect cannot preserve
+the selected body/tag pair. Unsigned CDN redirects are unchanged. Other storage
+providers retain their existing publication and sidecar behavior; this guarantee
+currently applies only to GCS.
+
+See Google's [consistency guarantees](https://cloud.google.com/storage/docs/consistency)
+and [object generation documentation](https://cloud.google.com/storage/docs/metadata#generation-number).
+Google recommends [generation preconditions for successive metadata/data reads](https://cloud.google.com/storage/docs/request-preconditions).
+The server preserves the generation as a literal string, including values above
+JavaScript's safe integer range, using a per-file SDK request interceptor rather
+than the SDK's numeric generation constructor option.
+
+### Bucket setup
+
 1. Create a [bucket](https://console.cloud.google.com/storage/browser) (or use an existing one).
 2. Create a new [service account](https://console.cloud.google.com/iam-admin/serviceaccounts).
 3. Grant the role `Storage Object Admin` to the service account on the bucket.

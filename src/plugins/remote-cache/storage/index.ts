@@ -107,8 +107,17 @@ export class ArtifactNotFoundError extends Error {
   }
 }
 
+export interface ArtifactSnapshot {
+  tag?: string
+  open: () => Promise<Readable>
+}
+
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {
+  artifacts?: {
+    createWriteStream: (artifactPath: string, tag?: string) => Writable
+    getSnapshot: (artifactPath: string) => Promise<ArtifactSnapshot>
+  }
   exists: (
     artifactPath: string,
     cb: (err: Error | null, exists?: boolean) => void,
@@ -204,6 +213,18 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   providerOptions: ProviderOptions<Provider>,
 ) {
   const location = createStorageLocation(provider, providerOptions)
+  const { artifacts } = location
+
+  const getCachedArtifactSnapshot = artifacts
+    ? async (artifactId: string, team: string, requireTag: boolean) => {
+        const artifactPath = getArtifactPath(team, artifactId)
+        const snapshot = await artifacts.getSnapshot(artifactPath)
+        if (requireTag && !snapshot.tag) {
+          throw new ArtifactNotFoundError(artifactPath)
+        }
+        return snapshot
+      }
+    : undefined
 
   function getArtifactTagPath(artifactId: string, team: string): string {
     return getArtifactPath(team, `${artifactId}.tag`)
@@ -244,13 +265,14 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     team: string,
     artifact: Readable,
     maxBytes?: number,
+    tag?: string,
   ) {
     const artifactPath = getArtifactPath(team, artifactId)
     const { promote, remove } = location
 
     // Providers that cannot promote cheaply write straight to the final path.
     if (!promote) {
-      return writeArtifactStream(artifactPath, artifact, maxBytes)
+      return writeArtifactStream(artifactPath, artifact, maxBytes, tag)
     }
 
     // Stream into a sibling temporary key and publish it only once the whole
@@ -284,8 +306,11 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     artifactPath: string,
     artifact: Readable,
     maxBytes?: number,
+    tag?: string,
   ) {
-    const writeStream = location.createWriteStream(artifactPath)
+    const writeStream = location.artifacts
+      ? location.artifacts.createWriteStream(artifactPath, tag)
+      : location.createWriteStream(artifactPath)
     if (maxBytes && maxBytes > 0) {
       return pipeline(artifact, createSizeLimitStream(maxBytes), writeStream)
     }
@@ -363,6 +388,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   }
 
   return {
+    getCachedArtifactSnapshot,
     getCachedArtifact,
     createCachedArtifact,
     existsCachedArtifact,
@@ -376,6 +402,9 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 declare module 'fastify' {
   interface FastifyInstance {
     location: {
+      getCachedArtifactSnapshot: ReturnType<
+        typeof createLocation
+      >['getCachedArtifactSnapshot']
       existsCachedArtifact: ReturnType<
         typeof createLocation
       >['existsCachedArtifact']
