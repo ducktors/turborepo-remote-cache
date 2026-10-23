@@ -72,7 +72,9 @@ export const putArtifact: RouteOptions<
     }
 
     try {
-      const artifactTag = req.headers['x-artifact-tag']
+      const artifactTag = this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY
+        ? req.headers['x-artifact-tag']
+        : undefined
 
       const storagePromises: Promise<void>[] = [
         this.location.createCachedArtifact(
@@ -80,10 +82,11 @@ export const putArtifact: RouteOptions<
           team,
           req.body,
           bodyLimit,
+          artifactTag,
         ),
       ]
 
-      if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY && artifactTag) {
+      if (!this.location.getCachedArtifactSnapshot && artifactTag) {
         storagePromises.push(
           this.location.createCachedArtifactTag(artifactId, team, artifactTag),
         )

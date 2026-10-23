@@ -1,5 +1,6 @@
+import { once } from 'node:events'
 import { Storage } from '@google-cloud/storage'
-import { StorageProvider } from './index.js'
+import { ArtifactNotFoundError, type StorageProvider } from './index.js'
 
 export interface GoogleCloudStorageOptions {
   bucket: string
@@ -36,7 +37,53 @@ export function createGoogleCloudStorage({
 
   const turboBucket = storage.bucket(bucket)
 
+  function storageError(error: unknown, artifactPath: string) {
+    return (error as { code?: number }).code === 404
+      ? new ArtifactNotFoundError(artifactPath)
+      : error
+  }
+
   return {
+    artifacts: {
+      createWriteStream(artifactPath, tag) {
+        return turboBucket.file(artifactPath).createWriteStream({
+          metadata: {
+            metadata: tag ? { 'artifact-tag': tag } : {},
+          },
+        })
+      },
+      async getSnapshot(artifactPath) {
+        const [metadata] = await turboBucket
+          .file(artifactPath)
+          .getMetadata()
+          .catch((error) => {
+            throw storageError(error, artifactPath)
+          })
+        if (!metadata.generation) {
+          throw new Error('GCS artifact metadata is missing its generation')
+        }
+        const file = turboBucket.file(artifactPath)
+        file.interceptors.push({
+          request: (options) => ({
+            ...options,
+            uri: 'uri' in options ? options.uri : options.url,
+            qs: { ...options.qs, generation: metadata.generation },
+          }),
+        })
+        return {
+          tag: metadata.metadata?.['artifact-tag'] as string | undefined,
+          open: async () => {
+            const stream = file.createReadStream()
+            try {
+              await once(stream, 'readable')
+            } catch (error) {
+              throw storageError(error, artifactPath)
+            }
+            return stream
+          },
+        }
+      },
+    },
     exists: (artifactPath, cb) => {
       turboBucket.file(artifactPath).exists(cb)
     },
