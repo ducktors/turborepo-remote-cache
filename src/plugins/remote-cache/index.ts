@@ -10,6 +10,7 @@ import {
   putArtifact,
 } from './routes/index.js'
 import { createLocation } from './storage/index.js'
+import { registerUploadLifecycle } from './upload-lifecycle.js'
 
 async function turboRemoteCache(
   instance: FastifyInstance,
@@ -25,6 +26,7 @@ async function turboRemoteCache(
     instance.log.warn(bodyLimitWarning)
   }
   const { apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
+  registerUploadLifecycle(instance)
 
   // Stream the upload body straight through to storage instead of buffering the
   // whole request into the heap. A custom parser without `parseAs` receives the

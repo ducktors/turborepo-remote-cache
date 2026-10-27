@@ -36,6 +36,13 @@ export const putArtifact: RouteOptions<
   method: 'PUT',
   schema: artifactsRouteSchemaWithHeaders,
   authorization: 'write',
+  errorHandler(error, _request, reply) {
+    if (error.code === 'FST_ERR_HANDLER_TIMEOUT') {
+      reply.code(412).send({ message: 'Error during the artifact creation' })
+      return
+    }
+    throw error
+  },
   async handler(req, reply) {
     if (this.config.READ_ONLY) {
       throw forbidden('Remote cache is running in read-only mode')
@@ -76,23 +83,28 @@ export const putArtifact: RouteOptions<
         ? req.headers['x-artifact-tag']
         : undefined
 
-      const storagePromises: Promise<void>[] = [
-        this.location.createCachedArtifact(
-          artifactId,
-          team,
-          req.body,
-          bodyLimit,
-          artifactTag,
-        ),
-      ]
+      await this.uploads.run(req, reply, async ({ signal, join }) => {
+        const storagePromises: Promise<void>[] = [
+          this.location.createCachedArtifact(artifactId, team, req.body, {
+            maxBytes: bodyLimit,
+            tag: artifactTag,
+            signal,
+          }),
+        ]
 
-      if (!this.location.getCachedArtifactSnapshot && artifactTag) {
-        storagePromises.push(
-          this.location.createCachedArtifactTag(artifactId, team, artifactTag),
-        )
-      }
+        if (!this.location.getCachedArtifactSnapshot && artifactTag) {
+          storagePromises.push(
+            this.location.createCachedArtifactTag(
+              artifactId,
+              team,
+              artifactTag,
+              { signal },
+            ),
+          )
+        }
 
-      await Promise.all(storagePromises)
+        await join(storagePromises)
+      })
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
@@ -110,7 +122,7 @@ export const putArtifact: RouteOptions<
         throw err
       }
       // we need this error throw since turbo retries if the error is in 5xx range
-      throw preconditionFailed('Error during the artifact creation', err)
+      throw preconditionFailed('Error during the artifact creation')
     }
   },
 }

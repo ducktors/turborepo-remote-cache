@@ -1,3 +1,4 @@
+import nativeFs from 'node:fs'
 import fsPromises from 'node:fs/promises'
 import { tmpdir } from 'os'
 import { dirname, join, normalize } from 'path'
@@ -11,6 +12,21 @@ export type LocalOptions = {
 
 export function getLocalRootPath({ path, useTmp }: LocalOptions): string {
   return useTmp ? join(tmpdir(), path) : normalize(path)
+}
+
+function createLocalWriteStream(target: string) {
+  // A native stream waits for its file descriptor to close before settling.
+  // fs-blob-store's proxy can close before its underlying file has closed.
+  return nativeFs.createWriteStream(target, {
+    fs: {
+      ...nativeFs,
+      open(path, flags, mode, callback) {
+        fsPromises
+          .mkdir(dirname(target), { recursive: true })
+          .then(() => nativeFs.open(path, flags, mode, callback), callback)
+      },
+    },
+  })
 }
 
 export function createLocal(options: LocalOptions): StorageProvider {
@@ -27,7 +43,8 @@ export function createLocal(options: LocalOptions): StorageProvider {
     // object with none of them.
     exists: (artifactPath, cb) => store.exists(artifactPath, cb),
     createReadStream: (artifactPath) => store.createReadStream(artifactPath),
-    createWriteStream: (artifactPath) => store.createWriteStream(artifactPath),
+    createWriteStream: (artifactPath) =>
+      createLocalWriteStream(toNativePath(artifactPath)),
     /**
      * Atomically publishes `fromPath` as `toPath`. Both live under the same
      * store root, so `rename` is an atomic same-filesystem operation: readers

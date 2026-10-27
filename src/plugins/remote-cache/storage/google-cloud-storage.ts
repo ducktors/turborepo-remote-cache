@@ -1,5 +1,5 @@
 import { once } from 'node:events'
-import { Storage } from '@google-cloud/storage'
+import { type File, Storage } from '@google-cloud/storage'
 import { ArtifactNotFoundError, type StorageProvider } from './index.js'
 
 export interface GoogleCloudStorageOptions {
@@ -10,10 +10,12 @@ export interface GoogleCloudStorageOptions {
 }
 
 function createStorage({ clientEmail, privateKey, projectId }) {
+  const retryOptions = { maxRetries: 3, totalTimeout: 240, maxRetryDelay: 30 }
   if (!clientEmail || !privateKey || !projectId) {
-    return new Storage()
+    return new Storage({ retryOptions })
   } else {
     return new Storage({
+      retryOptions,
       projectId,
       credentials: {
         client_email: clientEmail,
@@ -21,6 +23,18 @@ function createStorage({ clientEmail, privateKey, projectId }) {
       },
     })
   }
+}
+
+function configureUpload(file: File, signal?: AbortSignal) {
+  file.interceptors.push({
+    request: (options) => ({
+      ...options,
+      uri: 'uri' in options ? options.uri : options.url,
+      timeout: 60_000,
+      signal,
+    }),
+  })
+  return file
 }
 
 export function createGoogleCloudStorage({
@@ -45,8 +59,11 @@ export function createGoogleCloudStorage({
 
   return {
     artifacts: {
-      createWriteStream(artifactPath, tag) {
-        return turboBucket.file(artifactPath).createWriteStream({
+      createWriteStream(artifactPath, tag, options) {
+        return configureUpload(
+          turboBucket.file(artifactPath),
+          options?.signal,
+        ).createWriteStream({
           metadata: {
             metadata: tag ? { 'artifact-tag': tag } : {},
           },
@@ -92,11 +109,13 @@ export function createGoogleCloudStorage({
         .file(artifactPath)
         .createReadStream() as NodeJS.ReadStream
     },
-    // No destroy handler is necessary. The SDK destroys its internal upload
-    // pipeline when this writable closes, so an unfinished upload never
-    // becomes a visible object.
-    createWriteStream(artifactPath) {
-      return turboBucket.file(artifactPath).createWriteStream()
+    // Destroying the SDK writable stops local work. A completed remote write
+    // may still win a lost-ack race; cancellation is not publication rollback.
+    createWriteStream(artifactPath, options) {
+      return configureUpload(
+        turboBucket.file(artifactPath),
+        options?.signal,
+      ).createWriteStream()
     },
   }
 }

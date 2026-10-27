@@ -34,6 +34,36 @@ It supports several storage providers and deploys environments. Moreover, the pr
 
 [Full documentation is available here](https://ducktors.github.io/turborepo-remote-cache/supported-storage-providers)
 
+### Upload lifetime
+
+Artifact PUTs have a 270-second application deadline. An embedding application's
+shorter Fastify route/server `handlerTimeout` also bounds uploads, including time
+already spent in request hooks. The upload clock continues after input EOF: Fastify 5's native signal and handler timer alone cannot
+cover delayed storage finalization on HTTP/1. Normal complete input does not cancel
+an upload; incomplete input, HTTP/2 resets, premature response close, timeout and
+shutdown cancel unfinished local pipelines. Started body and legacy tag pipelines
+are joined before reporting local settlement. LOCAL staging cleanup waits for the
+file to close and preserves the previous artifact when a write fails.
+
+Storage failures and PUT timeouts return 412, retaining this server's existing
+policy of preventing Turbo from automatically retrying 5xx upload failures. This
+also maps Fastify's native PUT timeout to 412 instead of the generic application
+error handler's 500. Streaming byte-limit errors remain 413. The request's structured
+`Artifact upload locally settled` log records `reqId`, `outcome`, a bounded `cause`,
+and `settlement: local`; it contains no storage error, signature or session URI.
+
+GCS requests use a 60-second request timeout; SDK retry ceilings are three retries,
+240 seconds total and 30 seconds maximum delay, subject to the SDK's existing
+idempotency rules (unconditional artifact writes do not gain retries). Cancellation
+does not establish remote non-publication: the SDK's outer writable may settle
+before an HTTP request waiting for its acknowledgement closes; the request timeout
+bounds that remaining request. A complete valid GCS object can win a cancellation
+or lost-acknowledgement race and is never deleted as rollback. Body/tag metadata
+publication and generation-pinned reads are unchanged. `preClose` aborts and joins
+owned upload work; the process entrypoint retains its existing 10-second
+close-with-grace hard exit. A noncooperative provider may still require that hard
+exit; neither local settlement nor process exit certifies remote session finality.
+
 ## Contribute to this project
 
 1. Clone this repository
