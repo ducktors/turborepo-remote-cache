@@ -1,4 +1,4 @@
-import { PassThrough, Writable } from 'node:stream'
+import { PassThrough, Readable, Writable, pipeline } from 'node:stream'
 import { BlobServiceClient } from '@azure/storage-blob'
 import { StorageProvider } from './index.js'
 
@@ -25,19 +25,26 @@ export function createAzureBlobStorage({
     createReadStream(artifactPath) {
       const blobClient = containerClient.getBlobClient(artifactPath)
       const stream = new PassThrough()
+      // When the client disconnects, abort the download so that the SDK
+      // releases the socket.
+      const controller = new AbortController()
+      stream.once('close', () => controller.abort())
       blobClient
-        .download()
+        .download(undefined, undefined, { abortSignal: controller.signal })
         .then((response) => {
-          if (!response.readableStreamBody) {
+          const body = response.readableStreamBody as Readable | undefined
+          if (!body) {
             throw new Error(
               `Artifact ${artifactPath} download returned no readable body.`,
             )
           }
-          // pipe() does not forward errors, so a body that fails partway
-          // through (dropped connection) has to be wired through explicitly.
-          response.readableStreamBody
-            .on('error', (err) => stream.destroy(err))
-            .pipe(stream)
+          if (stream.destroyed) {
+            body.destroy()
+            return
+          }
+          // pipeline() forwards a body error to the stream (dropped
+          // connection), and destroys the body when the stream is destroyed.
+          pipeline(body, stream, () => {})
         })
         // A real backend failure (network, throttling, 5xx) or a response
         // without a body. Destroy the stream with the error so it surfaces as a
