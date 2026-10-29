@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto'
 import { Transform, Writable } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
 import { posix as posixPath } from 'path'
-import { Readable, pipeline as pipelineCallback } from 'stream'
-import { promisify } from 'util'
+import { Readable } from 'stream'
 import { entityTooLarge, notImplemented } from '@hapi/boom'
 import { STORAGE_PROVIDERS } from '../../../env.js'
 import {
@@ -21,7 +21,11 @@ import {
 } from './local.js'
 import { type S3Options as S3Opts, createS3 } from './s3.js'
 
-const pipeline = promisify(pipelineCallback)
+export interface ArtifactWriteOptions {
+  maxBytes?: number
+  tag?: string
+  signal?: AbortSignal
+}
 
 /**
  * Best-effort cleanup of a temporary artifact key. A failure here must never
@@ -107,14 +111,30 @@ export class ArtifactNotFoundError extends Error {
   }
 }
 
+export interface ArtifactSnapshot {
+  tag?: string
+  open: () => Promise<Readable>
+}
+
 // https://github.com/maxogden/abstract-blob-store#api
 export interface StorageProvider {
+  artifacts?: {
+    createWriteStream: (
+      artifactPath: string,
+      tag?: string,
+      options?: Pick<ArtifactWriteOptions, 'signal'>,
+    ) => Writable
+    getSnapshot: (artifactPath: string) => Promise<ArtifactSnapshot>
+  }
   exists: (
     artifactPath: string,
     cb: (err: Error | null, exists?: boolean) => void,
   ) => void
   createReadStream: (artifactPath: string) => Readable
-  createWriteStream: (artifactPath: string) => Writable
+  createWriteStream: (
+    artifactPath: string,
+    options?: Pick<ArtifactWriteOptions, 'signal'>,
+  ) => Writable
   /**
    * Atomically publishes an already-written artifact under its final path.
    *
@@ -177,13 +197,14 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
       })
     }
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
-      const { clientEmail, privateKey, projectId } =
+      const { clientEmail, privateKey, projectId, uploadTimeout } =
         providerOptions as GoogleCloudStorageOptions
       return createGoogleCloudStorage({
         bucket: path,
         clientEmail,
         privateKey,
         projectId,
+        uploadTimeout,
       })
     }
     case STORAGE_PROVIDERS.AZURE_BLOB_STORAGE: {
@@ -204,6 +225,18 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   providerOptions: ProviderOptions<Provider>,
 ) {
   const location = createStorageLocation(provider, providerOptions)
+  const { artifacts } = location
+
+  const getCachedArtifactSnapshot = artifacts
+    ? async (artifactId: string, team: string, requireTag: boolean) => {
+        const artifactPath = getArtifactPath(team, artifactId)
+        const snapshot = await artifacts.getSnapshot(artifactPath)
+        if (requireTag && !snapshot.tag) {
+          throw new ArtifactNotFoundError(artifactPath)
+        }
+        return snapshot
+      }
+    : undefined
 
   function getArtifactTagPath(artifactId: string, team: string): string {
     return getArtifactPath(team, `${artifactId}.tag`)
@@ -243,14 +276,19 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     artifactId: string,
     team: string,
     artifact: Readable,
-    maxBytes?: number,
+    optionsOrMaxBytes?: number | ArtifactWriteOptions,
+    legacyTag?: string,
   ) {
+    const options =
+      typeof optionsOrMaxBytes === 'object'
+        ? optionsOrMaxBytes
+        : { maxBytes: optionsOrMaxBytes, tag: legacyTag }
     const artifactPath = getArtifactPath(team, artifactId)
     const { promote, remove } = location
 
     // Providers that cannot promote cheaply write straight to the final path.
     if (!promote) {
-      return writeArtifactStream(artifactPath, artifact, maxBytes)
+      return writeArtifactStream(artifactPath, artifact, options)
     }
 
     // Stream into a sibling temporary key and publish it only once the whole
@@ -262,7 +300,8 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     // artifact that is already cached.
     const tempPath = `${artifactPath}.${randomUUID()}.tmp`
     try {
-      await writeArtifactStream(tempPath, artifact, maxBytes)
+      await writeArtifactStream(tempPath, artifact, options)
+      options.signal?.throwIfAborted()
     } catch (err) {
       await removeQuietly(remove, tempPath)
       throw err
@@ -283,13 +322,17 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   async function writeArtifactStream(
     artifactPath: string,
     artifact: Readable,
-    maxBytes?: number,
+    { maxBytes, tag, signal }: ArtifactWriteOptions,
   ) {
-    const writeStream = location.createWriteStream(artifactPath)
+    const writeStream = location.artifacts
+      ? location.artifacts.createWriteStream(artifactPath, tag, { signal })
+      : location.createWriteStream(artifactPath, { signal })
     if (maxBytes && maxBytes > 0) {
-      return pipeline(artifact, createSizeLimitStream(maxBytes), writeStream)
+      return pipeline(artifact, createSizeLimitStream(maxBytes), writeStream, {
+        signal,
+      })
     }
-    return pipeline(artifact, writeStream)
+    return pipeline(artifact, writeStream, { signal })
   }
 
   async function getCachedArtifactTag(
@@ -336,10 +379,12 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     artifactId: string,
     team: string,
     tag: string,
+    options: Pick<ArtifactWriteOptions, 'signal'> = {},
   ): Promise<void> {
     return pipeline(
       Readable.from(tag),
-      location.createWriteStream(getArtifactTagPath(artifactId, team)),
+      location.createWriteStream(getArtifactTagPath(artifactId, team), options),
+      options,
     )
   }
 
@@ -363,6 +408,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
   }
 
   return {
+    getCachedArtifactSnapshot,
     getCachedArtifact,
     createCachedArtifact,
     existsCachedArtifact,
@@ -376,6 +422,9 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
 declare module 'fastify' {
   interface FastifyInstance {
     location: {
+      getCachedArtifactSnapshot: ReturnType<
+        typeof createLocation
+      >['getCachedArtifactSnapshot']
       existsCachedArtifact: ReturnType<
         typeof createLocation
       >['existsCachedArtifact']

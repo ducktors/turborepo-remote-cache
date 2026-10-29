@@ -10,6 +10,7 @@ import {
   putArtifact,
 } from './routes/index.js'
 import { createLocation } from './storage/index.js'
+import { registerUploadLifecycle } from './upload-lifecycle.js'
 
 async function turboRemoteCache(
   instance: FastifyInstance,
@@ -25,6 +26,7 @@ async function turboRemoteCache(
     instance.log.warn(bodyLimitWarning)
   }
   const { apiVersion = 'v8', provider = STORAGE_PROVIDERS.LOCAL } = options
+  registerUploadLifecycle(instance)
 
   // Stream the upload body straight through to storage instead of buffering the
   // whole request into the heap. A custom parser without `parseAs` receives the
@@ -53,8 +55,19 @@ async function turboRemoteCache(
       useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
       connectionString: instance.config.ABS_CONNECTION_STRING,
       maxSockets: instance.config.S3_MAX_SOCKETS,
+      uploadTimeout: instance.config.UPLOAD_TIMEOUT,
     }),
   )
+
+  if (
+    instance.location.getCachedArtifactSnapshot &&
+    instance.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY &&
+    instance.config.TURBO_CACHE_READ_URL
+  ) {
+    instance.log.warn(
+      'TURBO_CACHE_READ_URL has no effect for signed artifacts with this storage provider. The server sends the artifacts.',
+    )
+  }
 
   instance.register(
     async function (i) {

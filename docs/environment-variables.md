@@ -31,12 +31,13 @@ nav_order: 2
 | `STORAGE_PATH` | string | optional |  | Caching folder under `/tmp` if `STORAGE_PROVIDER` is set to `local`. If `STORAGE_PROVIDER` is set to `s3`, `google-cloud-storage` or `azure-blob-storage`, this will be the name of the bucket. |
 | `STORAGE_PATH_USE_TMP_FOLDER` | boolean | optional | `true` | Uses the system tmp folder as a prefix to `STORAGE_PATH` |
 | `BODY_LIMIT` | number | optional | `104857600` | The limit for artifact upload size  |
+| `UPLOAD_TIMEOUT` | number | optional | `0` | The maximum duration of an artifact upload (`PUT`), in milliseconds. When an upload is longer, the server stops it and returns `412`. `0` disables the limit. With Google Cloud Storage, the value is also the timeout of each storage request. |
 | `HTTP2` | boolean | optional | `'false'` | If set to `true`, the server will use the HTTP/2 protocol, which helps bypass the 32MB payload size limit in Cloud Run |
 | `SSL_KEY_PATH` | string | optional | `` | If set, enables HTTPS using the key file at the specified path. |
 | `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
 | `TURBO_REMOTE_CACHE_SIGNATURE_KEY` | string | optional | | A secret key used to sign and verify remote cache artifacts. Must be the same for the Turborepo client and the cache server. See [Artifact Integrity and Authenticity Verification](https://ducktors.github.io/turborepo-remote-cache/custom-remote-caching#artifact-integrity-and-authenticity-verification) for more info. |
 | `READ_ONLY` | boolean | optional | `false` | If set to `true`, the server runs in read-only mode: cache reads (`GET`/`HEAD /artifacts/:id`) and event acknowledgements (`POST /artifacts/events`) continue to work, while mutating requests (`PUT /artifacts/:id` and `POST /clean`) are rejected with a `403 Forbidden`. Useful for sharing a CI-populated cache with local developers without allowing them to modify entries. |
-| `TURBO_CACHE_READ_URL` | string | optional | | If set, cache reads (`GET`/`HEAD /artifacts/:id`) are answered with a `302` redirect to `<TURBO_CACHE_READ_URL>/<teamId>/<artifactId>` instead of being streamed from the storage provider. Writes are unaffected and still go to the configured `STORAGE_PROVIDER`. Use it to serve reads from a CDN or proxy (CloudFront, Cloudflare, ...) to cut egress cost and latency. Must include the scheme (`http://` or `https://`); the server fails to start otherwise. See [Serving cache reads from a CDN](#serving-cache-reads-from-a-cdn). |
+| `TURBO_CACHE_READ_URL` | string | optional | | If set, cache reads (`GET`/`HEAD /artifacts/:id`) are answered with a `302` redirect to `<TURBO_CACHE_READ_URL>/<teamId>/<artifactId>` instead of being streamed from the storage provider, except for signed GCS reads. Writes are unaffected and still go to the configured `STORAGE_PROVIDER`. Use it to serve reads from a CDN or proxy (CloudFront, Cloudflare, ...) to cut egress cost and latency. Must include the scheme (`http://` or `https://`); the server fails to start otherwise. See [Serving cache reads from a CDN](#serving-cache-reads-from-a-cdn). |
 
 Both `SSL_KEY_PATH` and `SSL_CERT_PATH` must be set to enable HTTPS.
 
@@ -156,15 +157,18 @@ Notes:
   `https://cdn.example.com/cache?token=secret` redirects to
   `https://cdn.example.com/cache/myteam/abc123?token=secret`.
 - Team and artifact identifiers are URL-encoded when building the redirect.
-- When `TURBO_REMOTE_CACHE_SIGNATURE_KEY` is set, the `x-artifact-tag` header is
+- With `STORAGE_PROVIDER=google-cloud-storage` and `TURBO_REMOTE_CACHE_SIGNATURE_KEY`
+  set, reads are served by this server without a CDN redirect. This keeps each
+  artifact body and signature tied to the same GCS object generation; see
+  [GCS artifact publication and signatures](supported-storage-providers.md).
+- For other providers, when `TURBO_REMOTE_CACHE_SIGNATURE_KEY` is set, the `x-artifact-tag` header is
   still resolved from the storage provider before the redirect is issued, so
   signature verification keeps working.
-- Because reads are redirected before the storage provider is consulted, the
+- For redirected reads without signatures, the
   server cannot tell a hit from a miss: a request for an artifact that does not
-  exist is still redirected and the CDN answers `404`. The exception is
-  `TURBO_REMOTE_CACHE_SIGNATURE_KEY`: the tag lookup runs first, so a missing
+  exist is still redirected and the CDN answers `404`. For signed reads that
+  use redirects, the tag lookup runs first, so a missing
   tag returns `404` from the server.
 - The redirect target is not protected by the server's authentication. Restrict
   access at the CDN - for example with a signed URL, a token in the base URL
   query string, or an origin rule.
-

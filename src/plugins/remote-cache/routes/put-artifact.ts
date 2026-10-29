@@ -36,6 +36,13 @@ export const putArtifact: RouteOptions<
   method: 'PUT',
   schema: artifactsRouteSchemaWithHeaders,
   authorization: 'write',
+  errorHandler(error, _request, reply) {
+    if (error.code === 'FST_ERR_HANDLER_TIMEOUT') {
+      reply.code(412).send({ message: 'Error during the artifact creation' })
+      return
+    }
+    throw error
+  },
   async handler(req, reply) {
     if (this.config.READ_ONLY) {
       throw forbidden('Remote cache is running in read-only mode')
@@ -72,27 +79,41 @@ export const putArtifact: RouteOptions<
     }
 
     try {
-      const artifactTag = req.headers['x-artifact-tag']
+      const artifactTag = this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY
+        ? req.headers['x-artifact-tag']
+        : undefined
 
-      const storagePromises: Promise<void>[] = [
-        this.location.createCachedArtifact(
-          artifactId,
-          team,
-          req.body,
-          bodyLimit,
-        ),
-      ]
+      await this.uploads.run(req, reply, async ({ signal, join }) => {
+        const storagePromises: Promise<void>[] = [
+          this.location.createCachedArtifact(artifactId, team, req.body, {
+            maxBytes: bodyLimit,
+            tag: artifactTag,
+            signal,
+          }),
+        ]
 
-      if (this.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY && artifactTag) {
-        storagePromises.push(
-          this.location.createCachedArtifactTag(artifactId, team, artifactTag),
-        )
-      }
+        // Write the sidecar also for providers that store the tag with the
+        // artifact. Older server versions read only the sidecar, so a rollback
+        // or a mixed deployment keeps the current behavior.
+        if (artifactTag) {
+          storagePromises.push(
+            this.location.createCachedArtifactTag(
+              artifactId,
+              team,
+              artifactTag,
+              { signal },
+            ),
+          )
+        }
 
-      await Promise.all(storagePromises)
+        await join(storagePromises)
+      })
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
+      // Fastify already sent a reply for a handler timeout. A second reply
+      // only logs a "reply already sent" error.
+      if (reply.sent) return reply
       // When the upload fails before the body ends, `pipeline()` destroys the
       // request and the server stops reading the socket. The Fastify body
       // parser closes the connection on a body error, because the client can
@@ -106,8 +127,13 @@ export const putArtifact: RouteOptions<
       if (isBoom(err) && err.output.statusCode === 413) {
         throw err
       }
+      // The response does not include the storage error, so log its name and
+      // code here. SDK error messages and fields can contain credentials and
+      // session URLs, so do not log them.
+      const { name, code } = (err ?? {}) as { name?: string; code?: unknown }
+      req.log.warn({ error: { name, code } }, 'Artifact write failed')
       // we need this error throw since turbo retries if the error is in 5xx range
-      throw preconditionFailed('Error during the artifact creation', err)
+      throw preconditionFailed('Error during the artifact creation')
     }
   },
 }

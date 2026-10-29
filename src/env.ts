@@ -53,6 +53,9 @@ const schema = Type.Object(
       Type.Enum(STORAGE_PROVIDERS, { default: STORAGE_PROVIDERS.LOCAL }),
     ),
     BODY_LIMIT: Type.Optional(Type.Number({ default: BODY_LIMIT_DEFAULT })),
+    // UPLOAD_TIMEOUT is the maximum duration of an artifact PUT, in
+    // milliseconds. 0 disables the limit.
+    UPLOAD_TIMEOUT: Type.Optional(Type.Number({ default: 0 })),
     STORAGE_PATH: Type.Optional(Type.String()),
     STORAGE_PATH_USE_TMP_FOLDER: Type.Optional(Type.Boolean({ default: true })),
     HTTP2: Type.Optional(Type.Boolean({ default: false })),
