@@ -24,14 +24,11 @@ const testEnv = {
 
 Object.assign(process.env, testEnv)
 
+// Only start the valid mock. Since msw 2.13.4, starting a second mock stops
+// the first one from intercepting requests. invalidJwksMock only signs tokens.
 let stopJwks
 before(() => {
-  const stopValid = jwksMock.start()
-  const stopInvalid = invalidJwksMock.start()
-  stopJwks = () => {
-    stopValid()
-    stopInvalid()
-  }
+  stopJwks = jwksMock.start()
 })
 after(() => stopJwks?.())
 
