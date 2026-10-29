@@ -14,15 +14,15 @@ function createFakeS3() {
     const url = req.url ?? ''
     const record: RecordedRequest = { method: req.method ?? '', url }
     requests.push(record)
+    res.on('close', () => {
+      record.aborted = !res.writableEnded
+    })
 
     req.on('end', () => {
       if (req.method === 'GET') {
         if (slow) {
           res.writeHead(200, { 'content-type': 'application/octet-stream' })
           res.write('chunk-1')
-          res.on('close', () => {
-            record.aborted = !res.writableEnded
-          })
           return
         }
         res.writeHead(200, { 'content-type': 'application/octet-stream' })
@@ -52,6 +52,8 @@ describe('S3 download abort on stream destroy', async () => {
   const { port } = server.address() as AddressInfo
 
   after(async () => {
+    // The SDK keeps idle sockets open, and close() waits for them.
+    server.closeAllConnections()
     await new Promise<void>((resolve) => server.close(() => resolve()))
   })
 
@@ -107,6 +109,14 @@ describe('S3 download abort on stream destroy', async () => {
     // Allow microtasks and connection to settle
     await new Promise((resolve) => setTimeout(resolve, 100))
 
-    assert.equal(stream.destroyed, true)
+    // The abort can stop the GET before it is sent. If the GET reaches the
+    // server, the server must see the connection close before the response ends.
+    const deadline = Date.now() + 3000
+    while (requests.some((r) => r.aborted !== true)) {
+      if (Date.now() > deadline) {
+        assert.fail('Expected every request to be aborted on stream destroy')
+      }
+      await new Promise((resolve) => setTimeout(resolve, 20))
+    }
   })
 })

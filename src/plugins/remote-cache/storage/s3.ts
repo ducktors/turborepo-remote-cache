@@ -124,17 +124,18 @@ export function createS3({
           abortSignal: controller.signal,
         })
         .then((data) => {
-          if (data.Body) {
-            const stream =
-              data.Body instanceof Readable
-                ? data.Body
-                : Readable.from(data.Body as AsyncIterable<Uint8Array>)
-            if (passThrough.destroyed) {
-              stream.destroy()
-              return
-            }
-            pipeline(stream, passThrough, () => {})
+          if (!data.Body) {
+            throw new Error(`Artifact ${key} download returned no body.`)
           }
+          const stream =
+            data.Body instanceof Readable
+              ? data.Body
+              : Readable.from(data.Body as AsyncIterable<Uint8Array>)
+          if (passThrough.destroyed) {
+            stream.destroy()
+            return
+          }
+          pipeline(stream, passThrough, () => {})
         })
         .catch((err) => passThrough.destroy(err))
       return passThrough
