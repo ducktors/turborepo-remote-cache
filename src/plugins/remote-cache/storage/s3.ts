@@ -1,5 +1,4 @@
-import { PassThrough, Writable } from 'node:stream'
-import { Readable } from 'node:stream'
+import { PassThrough, Readable, Writable, pipeline } from 'node:stream'
 import {
   GetObjectCommand,
   HeadObjectCommand,
@@ -115,19 +114,28 @@ export function createS3({
     },
     createReadStream: (key: string) => {
       const passThrough = new PassThrough()
+      const controller = new AbortController()
+      passThrough.once('close', () => {
+        controller.abort()
+      })
+
       client
-        .send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+        .send(new GetObjectCommand({ Bucket: bucket, Key: key }), {
+          abortSignal: controller.signal,
+        })
         .then((data) => {
-          if (data.Body) {
-            if (data.Body instanceof Readable) {
-              data.Body.pipe(passThrough)
-            } else {
-              const stream = Readable.from(
-                data.Body as AsyncIterable<Uint8Array>,
-              )
-              stream.pipe(passThrough)
-            }
+          if (!data.Body) {
+            throw new Error(`Artifact ${key} download returned no body.`)
           }
+          const stream =
+            data.Body instanceof Readable
+              ? data.Body
+              : Readable.from(data.Body as AsyncIterable<Uint8Array>)
+          if (passThrough.destroyed) {
+            stream.destroy()
+            return
+          }
+          pipeline(stream, passThrough, () => {})
         })
         .catch((err) => passThrough.destroy(err))
       return passThrough
