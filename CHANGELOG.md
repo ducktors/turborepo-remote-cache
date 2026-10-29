@@ -1,3 +1,14 @@
+## [3.0.3](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.2...v3.0.3) (2026-10-29)
+
+
+### Bug Fixes
+
+* bound artifact upload lifetime and join local cleanup ([d02087d](https://github.com/ducktors/turborepo-remote-cache/commit/d02087da36ab80feaea2108b6ee0f59631651ade))
+* **gcs:** stop GCS reads that close early and keep tags on promote ([416a152](https://github.com/ducktors/turborepo-remote-cache/commit/416a152cad1353f264321915a086d6276cc6f914))
+* **gcs:** write the legacy tag sidecar for older server versions ([dd7be7d](https://github.com/ducktors/turborepo-remote-cache/commit/dd7be7de8628a92556d468f08b49a3fc9590b8c2))
+* merge the updated GCS change and fix the review findings ([9d2d126](https://github.com/ducktors/turborepo-remote-cache/commit/9d2d126b318b5b8bfb8d499ddb0806fd379e2b19))
+* publish GCS artifact bodies and signature tags atomically ([a0ab19c](https://github.com/ducktors/turborepo-remote-cache/commit/a0ab19cc275fe232edb17c5fc0e9513668232034)), closes [#949](https://github.com/ducktors/turborepo-remote-cache/issues/949)
+
 ## [3.0.2](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.1...v3.0.2) (2026-10-29)
 
 
