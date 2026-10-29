@@ -1,3 +1,29 @@
+# [3.0.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.5...v3.0.0) (2026-10-29)
+
+
+### chore
+
+* require Node.js 22 or later ([4f3c5f6](https://github.com/ducktors/turborepo-remote-cache/commit/4f3c5f60dec4f2fa065af982db4e6495a096d935))
+
+
+### BREAKING CHANGES
+
+* The package does not support Node.js 20. Use Node.js 22 or later.
+
+## [2.14.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.4...v2.14.5) (2026-10-29)
+
+
+### Bug Fixes
+
+* **ci:** align CodeQL action versions ([625b73e](https://github.com/ducktors/turborepo-remote-cache/commit/625b73e0428942f1396e6754796da17c7c507582))
+
+## [2.14.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.3...v2.14.4) (2026-10-23)
+
+
+### Bug Fixes
+
+* **deps:** bump fastify from 5.12.5 to 5.12.6 ([bd3da0e](https://github.com/ducktors/turborepo-remote-cache/commit/bd3da0e206e27a7b57c500940c034c8be7730f39))
+
 ## [2.14.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.2...v2.14.3) (2026-10-07)
 
 
