@@ -1,3 +1,10 @@
+## [2.14.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.4...v2.14.5) (2026-10-29)
+
+
+### Bug Fixes
+
+* **ci:** align CodeQL action versions ([625b73e](https://github.com/ducktors/turborepo-remote-cache/commit/625b73e0428942f1396e6754796da17c7c507582))
+
 ## [2.14.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.3...v2.14.4) (2026-10-23)
 
 
