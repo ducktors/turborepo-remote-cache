@@ -1,3 +1,11 @@
+## [3.0.1](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.0...v3.0.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* **s3:** abort GetObject request and destroy response body on client disconnect ([ea39f99](https://github.com/ducktors/turborepo-remote-cache/commit/ea39f99112d6a7483ecfdc0f44facd7696dcb77c)), closes [#948](https://github.com/ducktors/turborepo-remote-cache/issues/948)
+* **storage:** release download sockets and fix abort tests ([2cccc3b](https://github.com/ducktors/turborepo-remote-cache/commit/2cccc3b2e86656f1106a9b40c8a153a2a3b8d202))
+
 # [3.0.0](https://github.com/ducktors/turborepo-remote-cache/compare/v2.14.5...v3.0.0) (2026-10-29)
 
 
