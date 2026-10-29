@@ -16,7 +16,10 @@ COPY --chown=app:app package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY --chown=app:app . .
 RUN pnpm build:docker
-RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
+# Reinstall from an empty node_modules to avoid leaving dev-only packages in
+# node_modules/.pnpm, which would ship in the image.
+RUN rm -rf node_modules && \
+    pnpm install --prod --frozen-lockfile --ignore-scripts && \
     rm -rf .pnpm-store
 
 FROM node:24.22.2-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
