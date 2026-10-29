@@ -26,6 +26,10 @@ updates:
       default-days: 3
     commit-message:
       prefix: "chore(actions)"
+    groups:
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
     assignees:
       - "matteovivona"
     reviewers:
