@@ -92,7 +92,10 @@ export const putArtifact: RouteOptions<
           }),
         ]
 
-        if (!this.location.getCachedArtifactSnapshot && artifactTag) {
+        // Write the sidecar also for providers that store the tag with the
+        // artifact. Older server versions read only the sidecar, so a rollback
+        // or a mixed deployment keeps the current behavior.
+        if (artifactTag) {
           storagePromises.push(
             this.location.createCachedArtifactTag(
               artifactId,
@@ -108,6 +111,9 @@ export const putArtifact: RouteOptions<
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
+      // Fastify already sent a reply for a handler timeout. A second reply
+      // only logs a "reply already sent" error.
+      if (reply.sent) return reply
       // When the upload fails before the body ends, `pipeline()` destroys the
       // request and the server stops reading the socket. The Fastify body
       // parser closes the connection on a body error, because the client can
@@ -121,6 +127,11 @@ export const putArtifact: RouteOptions<
       if (isBoom(err) && err.output.statusCode === 413) {
         throw err
       }
+      // The response does not include the storage error, so log its name and
+      // code here. SDK error messages and fields can contain credentials and
+      // session URLs, so do not log them.
+      const { name, code } = (err ?? {}) as { name?: string; code?: unknown }
+      req.log.warn({ error: { name, code } }, 'Artifact write failed')
       // we need this error throw since turbo retries if the error is in 5xx range
       throw preconditionFailed('Error during the artifact creation')
     }

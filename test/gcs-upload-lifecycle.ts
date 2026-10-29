@@ -126,19 +126,16 @@ test(
           })
           return file
         })
-        context.mock.method(
-          Storage.prototype,
-          'bucket',
-          function (this: Storage) {
-            assert.equal(this.retryOptions.maxRetries, 3)
-            assert.equal(this.retryOptions.totalTimeout, 240)
-            assert.equal(this.retryOptions.maxRetryDelay, 30)
-            return bucket
-          },
-        )
+        context.mock.method(Storage.prototype, 'bucket', () => bucket)
         const location = createLocation(
           STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE,
-          { path: 'bucket', projectId: '', clientEmail: '', privateKey: '' },
+          {
+            path: 'bucket',
+            projectId: '',
+            clientEmail: '',
+            privateKey: '',
+            uploadTimeout: 60_000,
+          },
         )
         const controller = new AbortController()
         const uploading = location.createCachedArtifact(

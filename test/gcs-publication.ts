@@ -33,6 +33,7 @@ function createBucket() {
     retainVersions: true,
     metadataError: undefined as Error | undefined,
     readError: undefined as Error | undefined,
+    closeEarly: false,
     beforeCommit: undefined as
       | ((path: string, body: Buffer) => Promise<void>)
       | undefined,
@@ -85,6 +86,11 @@ function createBucket() {
               .generation
           }
           state.reads.push({ path, generation })
+          if (state.closeEarly) {
+            const stream = new Readable({ read() {} })
+            setImmediate(() => stream.destroy())
+            return stream
+          }
           return Readable.from(
             (async function* () {
               if (!path.endsWith('.tag')) await crossSnapshotBoundary()
@@ -189,7 +195,13 @@ test('GCS coherent publication', { timeout: 15_000 }, async (parent) => {
       assert.equal(response.statusCode, 200)
       assert.equal(response.body, 'first')
       assert.equal(response.headers['x-artifact-tag'], tagFor(response.body))
-      assert.deepEqual(bucket.state.writes, [artifactPath, artifactPath])
+      // Each PUT also writes the legacy sidecar for older server versions.
+      assert.deepEqual(bucket.state.writes.sort(), [
+        artifactPath,
+        artifactPath,
+        `${artifactPath}.tag`,
+        `${artifactPath}.tag`,
+      ])
     },
   )
 
@@ -387,6 +399,13 @@ test('GCS coherent publication', { timeout: 15_000 }, async (parent) => {
       bucket.state.readError = Object.assign(new Error('Unavailable'), {
         code: 503,
       })
+      assert.equal(
+        (await app.inject({ ...request, method: 'GET' })).statusCode,
+        500,
+      )
+      bucket.state.readError = undefined
+      // A read stream that closes without an error must not hang the GET.
+      bucket.state.closeEarly = true
       assert.equal(
         (await app.inject({ ...request, method: 'GET' })).statusCode,
         500,

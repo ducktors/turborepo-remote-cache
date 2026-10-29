@@ -96,6 +96,8 @@ test(
           }))
           const appOptions = {
             logger: {
+              // A normal completion logs the settled line at debug level.
+              level: 'debug',
               stream: new Writable({
                 write(chunk, _encoding, callback) {
                   const log = JSON.parse(chunk.toString())
@@ -112,10 +114,13 @@ test(
               TURBO_TOKEN: 'token',
               STORAGE_PROVIDER: 'google-cloud-storage',
               STORAGE_PATH: 'bucket',
+              // The stalled write uses the UPLOAD_TIMEOUT deadline. The
+              // deadline scenario uses the Fastify handlerTimeout.
+              ...(scenario === 'stalled-write' ? { UPLOAD_TIMEOUT: 100 } : {}),
             },
           } as const
           const app = createApp(appOptions)
-          if (scenario === 'deadline' || scenario === 'stalled-write') {
+          if (scenario === 'deadline') {
             app.addHook('onRoute', (route) => {
               if (route.method === 'PUT') route.handlerTimeout = 100
             })

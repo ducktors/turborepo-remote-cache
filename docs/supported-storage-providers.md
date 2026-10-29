@@ -50,8 +50,9 @@ DigitalOcean Spaces is an S3-compatible object storage that this project also su
 ### Artifact publication and signatures
 
 Artifacts are streamed directly into a GCS object. When signatures are enabled,
-the `x-artifact-tag` is included in the upload's custom metadata (`artifact-tag`),
-not written as a separate `.tag` object. GCS publishes the body and metadata
+the server writes the `x-artifact-tag` in the upload's custom metadata
+(`artifact-tag`). The server also writes the legacy `.tag` object for older
+server versions, but it reads only the embedded tag. GCS publishes the body and metadata
 atomically, and the server waits for the SDK's upload completion before returning
 success. Concurrent uploads can overwrite one another; each published generation
 contains one upload's body and tag. Failures before GCS finalizes an upload,
@@ -76,9 +77,9 @@ belongs to. These entries are rebuilt by clients; do not migrate by copying
 sidecar tags onto existing objects. An unsigned overwrite does not retain the
 previous generation's tag.
 
-Upgrade all cache-server writers and readers together, draining old instances
-before the new instances accept traffic. Mixed old/new versions are not safe
-for signed caching: old instances still read and write independent sidecars.
+Because the server still writes the legacy `.tag` object, old and new server
+versions can run together, and a rollback is safe. Old instances read the
+sidecar, with the same race between body and tag as before this change.
 Signed GCS GET and HEAD requests are served by this server even when
 `TURBO_CACHE_READ_URL` is set, because an unversioned CDN redirect cannot preserve
 the selected body/tag pair. Unsigned CDN redirects are unchanged. Other storage

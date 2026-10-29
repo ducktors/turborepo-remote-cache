@@ -1,6 +1,5 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
-const UPLOAD_TIMEOUT_MS = 270_000
 type Cause =
   | 'input_aborted'
   | 'response_closed'
@@ -12,7 +11,11 @@ type UploadWork = {
   join: (tasks: Promise<void>[]) => Promise<void>
 }
 
-function createUploadScope(request: FastifyRequest, reply: FastifyReply) {
+function createUploadScope(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  uploadTimeout: number,
+) {
   const controller = new AbortController()
   let cause: Cause | undefined
   const abort = (reason: Cause) => {
@@ -39,13 +42,17 @@ function createUploadScope(request: FastifyRequest, reply: FastifyReply) {
   }
   nativeSignal?.addEventListener('abort', onNativeAbort)
   if (nativeSignal?.aborted) onNativeAbort()
-  const timeout =
-    configuredTimeout > 0
-      ? Math.min(UPLOAD_TIMEOUT_MS, configuredTimeout - reply.elapsedTime)
-      : UPLOAD_TIMEOUT_MS
-  const timer = setTimeout(() => abort('deadline'), Math.max(0, timeout))
-  timer.unref()
-  if (timeout <= 0) abort('deadline')
+  let timeout = uploadTimeout > 0 ? uploadTimeout : Number.POSITIVE_INFINITY
+  if (configuredTimeout > 0) {
+    timeout = Math.min(timeout, configuredTimeout - reply.elapsedTime)
+  }
+  let timer: NodeJS.Timeout | undefined
+  if (timeout <= 0) {
+    abort('deadline')
+  } else if (Number.isFinite(timeout)) {
+    timer = setTimeout(() => abort('deadline'), timeout)
+    timer.unref()
+  }
   if (request.raw.aborted) onAborted()
 
   return {
@@ -91,7 +98,11 @@ export function registerUploadLifecycle(instance: FastifyInstance) {
       reply: FastifyReply,
       work: (upload: UploadWork) => Promise<void>,
     ) {
-      const scope = createUploadScope(request, reply)
+      const scope = createUploadScope(
+        request,
+        reply,
+        instance.config.UPLOAD_TIMEOUT ?? 0,
+      )
       let release = () => {}
       const done = new Promise<void>((resolve) => {
         release = resolve
@@ -115,7 +126,13 @@ export function registerUploadLifecycle(instance: FastifyInstance) {
           cause: scope.cause ?? 'none',
           settlement: 'local',
         }
-        request.log.info(fields, 'Artifact upload locally settled')
+        // A normal completion is logged at debug level only, to keep one log
+        // line per PUT.
+        if (completed) {
+          request.log.debug(fields, 'Artifact upload locally settled')
+        } else {
+          request.log.info(fields, 'Artifact upload locally settled')
+        }
         release()
       }
     },

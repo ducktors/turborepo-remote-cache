@@ -1,4 +1,3 @@
-import { once } from 'node:events'
 import { type File, Storage } from '@google-cloud/storage'
 import { ArtifactNotFoundError, type StorageProvider } from './index.js'
 
@@ -7,15 +6,14 @@ export interface GoogleCloudStorageOptions {
   projectId: string
   clientEmail: string
   privateKey: string
+  uploadTimeout?: number
 }
 
 function createStorage({ clientEmail, privateKey, projectId }) {
-  const retryOptions = { maxRetries: 3, totalTimeout: 240, maxRetryDelay: 30 }
   if (!clientEmail || !privateKey || !projectId) {
-    return new Storage({ retryOptions })
+    return new Storage()
   } else {
     return new Storage({
-      retryOptions,
       projectId,
       credentials: {
         client_email: clientEmail,
@@ -25,12 +23,20 @@ function createStorage({ clientEmail, privateKey, projectId }) {
   }
 }
 
-function configureUpload(file: File, signal?: AbortSignal) {
+function configureUpload(
+  file: File,
+  signal?: AbortSignal,
+  uploadTimeout?: number,
+) {
   file.interceptors.push({
     request: (options) => ({
       ...options,
       uri: 'uri' in options ? options.uri : options.url,
-      timeout: 60_000,
+      // The SDK sends the whole body in one request, and the timeout covers
+      // the full transfer. Use the upload deadline, so that the timeout does
+      // not stop an upload that is still in its time budget. The timeout also
+      // stops a request that is still open after an abort.
+      ...(uploadTimeout && uploadTimeout > 0 ? { timeout: uploadTimeout } : {}),
       signal,
     }),
   })
@@ -42,6 +48,7 @@ export function createGoogleCloudStorage({
   clientEmail,
   privateKey,
   projectId,
+  uploadTimeout,
 }: GoogleCloudStorageOptions): StorageProvider {
   const storage = createStorage({
     clientEmail,
@@ -63,6 +70,7 @@ export function createGoogleCloudStorage({
         return configureUpload(
           turboBucket.file(artifactPath),
           options?.signal,
+          uploadTimeout,
         ).createWriteStream({
           metadata: {
             metadata: tag ? { 'artifact-tag': tag } : {},
@@ -92,7 +100,22 @@ export function createGoogleCloudStorage({
           open: async () => {
             const stream = file.createReadStream()
             try {
-              await once(stream, 'readable')
+              await new Promise<void>((resolve, reject) => {
+                // once() rejects only on 'error'. A stream that closes without
+                // an error must also end the wait.
+                const settle = (error?: unknown) => {
+                  stream.off('readable', onReadable)
+                  stream.off('error', settle)
+                  stream.off('close', onClose)
+                  error ? reject(error) : resolve()
+                }
+                const onReadable = () => settle()
+                const onClose = () =>
+                  settle(new Error(`GCS read of ${artifactPath} closed early`))
+                stream.once('readable', onReadable)
+                stream.once('error', settle)
+                stream.once('close', onClose)
+              })
             } catch (error) {
               throw storageError(error, artifactPath)
             }
@@ -115,6 +138,7 @@ export function createGoogleCloudStorage({
       return configureUpload(
         turboBucket.file(artifactPath),
         options?.signal,
+        uploadTimeout,
       ).createWriteStream()
     },
   }

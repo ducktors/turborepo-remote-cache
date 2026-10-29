@@ -197,13 +197,14 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
       })
     }
     case STORAGE_PROVIDERS.GOOGLE_CLOUD_STORAGE: {
-      const { clientEmail, privateKey, projectId } =
+      const { clientEmail, privateKey, projectId, uploadTimeout } =
         providerOptions as GoogleCloudStorageOptions
       return createGoogleCloudStorage({
         bucket: path,
         clientEmail,
         privateKey,
         projectId,
+        uploadTimeout,
       })
     }
     case STORAGE_PROVIDERS.AZURE_BLOB_STORAGE: {

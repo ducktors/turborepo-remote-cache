@@ -292,14 +292,19 @@ test(
         interceptors: [],
         createWriteStream: () =>
           new Writable({
+            // Fail asynchronously, as the real SDK does. A synchronous failure
+            // of the tag sidecar aborts the inject() request before its body
+            // is read.
             write(_chunk, _encoding, callback) {
-              callback(
-                Object.assign(new Error(marker), {
-                  response: {
-                    config: { headers: { authorization: marker } },
-                    sessionUri: `http://127.0.0.1/${marker}`,
-                  },
-                }),
+              setImmediate(() =>
+                callback(
+                  Object.assign(new Error(marker), {
+                    response: {
+                      config: { headers: { authorization: marker } },
+                      sessionUri: `http://127.0.0.1/${marker}`,
+                    },
+                  }),
+                ),
               )
             },
           }),

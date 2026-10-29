@@ -55,8 +55,19 @@ async function turboRemoteCache(
       useTmp: !!instance.config.STORAGE_PATH_USE_TMP_FOLDER,
       connectionString: instance.config.ABS_CONNECTION_STRING,
       maxSockets: instance.config.S3_MAX_SOCKETS,
+      uploadTimeout: instance.config.UPLOAD_TIMEOUT,
     }),
   )
+
+  if (
+    instance.location.getCachedArtifactSnapshot &&
+    instance.config.TURBO_REMOTE_CACHE_SIGNATURE_KEY &&
+    instance.config.TURBO_CACHE_READ_URL
+  ) {
+    instance.log.warn(
+      'TURBO_CACHE_READ_URL has no effect for signed artifacts with this storage provider. The server sends the artifacts.',
+    )
+  }
 
   instance.register(
     async function (i) {

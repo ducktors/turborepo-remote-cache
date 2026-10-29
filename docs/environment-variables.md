@@ -31,6 +31,7 @@ nav_order: 2
 | `STORAGE_PATH` | string | optional |  | Caching folder under `/tmp` if `STORAGE_PROVIDER` is set to `local`. If `STORAGE_PROVIDER` is set to `s3`, `google-cloud-storage` or `azure-blob-storage`, this will be the name of the bucket. |
 | `STORAGE_PATH_USE_TMP_FOLDER` | boolean | optional | `true` | Uses the system tmp folder as a prefix to `STORAGE_PATH` |
 | `BODY_LIMIT` | number | optional | `104857600` | The limit for artifact upload size  |
+| `UPLOAD_TIMEOUT` | number | optional | `0` | The maximum duration of an artifact upload (`PUT`), in milliseconds. When an upload is longer, the server stops it and returns `412`. `0` disables the limit. With Google Cloud Storage, the value is also the timeout of each storage request. |
 | `HTTP2` | boolean | optional | `'false'` | If set to `true`, the server will use the HTTP/2 protocol, which helps bypass the 32MB payload size limit in Cloud Run |
 | `SSL_KEY_PATH` | string | optional | `` | If set, enables HTTPS using the key file at the specified path. |
 | `SSL_CERT_PATH` | string | optional | `` | If set, enables HTTPS using the certificate file at the specified path. |
