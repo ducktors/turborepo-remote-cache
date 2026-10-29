@@ -1,7 +1,6 @@
 ARG PNPM_VERSION=10.33.0
-ARG NODE_VERSION=24-alpine
 
-FROM node:${NODE_VERSION} AS build
+FROM node:24.22.2-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS build
 ARG PNPM_VERSION
 ENV HOME=/opt/app
 ENV CI=true
@@ -20,7 +19,7 @@ RUN pnpm build:docker
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
     rm -rf .pnpm-store
 
-FROM node:${NODE_VERSION}
+FROM node:24.22.2-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
 RUN apk update && \
     apk upgrade --no-cache && \
     apk add --no-cache tini && \
