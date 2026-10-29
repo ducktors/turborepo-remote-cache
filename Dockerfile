@@ -27,6 +27,10 @@ RUN apk update && \
     apk upgrade --no-cache && \
     apk add --no-cache tini && \
     rm -rf /var/cache/apk/*
+# The server only needs node. Remove the package managers that the base image ships.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+      /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+      /opt/yarn-* /usr/local/bin/yarn /usr/local/bin/yarnpkg
 RUN addgroup -g 1001 app && adduser -u 1001 -D -G app -s /bin/false app
 WORKDIR /opt/app
 COPY --chown=app:app --from=build /opt/app/dist ./dist
