@@ -359,6 +359,43 @@ test('createReadStream surfaces a mid-download failure as a stream error', async
   mock.restoreAll()
 })
 
+test('createReadStream releases the download when the stream is destroyed', async () => {
+  // A client that disconnects mid-download destroys the returned stream. The
+  // body and the request must close too, or the SDK keeps the socket open.
+  let signal: AbortSignal | undefined
+  const body = new Readable({ read() {} })
+  body.push('partial cache data')
+
+  mock.method(BlobServiceClient, 'fromConnectionString', () => ({
+    getContainerClient: () => ({
+      getBlobClient: () => ({
+        download: (
+          _offset: unknown,
+          _count: unknown,
+          options: { abortSignal: AbortSignal },
+        ) => {
+          signal = options.abortSignal
+          return Promise.resolve({ readableStreamBody: body })
+        },
+      }),
+    }),
+  }))
+
+  const storage = createAzureBlobStorage({
+    containerName: 'turborepo-remote-cache-test',
+    connectionString: 'key1=value1;key2=value2',
+  })
+
+  const stream = storage.createReadStream('superteam/hash')
+  await new Promise((resolve) => stream.once('data', resolve))
+  stream.destroy()
+  await new Promise((resolve) => setImmediate(resolve))
+
+  assert.equal(body.destroyed, true, 'the body must be destroyed')
+  assert.equal(signal?.aborted, true, 'the download must be aborted')
+  mock.restoreAll()
+})
+
 test('createWriteStream completes only after Azure commits the upload', async () => {
   // Isolated from the suite above: own mock so afterEach(mock.restoreAll) there
   // cannot strip it, and a caller-controlled deferred upload promise so we can
