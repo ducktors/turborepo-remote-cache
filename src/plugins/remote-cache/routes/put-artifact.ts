@@ -86,7 +86,10 @@ export const putArtifact: RouteOptions<
         ),
       ]
 
-      if (!this.location.getCachedArtifactSnapshot && artifactTag) {
+      // Write the sidecar also for providers that store the tag with the
+      // artifact. Older server versions read only the sidecar, so a rollback or
+      // a mixed deployment keeps the current behavior.
+      if (artifactTag) {
         storagePromises.push(
           this.location.createCachedArtifactTag(artifactId, team, artifactTag),
         )

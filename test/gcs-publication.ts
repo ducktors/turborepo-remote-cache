@@ -189,7 +189,13 @@ test('GCS coherent publication', { timeout: 15_000 }, async (parent) => {
       assert.equal(response.statusCode, 200)
       assert.equal(response.body, 'first')
       assert.equal(response.headers['x-artifact-tag'], tagFor(response.body))
-      assert.deepEqual(bucket.state.writes, [artifactPath, artifactPath])
+      // Each PUT also writes the legacy sidecar for older server versions.
+      assert.deepEqual(bucket.state.writes.sort(), [
+        artifactPath,
+        artifactPath,
+        `${artifactPath}.tag`,
+        `${artifactPath}.tag`,
+      ])
     },
   )
 
