@@ -1,4 +1,3 @@
-import { once } from 'node:events'
 import { Storage } from '@google-cloud/storage'
 import { ArtifactNotFoundError, type StorageProvider } from './index.js'
 
@@ -75,7 +74,22 @@ export function createGoogleCloudStorage({
           open: async () => {
             const stream = file.createReadStream()
             try {
-              await once(stream, 'readable')
+              await new Promise<void>((resolve, reject) => {
+                // once() rejects only on 'error'. A stream that closes without
+                // an error must also end the wait.
+                const settle = (error?: unknown) => {
+                  stream.off('readable', onReadable)
+                  stream.off('error', settle)
+                  stream.off('close', onClose)
+                  error ? reject(error) : resolve()
+                }
+                const onReadable = () => settle()
+                const onClose = () =>
+                  settle(new Error(`GCS read of ${artifactPath} closed early`))
+                stream.once('readable', onReadable)
+                stream.once('error', settle)
+                stream.once('close', onClose)
+              })
             } catch (error) {
               throw storageError(error, artifactPath)
             }

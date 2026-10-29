@@ -284,7 +284,7 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     // artifact that is already cached.
     const tempPath = `${artifactPath}.${randomUUID()}.tmp`
     try {
-      await writeArtifactStream(tempPath, artifact, maxBytes)
+      await writeArtifactStream(tempPath, artifact, maxBytes, tag)
     } catch (err) {
       await removeQuietly(remove, tempPath)
       throw err
