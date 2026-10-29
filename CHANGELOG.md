@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.1...v3.0.2) (2026-10-29)
+
+
+### Bug Fixes
+
+* **docker:** pin the Node.js base image by digest ([9c02b11](https://github.com/ducktors/turborepo-remote-cache/commit/9c02b11dfac5944345423028a6a4dfbda33819ce)), closes [#952](https://github.com/ducktors/turborepo-remote-cache/issues/952)
+
 ## [3.0.1](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.0...v3.0.1) (2026-10-29)
 
 
