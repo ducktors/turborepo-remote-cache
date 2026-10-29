@@ -37,6 +37,9 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 3
+    ignore:
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "fix(docker)"
     assignees:
