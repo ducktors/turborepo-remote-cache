@@ -93,13 +93,13 @@ importers:
         version: 1.2.2
       '@commitlint/cli':
         specifier: ^20.5.0
-        version: 20.5.0(@types/node@20.17.51)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.8.3)
+        version: 20.5.0(@types/node@22.20.5)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.8.3)
       '@commitlint/config-conventional':
         specifier: ^20.5.0
         version: 20.5.0
       '@commitlint/prompt':
         specifier: ^20.5.0
-        version: 20.5.0(@types/node@20.17.51)(typescript@5.8.3)
+        version: 20.5.0(@types/node@22.20.5)(typescript@5.8.3)
       '@ducktors/tsconfig':
         specifier: ^1.0.0
         version: 1.0.0(typescript@5.8.3)
@@ -122,8 +122,8 @@ importers:
         specifier: ^14.1.0
         version: 14.1.0(semantic-release@25.0.3(typescript@5.8.3))
       '@types/node':
-        specifier: ^20.17.51
-        version: 20.17.51
+        specifier: ^22.20.5
+        version: 22.20.5
       '@types/s3rver':
         specifier: ^3.7.4
         version: 3.7.4
@@ -132,7 +132,7 @@ importers:
         version: 9.1.0
       commitizen:
         specifier: ^4.3.1
-        version: 4.3.1(@types/node@20.17.51)(typescript@5.8.3)
+        version: 4.3.1(@types/node@22.20.5)(typescript@5.8.3)
       commitlint-config-cz:
         specifier: ^0.13.3
         version: 0.13.3
@@ -141,7 +141,7 @@ importers:
         version: 4.3.2(@commitlint/lint@20.5.0)
       cz-conventional-changelog:
         specifier: ^3.3.0
-        version: 3.3.0(@types/node@20.17.51)(typescript@5.8.3)
+        version: 3.3.0(@types/node@22.20.5)(typescript@5.8.3)
       fastify-tsconfig:
         specifier: ^3.0.0
         version: 3.0.0
@@ -150,7 +150,7 @@ importers:
         version: 9.1.7
       mock-jwks:
         specifier: ^3.3.5
-        version: 3.3.5(@types/node@20.17.51)(typescript@5.8.3)
+        version: 3.3.5(@types/node@22.20.5)(typescript@5.8.3)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -1248,6 +1248,9 @@ packages:
 
   '@types/node@20.17.51':
     resolution: {integrity: sha512-hccptBl7C8lHiKxTBsY6vYYmqpmw1E/aGR/8fmueE+B390L3pdMOpNSRvFO4ZnXzW5+p2HBXV0yNABd2vdk22Q==}
+
+  '@types/node@22.20.5':
+    resolution: {integrity: sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3927,6 +3930,9 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   undici@6.24.1:
     resolution: {integrity: sha512-sC+b0tB1whOCzbtlx20fx3WgCXwkW627p4EA9uM+/tNNPkSS+eSEld6pAs9nDv7WbY1UUljBMYPtu9BCOrCWKA==}
     engines: {node: '>=18.17'}
@@ -4755,11 +4761,11 @@ snapshots:
 
   '@colors/colors@1.6.0': {}
 
-  '@commitlint/cli@20.5.0(@types/node@20.17.51)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.8.3)':
+  '@commitlint/cli@20.5.0(@types/node@22.20.5)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.8.3)':
     dependencies:
       '@commitlint/format': 20.5.0
       '@commitlint/lint': 20.5.0
-      '@commitlint/load': 20.5.0(@types/node@20.17.51)(typescript@5.8.3)
+      '@commitlint/load': 20.5.0(@types/node@22.20.5)(typescript@5.8.3)
       '@commitlint/read': 20.5.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)
       '@commitlint/types': 20.5.0
       tinyexec: 1.0.1
@@ -4817,7 +4823,7 @@ snapshots:
       '@commitlint/rules': 20.5.0
       '@commitlint/types': 20.5.0
 
-  '@commitlint/load@19.8.1(@types/node@20.17.51)(typescript@5.8.3)':
+  '@commitlint/load@19.8.1(@types/node@22.20.5)(typescript@5.8.3)':
     dependencies:
       '@commitlint/config-validator': 19.8.1
       '@commitlint/execute-rule': 19.8.1
@@ -4825,7 +4831,7 @@ snapshots:
       '@commitlint/types': 19.8.1
       chalk: 5.4.1
       cosmiconfig: 9.0.0(typescript@5.8.3)
-      cosmiconfig-typescript-loader: 6.1.0(@types/node@20.17.51)(cosmiconfig@9.0.0(typescript@5.8.3))(typescript@5.8.3)
+      cosmiconfig-typescript-loader: 6.1.0(@types/node@22.20.5)(cosmiconfig@9.0.0(typescript@5.8.3))(typescript@5.8.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -4834,14 +4840,14 @@ snapshots:
       - typescript
     optional: true
 
-  '@commitlint/load@20.5.0(@types/node@20.17.51)(typescript@5.8.3)':
+  '@commitlint/load@20.5.0(@types/node@22.20.5)(typescript@5.8.3)':
     dependencies:
       '@commitlint/config-validator': 20.5.0
       '@commitlint/execute-rule': 20.0.0
       '@commitlint/resolve-extends': 20.5.0
       '@commitlint/types': 20.5.0
       cosmiconfig: 9.0.1(typescript@5.8.3)
-      cosmiconfig-typescript-loader: 6.1.0(@types/node@20.17.51)(cosmiconfig@9.0.1(typescript@5.8.3))(typescript@5.8.3)
+      cosmiconfig-typescript-loader: 6.1.0(@types/node@22.20.5)(cosmiconfig@9.0.1(typescript@5.8.3))(typescript@5.8.3)
       is-plain-obj: 4.1.0
       lodash.mergewith: 4.6.2
       picocolors: 1.1.1
@@ -4857,10 +4863,10 @@ snapshots:
       conventional-changelog-angular: 8.3.1
       conventional-commits-parser: 6.4.0
 
-  '@commitlint/prompt@20.5.0(@types/node@20.17.51)(typescript@5.8.3)':
+  '@commitlint/prompt@20.5.0(@types/node@22.20.5)(typescript@5.8.3)':
     dependencies:
       '@commitlint/ensure': 20.5.0
-      '@commitlint/load': 20.5.0(@types/node@20.17.51)(typescript@5.8.3)
+      '@commitlint/load': 20.5.0(@types/node@22.20.5)(typescript@5.8.3)
       '@commitlint/types': 20.5.0
       inquirer: 9.3.7
       picocolors: 1.1.1
@@ -5097,17 +5103,17 @@ snapshots:
 
   '@hapi/hoek@10.0.1': {}
 
-  '@inquirer/confirm@5.1.12(@types/node@20.17.51)':
+  '@inquirer/confirm@5.1.12(@types/node@22.20.5)':
     dependencies:
-      '@inquirer/core': 10.1.13(@types/node@20.17.51)
-      '@inquirer/type': 3.0.7(@types/node@20.17.51)
+      '@inquirer/core': 10.1.13(@types/node@22.20.5)
+      '@inquirer/type': 3.0.7(@types/node@22.20.5)
     optionalDependencies:
-      '@types/node': 20.17.51
+      '@types/node': 22.20.5
 
-  '@inquirer/core@10.1.13(@types/node@20.17.51)':
+  '@inquirer/core@10.1.13(@types/node@22.20.5)':
     dependencies:
       '@inquirer/figures': 1.0.12
-      '@inquirer/type': 3.0.7(@types/node@20.17.51)
+      '@inquirer/type': 3.0.7(@types/node@22.20.5)
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       mute-stream: 2.0.0
@@ -5115,13 +5121,13 @@ snapshots:
       wrap-ansi: 6.2.0
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
-      '@types/node': 20.17.51
+      '@types/node': 22.20.5
 
   '@inquirer/figures@1.0.12': {}
 
-  '@inquirer/type@3.0.7(@types/node@20.17.51)':
+  '@inquirer/type@3.0.7(@types/node@22.20.5)':
     optionalDependencies:
-      '@types/node': 20.17.51
+      '@types/node': 22.20.5
 
   '@istanbuljs/schema@0.1.3': {}
 
@@ -5743,6 +5749,10 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
+  '@types/node@22.20.5':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/request@2.48.13':
@@ -6092,10 +6102,10 @@ snapshots:
 
   commander@5.1.0: {}
 
-  commitizen@4.3.1(@types/node@20.17.51)(typescript@5.8.3):
+  commitizen@4.3.1(@types/node@22.20.5)(typescript@5.8.3):
     dependencies:
       cachedir: 2.3.0
-      cz-conventional-changelog: 3.3.0(@types/node@20.17.51)(typescript@5.8.3)
+      cz-conventional-changelog: 3.3.0(@types/node@22.20.5)(typescript@5.8.3)
       dedent: 0.7.0
       detect-indent: 6.1.0
       find-node-modules: 2.1.3
@@ -6186,17 +6196,17 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@6.1.0(@types/node@20.17.51)(cosmiconfig@9.0.0(typescript@5.8.3))(typescript@5.8.3):
+  cosmiconfig-typescript-loader@6.1.0(@types/node@22.20.5)(cosmiconfig@9.0.0(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
-      '@types/node': 20.17.51
+      '@types/node': 22.20.5
       cosmiconfig: 9.0.0(typescript@5.8.3)
       jiti: 2.4.2
       typescript: 5.8.3
     optional: true
 
-  cosmiconfig-typescript-loader@6.1.0(@types/node@20.17.51)(cosmiconfig@9.0.1(typescript@5.8.3))(typescript@5.8.3):
+  cosmiconfig-typescript-loader@6.1.0(@types/node@22.20.5)(cosmiconfig@9.0.1(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
-      '@types/node': 20.17.51
+      '@types/node': 22.20.5
       cosmiconfig: 9.0.1(typescript@5.8.3)
       jiti: 2.4.2
       typescript: 5.8.3
@@ -6237,16 +6247,16 @@ snapshots:
     dependencies:
       type-fest: 1.4.0
 
-  cz-conventional-changelog@3.3.0(@types/node@20.17.51)(typescript@5.8.3):
+  cz-conventional-changelog@3.3.0(@types/node@22.20.5)(typescript@5.8.3):
     dependencies:
       chalk: 2.4.2
-      commitizen: 4.3.1(@types/node@20.17.51)(typescript@5.8.3)
+      commitizen: 4.3.1(@types/node@22.20.5)(typescript@5.8.3)
       conventional-commit-types: 3.0.0
       lodash.map: 4.6.0
       longest: 2.0.1
       word-wrap: 1.2.5
     optionalDependencies:
-      '@commitlint/load': 19.8.1(@types/node@20.17.51)(typescript@5.8.3)
+      '@commitlint/load': 19.8.1(@types/node@22.20.5)(typescript@5.8.3)
     transitivePeerDependencies:
       - '@types/node'
       - typescript
@@ -7592,11 +7602,11 @@ snapshots:
     dependencies:
       obliterator: 2.0.5
 
-  mock-jwks@3.3.5(@types/node@20.17.51)(typescript@5.8.3):
+  mock-jwks@3.3.5(@types/node@22.20.5)(typescript@5.8.3):
     dependencies:
       base64-url: 2.3.3
       jsonwebtoken: 9.0.2
-      msw: 2.8.5(@types/node@20.17.51)(typescript@5.8.3)
+      msw: 2.8.5(@types/node@22.20.5)(typescript@5.8.3)
       node-forge: 1.4.0
       node-rsa: 1.1.1
     transitivePeerDependencies:
@@ -7605,12 +7615,12 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.8.5(@types/node@20.17.51)(typescript@5.8.3):
+  msw@2.8.5(@types/node@22.20.5)(typescript@5.8.3):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.1
       '@bundled-es-modules/statuses': 1.0.1
       '@bundled-es-modules/tough-cookie': 0.1.6
-      '@inquirer/confirm': 5.1.12(@types/node@20.17.51)
+      '@inquirer/confirm': 5.1.12(@types/node@22.20.5)
       '@mswjs/interceptors': 0.38.7
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/until': 2.1.0
@@ -8631,6 +8641,8 @@ snapshots:
       which-boxed-primitive: 1.1.1
 
   undici-types@6.19.8: {}
+
+  undici-types@6.21.0: {}
 
   undici@6.24.1: {}
 
