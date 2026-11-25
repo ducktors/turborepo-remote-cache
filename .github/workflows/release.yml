@@ -58,4 +58,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DUCKTORS_PAT }}
           HUSKY: "0"
-        run: pnpm dlx semantic-release
+        run: pnpm exec semantic-release
