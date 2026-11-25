@@ -1,3 +1,15 @@
+## [3.0.4](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.3...v3.0.4) (2026-11-25)
+
+
+### Bug Fixes
+
+* **ci:** run semantic-release from the lockfile ([d08ebee](https://github.com/ducktors/turborepo-remote-cache/commit/d08ebeedeb0e8af5fe3b90cead0b838527d5f0a5))
+* **deps:** override es-toolkit to 1.53.1 or later ([587cb7c](https://github.com/ducktors/turborepo-remote-cache/commit/587cb7c4955fda81bbfa6ebe0f1c21dbd97f4e06))
+* **deps:** update dependencies to fix security advisories ([1b6eada](https://github.com/ducktors/turborepo-remote-cache/commit/1b6eada88b944475ffc92043a65e1dc3ae5e63f2))
+* **docker:** bump node from 24.22.2-alpine to 24.22.3-alpine ([8f39563](https://github.com/ducktors/turborepo-remote-cache/commit/8f3956315d69a2a2ddfa1cf52e02440bccf0079a))
+* **docker:** remove npm, corepack and yarn from the runtime image ([7977a43](https://github.com/ducktors/turborepo-remote-cache/commit/7977a435254da41c76901c318b9deed918c37fa3))
+* **docker:** ship only production dependencies in the image ([ea52fe3](https://github.com/ducktors/turborepo-remote-cache/commit/ea52fe30a1fbec2a6d12ca255c1bc7c37c20242e))
+
 ## [3.0.3](https://github.com/ducktors/turborepo-remote-cache/compare/v3.0.2...v3.0.3) (2026-10-29)
 
 
