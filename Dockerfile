@@ -1,6 +1,6 @@
 ARG PNPM_VERSION=10.33.0
 
-FROM node:24.22.2-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS build
+FROM node:24.22.3-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS build
 ARG PNPM_VERSION
 ENV HOME=/opt/app
 ENV CI=true
@@ -22,7 +22,7 @@ RUN rm -rf node_modules && \
     pnpm install --prod --frozen-lockfile --ignore-scripts && \
     rm -rf .pnpm-store
 
-FROM node:24.22.2-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+FROM node:24.22.3-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5
 RUN apk update && \
     apk upgrade --no-cache && \
     apk add --no-cache tini && \
